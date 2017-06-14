@@ -90,12 +90,16 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Manifold">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="直接用代码 举例说明。 先准备数据：12345678910import tensorflow as tfimport numpy as npnum_examples = 10num_features = 2data = np.reshape(np.arange(num_examples*num_features), (num_examples,num_features))tdata = tf.co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Queue, Coordinator and Producer in Tensorflow">
+<meta property="og:url" content="http://yoursite.com/2017/06/11/Queue-coordinator-and-producer-in-Tensorflow/index.html">
 <meta property="og:site_name" content="Manifold">
+<meta property="og:description" content="直接用代码 举例说明。 先准备数据：12345678910import tensorflow as tfimport numpy as npnum_examples = 10num_features = 2data = np.reshape(np.arange(num_examples*num_features), (num_examples,num_features))tdata = tf.co">
+<meta property="og:updated_time" content="2017-06-14T14:37:31.033Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Manifold">
+<meta name="twitter:title" content="Queue, Coordinator and Producer in Tensorflow">
+<meta name="twitter:description" content="直接用代码 举例说明。 先准备数据：12345678910import tensorflow as tfimport numpy as npnum_examples = 10num_features = 2data = np.reshape(np.arange(num_examples*num_features), (num_examples,num_features))tdata = tf.co">
 
 
 
@@ -123,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/06/11/Queue-coordinator-and-producer-in-Tensorflow/"/>
 
 
 
 
 
-  <title>Manifold</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Queue, Coordinator and Producer in Tensorflow | Manifold</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -155,9 +159,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left 
-   page-home 
- ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -240,9 +242,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -268,9 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/11/Queue-coordinator-and-producer-in-Tensorflow/" itemprop="url">Queue, Coordinator and Producer in Tensorflow</a></h1>
+          <h1 class="post-title" itemprop="name headline">Queue, Coordinator and Producer in Tensorflow</h1>
         
 
         <div class="post-meta">
@@ -317,9 +317,7 @@
       
 
       
-        
-          
-            <p>直接用代码 举例说明。</p>
+        <p>直接用代码 举例说明。</p>
 <p>先准备数据：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">num_examples = <span class="number">10</span></div><div class="line">num_features = <span class="number">2</span></div><div class="line">data = np.reshape(np.arange(num_examples*num_features), (num_examples,num_features))</div><div class="line">tdata = tf.constant(data,<span class="string">'float32'</span>)</div><div class="line"><span class="comment">#print (data)</span></div><div class="line"><span class="keyword">print</span> (<span class="string">'--------------'</span>)</div><div class="line">sess = tf.Session()</div><div class="line">coord = tf.train.Coordinator()</div></pre></td></tr></table></figure></p>
 <p><strong>运行以下各段代码前先运行上方的代码。</strong></p>
 <p>以下各段代码之间互相独立。</p>
@@ -336,20 +334,27 @@
 <h2 id="How-to-use-tf-train-batch"><a href="#How-to-use-tf-train-batch" class="headerlink" title="How to use tf.train.batch?"></a>How to use tf.train.batch?</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">data_q = tf.train.slice_input_producer([tdata], num_epochs=<span class="number">2</span>, shuffle=<span class="keyword">False</span>,capacity=<span class="number">512</span>)</div><div class="line">sess.run(tf.local_variables_initializer())  <span class="comment"># MUST DO when num_epochs != None!</span></div><div class="line"></div><div class="line"><span class="comment">#batch_data = tf.train.batch([tdata],batch_size=2,enqueue_many=True) #也可直接用Tensor初始化</span></div><div class="line">batch_data = tf.train.batch([data_q],batch_size=<span class="number">2</span>,enqueue_many=<span class="keyword">True</span>)</div><div class="line"></div><div class="line">threads = tf.train.start_queue_runners(sess=sess,coord=coord)</div><div class="line"></div><div class="line">sess.run(batch_data)</div><div class="line">sess.run(batch_data)</div></pre></td></tr></table></figure>
 <p>当队列空时，抛出OutOfRangeError。如果用Tensor初始化batch,那么永远不会抛出OutOfRangeError。</p>
 
-          
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
     <div>
+      
+        
+
       
     </div>
 
@@ -357,143 +362,38 @@
       
 
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/30/First-post-test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="airaria">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Manifold">
-    </span>
-
-    
-      <header class="post-header">
-
         
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/05/30/First-post-test/" itemprop="url">First Post Test</a></h1>
-        
+      
 
-        <div class="post-meta">
-          <span class="post-time">
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-30T00:41:40+08:00">
-                2017-05-30
-              </time>
+              <a href="/2017/05/30/First-post-test/" rel="next" title="First Post Test">
+                <i class="fa fa-chevron-left"></i> First Post Test
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <ul>
-<li>This is a testing.</li>
-<li>I hope it will work.</li>
-</ul>
-<blockquote>
-<p>今夕复何夕，共此灯烛光</p>
-</blockquote>
-<p>$$E=mc^2$$</p>
-<p>$$\hat{H} \lvert\psi\rangle = i\hbar\frac{\partial}{\partial t}\lvert\psi\rangle$$</p>
-<p>$$\sum_i a_i = \infty $$</p>
-<p>$$g_{\mu\nu} = g_{\nu\mu}$$</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -501,6 +401,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -520,8 +424,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -594,6 +507,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-use-queue"><span class="nav-number">1.</span> <span class="nav-text">How to use queue?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-use-coordinator"><span class="nav-number">2.</span> <span class="nav-text">How to use coordinator?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-use-producer"><span class="nav-number">3.</span> <span class="nav-text">How to use producer?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-use-tf-train-batch"><span class="nav-number">4.</span> <span class="nav-text">How to use tf.train.batch?</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -707,6 +636,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
 
   
 
