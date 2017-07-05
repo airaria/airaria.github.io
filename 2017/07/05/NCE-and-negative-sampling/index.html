@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="ML-theory," />
 
 
 
@@ -90,12 +90,17 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Manifold">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="在语言模型中，给定上下文c，要预测单词w: 1p_&amp;#123;\theta&amp;#125;(w|c) = \frac&amp;#123;u_&amp;#123;\theta&amp;#125;(w,c)&amp;#125;&amp;#123;\sum_&amp;#123;w&amp;apos;\in V&amp;#125;u_&amp;#123;\theta&amp;#125;(w&amp;apos;,c)&amp;#125; = \frac&amp;#123;u_&amp;#123;\theta&amp;#125;">
+<meta name="keywords" content="ML-theory">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NCE and Negative Sampling">
+<meta property="og:url" content="http://yoursite.com/2017/07/05/NCE-and-negative-sampling/index.html">
 <meta property="og:site_name" content="Manifold">
+<meta property="og:description" content="在语言模型中，给定上下文c，要预测单词w: 1p_&amp;#123;\theta&amp;#125;(w|c) = \frac&amp;#123;u_&amp;#123;\theta&amp;#125;(w,c)&amp;#125;&amp;#123;\sum_&amp;#123;w&amp;apos;\in V&amp;#125;u_&amp;#123;\theta&amp;#125;(w&amp;apos;,c)&amp;#125; = \frac&amp;#123;u_&amp;#123;\theta&amp;#125;">
+<meta property="og:updated_time" content="2017-07-05T14:04:39.444Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Manifold">
+<meta name="twitter:title" content="NCE and Negative Sampling">
+<meta name="twitter:description" content="在语言模型中，给定上下文c，要预测单词w: 1p_&amp;#123;\theta&amp;#125;(w|c) = \frac&amp;#123;u_&amp;#123;\theta&amp;#125;(w,c)&amp;#125;&amp;#123;\sum_&amp;#123;w&amp;apos;\in V&amp;#125;u_&amp;#123;\theta&amp;#125;(w&amp;apos;,c)&amp;#125; = \frac&amp;#123;u_&amp;#123;\theta&amp;#125;">
 
 
 
@@ -123,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/07/05/NCE-and-negative-sampling/"/>
 
 
 
 
 
-  <title>Manifold</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>NCE and Negative Sampling | Manifold</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -155,9 +160,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left 
-   page-home 
- ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -240,9 +243,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -268,9 +271,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/05/NCE-and-negative-sampling/" itemprop="url">NCE and Negative Sampling</a></h1>
+          <h1 class="post-title" itemprop="name headline">NCE and Negative Sampling</h1>
         
 
         <div class="post-meta">
@@ -317,9 +318,7 @@
       
 
       
-        
-          
-            <p> 在语言模型中，给定上下文c，要预测单词w:<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">p_&#123;\theta&#125;(w|c) = \frac&#123;u_&#123;\theta&#125;(w,c)&#125;&#123;\sum_&#123;w&apos;\in V&#125;u_&#123;\theta&#125;(w&apos;,c)&#125; = \frac&#123;u_&#123;\theta&#125;(w,c)&#125;&#123;Z_&#123;\theta&#125;(c)&#125;</div></pre></td></tr></table></figure></p>
+        <p> 在语言模型中，给定上下文c，要预测单词w:<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">p_&#123;\theta&#125;(w|c) = \frac&#123;u_&#123;\theta&#125;(w,c)&#125;&#123;\sum_&#123;w&apos;\in V&#125;u_&#123;\theta&#125;(w&apos;,c)&#125; = \frac&#123;u_&#123;\theta&#125;(w,c)&#125;&#123;Z_&#123;\theta&#125;(c)&#125;</div></pre></td></tr></table></figure></p>
 <p>其中<code>$u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)$</code>, 而 <code>$Z_{\theta}(c)$</code>是配分函数（归一化因子）。然而当字典<code>$V$</code>非常大时，计算归一化因子非常耗时。</p>
 <hr>
 <p>下面，我们令<code>$\tilde p(w|c)$</code> 和 <code>$\tilde p(c)$</code>代表经验分布，<code>$q(w)$</code>代表噪声分布。</p>
@@ -356,291 +355,72 @@
 <li><em>What is Candidate Sampling</em> from <em>TensorFlow</em> </li>
 </ol>
 
-          
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
     <div>
+      
+        
+
       
     </div>
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/11/Queue-coordinator-and-producer-in-Tensorflow/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="airaria">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Manifold">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/11/Queue-coordinator-and-producer-in-Tensorflow/" itemprop="url">Queue, Coordinator and Producer in Tensorflow</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-11T22:51:54+08:00">
-                2017-06-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/ML-theory/" rel="tag"># ML-theory</a>
           
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
         
-          
-            <p>直接用代码 举例说明。</p>
-<p>先准备数据：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">num_examples = <span class="number">10</span></div><div class="line">num_features = <span class="number">2</span></div><div class="line">data = np.reshape(np.arange(num_examples*num_features), (num_examples,num_features))</div><div class="line">tdata = tf.constant(data,<span class="string">'float32'</span>)</div><div class="line"><span class="comment">#print (data)</span></div><div class="line"><span class="keyword">print</span> (<span class="string">'--------------'</span>)</div><div class="line">sess = tf.Session()</div><div class="line">coord = tf.train.Coordinator()</div></pre></td></tr></table></figure></p>
-<p><strong>运行以下各段代码前先运行上方的代码。</strong></p>
-<p>以下各段代码之间互相独立。</p>
-<h2 id="How-to-use-queue"><a href="#How-to-use-queue" class="headerlink" title="How to use queue?"></a>How to use queue?</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">q = tf.FIFOQueue(num_examples*<span class="number">5</span>,<span class="string">'float'</span>)</div><div class="line">inc_q = q.enqueue_many(tdata)  <span class="comment">#ok!  As long as queue is not full</span></div><div class="line">x = q.dequeue()  <span class="comment"># ok!  As long as queue is not empty</span></div><div class="line">sess.run(tf.global_variables_initializer())</div><div class="line">sess.run(inc_q)</div><div class="line">sess.run(x)  <span class="comment"># array([0., 1.], dtype=float32)</span></div></pre></td></tr></table></figure>
-<p> 当队列满或者空时会阻塞。</p>
-<h2 id="How-to-use-coordinator"><a href="#How-to-use-coordinator" class="headerlink" title="How to use coordinator?"></a>How to use coordinator?</h2><p> Coordinator是用来协调各个线程的。<br> 引用tensorflow官网上的说明：</p>
-<blockquote>
-<p>Any of the threads can call coord.request_stop() to ask for all the threads to stop.<br>To cooperate with the requests,<br>each thread must check for coord.should_stop() on a regular basis.<br>coord.should_stop() returns True as soon as coord.request_stop() has been called.</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">q = tf.FIFOQueue(num_examples,<span class="string">'float'</span>)</div><div class="line">inc_q = q.enqueue_many(tdata)</div><div class="line">x = q.dequeue()</div><div class="line"></div><div class="line">qr = tf.train.QueueRunner(q,[inc_q] * <span class="number">4</span>)   </div><div class="line">enq_threads = qr.create_threads(sess,coord=coord,start=<span class="keyword">True</span>) <span class="comment">#创建并执行4个线程</span></div><div class="line"><span class="keyword">for</span> iter <span class="keyword">in</span> range(<span class="number">10</span>):</div><div class="line">    r = sess.run(x)</div><div class="line">    <span class="keyword">print</span> (r) <span class="comment"># [[0, 1],[1, 2] ... [18, 19]]</span></div><div class="line">coord.request_stop()</div><div class="line">coord.join(enq_threads)  <span class="comment">#q is closed. Instead of block, a error raises if  there is no more elements in q.3</span></div></pre></td></tr></table></figure>
-<p> 在调用coord.request_stop() 并且等待 enq_threads都终止之后，如果我们继续 一直执行出队操作x,那么当队列空时会产生OutOfRangeError。</p>
-<h2 id="How-to-use-producer"><a href="#How-to-use-producer" class="headerlink" title="How to use producer?"></a>How to use producer?</h2><p>Tensorflow 中提供了各种producer，让我们不必直接控制线程的创建以及队列的出队入队。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">str_q = tf.train.string_input_producer([<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>],num_epochs=<span class="number">3</span>)</div><div class="line">sess.run(tf.local_variables_initializer())  <span class="comment">#MUST DO  when num_epochs != None</span></div><div class="line">y = str_q.size()</div><div class="line">sess.run(y)   <span class="comment"># 0 , 此时队列空!</span></div><div class="line">threads = tf.train.start_queue_runners(sess=sess,coord=coord)</div><div class="line">sess.run(str_q.size()) <span class="comment"># 15 = 5 * 3</span></div><div class="line"><span class="keyword">try</span>:</div><div class="line">    <span class="keyword">while</span> <span class="keyword">not</span> coord.should_stop():</div><div class="line">        r = sess.run(str_q.dequeue())</div><div class="line">        <span class="keyword">print</span> (r)</div><div class="line"><span class="keyword">except</span> tf.errors.OutOfRangeError:</div><div class="line">    print(<span class="string">'no more inputs.'</span>)</div><div class="line"><span class="keyword">finally</span>:</div><div class="line">    coord.request_stop()</div><div class="line"></div><div class="line">coord.join(threads)</div></pre></td></tr></table></figure></p>
-<p>Produer的作用是自动入队，返回值是出队的Tensor?</p>
-<h2 id="How-to-use-tf-train-batch"><a href="#How-to-use-tf-train-batch" class="headerlink" title="How to use tf.train.batch?"></a>How to use tf.train.batch?</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">data_q = tf.train.slice_input_producer([tdata], num_epochs=<span class="number">2</span>, shuffle=<span class="keyword">False</span>,capacity=<span class="number">512</span>)</div><div class="line">sess.run(tf.local_variables_initializer())  <span class="comment"># MUST DO when num_epochs != None!</span></div><div class="line"></div><div class="line"><span class="comment">#batch_data = tf.train.batch([tdata],batch_size=2,enqueue_many=True) #也可直接用Tensor初始化</span></div><div class="line">batch_data = tf.train.batch([data_q],batch_size=<span class="number">2</span>,enqueue_many=<span class="keyword">True</span>)</div><div class="line"></div><div class="line">threads = tf.train.start_queue_runners(sess=sess,coord=coord)</div><div class="line"></div><div class="line">sess.run(batch_data)</div><div class="line">sess.run(batch_data)</div></pre></td></tr></table></figure>
-<p>当队列空时，抛出OutOfRangeError。如果用Tensor初始化batch,那么永远不会抛出OutOfRangeError。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
       
 
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/30/First-post-test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="airaria">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Manifold">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/05/30/First-post-test/" itemprop="url">First Post Test</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-30T00:41:40+08:00">
-                2017-05-30
-              </time>
+              <a href="/2017/06/11/Queue-coordinator-and-producer-in-Tensorflow/" rel="next" title="Queue, Coordinator and Producer in Tensorflow">
+                <i class="fa fa-chevron-left"></i> Queue, Coordinator and Producer in Tensorflow
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <ul>
-<li>This is a testing.</li>
-<li>I hope it will work.</li>
-</ul>
-<blockquote>
-<p>今夕复何夕，共此灯烛光</p>
-</blockquote>
-<p>$$E=mc^2$$</p>
-<p>$$\hat{H} \lvert\psi\rangle = i\hbar\frac{\partial}{\partial t}\lvert\psi\rangle$$</p>
-<p>$$\sum_i a_i = \infty $$</p>
-<p>$$g_{\mu\nu} = g_{\nu\mu}$$</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -648,6 +428,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -667,8 +451,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -741,6 +534,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Noise-contrastive-estimation-NCE"><span class="nav-number">1.</span> <span class="nav-text">Noise contrastive estimation(NCE)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Negative-sampling"><span class="nav-number">2.</span> <span class="nav-text">Negative sampling</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#直接的角度"><span class="nav-number">2.0.1.</span> <span class="nav-text">直接的角度</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Candidate-Sampling"><span class="nav-number"></span> <span class="nav-text">Candidate Sampling</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是candicate-sampling"><span class="nav-number">0.1.</span> <span class="nav-text">什么是candicate sampling?</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -854,6 +663,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
 
   
 
