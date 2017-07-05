@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="在语言模型中，给定上下文c，要预测单词w:$$p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w’\in V}u_{\theta}(w’,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)}$$其中$u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)$, 而 $$Z_{\theta">
+<meta name="description" content="在语言模型中，给定上下文c，要预测单词w:$$p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w’\in V}u_{\theta}(w’,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)}$$其中$u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)$, 而 $Z_{\theta}">
 <meta name="keywords" content="ML-theory">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NCE and Negative Sampling">
 <meta property="og:url" content="http://yoursite.com/2017/07/05/NCE-and-negative-sampling/index.html">
 <meta property="og:site_name" content="Manifold">
-<meta property="og:description" content="在语言模型中，给定上下文c，要预测单词w:$$p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w’\in V}u_{\theta}(w’,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)}$$其中$u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)$, 而 $$Z_{\theta">
-<meta property="og:updated_time" content="2017-07-05T14:22:23.575Z">
+<meta property="og:description" content="在语言模型中，给定上下文c，要预测单词w:$$p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w’\in V}u_{\theta}(w’,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)}$$其中$u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)$, 而 $Z_{\theta}">
+<meta property="og:updated_time" content="2017-07-05T14:25:12.768Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NCE and Negative Sampling">
-<meta name="twitter:description" content="在语言模型中，给定上下文c，要预测单词w:$$p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w’\in V}u_{\theta}(w’,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)}$$其中$u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)$, 而 $$Z_{\theta">
+<meta name="twitter:description" content="在语言模型中，给定上下文c，要预测单词w:$$p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w’\in V}u_{\theta}(w’,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)}$$其中$u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)$, 而 $Z_{\theta}">
 
 
 
@@ -318,25 +318,25 @@
       
 
       
-        <p> 在语言模型中，给定上下文c，要预测单词w:<br>$$p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w’\in V}u_{\theta}(w’,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)}$$<br>其中$u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)$, 而 $$Z_{\theta}(c)$$是配分函数（归一化因子）。然而当字典$$V$$非常大时，计算归一化因子非常耗时。</p>
+        <p> 在语言模型中，给定上下文c，要预测单词w:<br>$$p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w’\in V}u_{\theta}(w’,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)}$$<br>其中$u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)$, 而 $Z_{\theta}(c)$是配分函数（归一化因子）。然而当字典$V$非常大时，计算归一化因子非常耗时。</p>
 <hr>
-<p>下面，我们令<code>$\tilde p(w|c)$</code> 和 <code>$\tilde p(c)$</code>代表经验分布，<code>$q(w)$</code>代表噪声分布。</p>
+<p>下面，我们令$\tilde p(w|c)$ 和 $\tilde p(c)$代表经验分布，$q(w)$代表噪声分布。</p>
 <hr>
 <h2 id="Noise-contrastive-estimation-NCE"><a href="#Noise-contrastive-estimation-NCE" class="headerlink" title="Noise contrastive estimation(NCE)"></a>Noise contrastive estimation(NCE)</h2><p>NCE把语言模型的参数估计问题变成一个二分类问题的参数估计。二分类中的两类分别是真实样本和噪声样本。<br>具体地，</p>
 <ol>
-<li>从 <code>$\tilde p(c)$</code>中采样<code>$c$</code>,再从<code>$\tilde p(w|c)$</code>中采样作为正样本(d=1)。</li>
-<li>从<code>$q(w)$</code>采样k个样本作为负样本(d=0)。</li>
+<li>从 $\tilde p(c)$中采样$c$,再从$\tilde p(w|c)$中采样作为正样本(d=1)。</li>
+<li>从$q(w)$采样k个样本作为负样本(d=0)。</li>
 </ol>
-<p>如果给定<code>$c$</code>，那么<code>$(d,w)$</code>的分布是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">p(0,w|c) = \frac&#123;k&#125;&#123;1+k&#125;q(w)</div><div class="line"></div><div class="line">p(1,w|c) = \frac&#123;1&#125;&#123;1+k&#125;\tilde p(w|c).</div></pre></td></tr></table></figure></p>
-<p>利用条件概率，我们可以把上式变为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">p(0|c,w) = \frac&#123;k\times q(w)&#125;&#123;\tilde p(w|c)+k\times q(w)&#125;</div><div class="line"></div><div class="line">p(1|c,w) = \frac&#123;\tilde p(w|c)&#125;&#123;\tilde p(w|c)+k\times q(w)&#125;.</div></pre></td></tr></table></figure></p>
-<p>在NCE中，针对上式，用<code>$p_{\theta}(w|c)$</code>代替<code>$\tilde p(w|c)$</code>，并且假设</p>
+<p>如果给定$c$，那么$(d,w)$的分布是<br>$$<br>p(0,w|c) = \frac{k}{1+k}q(w)</p>
+<p>p(1,w|c) = \frac{1}{1+k}\tilde p(w|c).<br>$$<br>利用条件概率，我们可以把上式变为<br>$$<br>p(0|c,w) = \frac{k\times q(w)}{\tilde p(w|c)+k\times q(w)}</p>
+<p>p(1|c,w) = \frac{\tilde p(w|c)}{\tilde p(w|c)+k\times q(w)}.<br>$$</p>
+<p>在NCE中，针对上式，用$p_{\theta}(w|c)$代替$\tilde p(w|c)$，并且假设</p>
 <ol>
-<li><code>$Z(c)$</code>是待估计参数</li>
-<li>对于参数众多的NN，固定<code>$Z(c)=1$</code>有效。</li>
+<li>$Z(c)$是待估计参数</li>
+<li>对于参数众多的NN，固定$Z(c)=1$有效。</li>
 </ol>
-<p>因此，上两式又可写成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">p(0|c,w) = \frac&#123;k\times q(w)&#125;&#123;u_&#123;\theta&#125;(w|c)+k\times q(w)&#125;</div><div class="line"></div><div class="line">p(1|c,w) = \frac&#123;\tilde p(w|c)&#125;&#123;u_&#123;\theta&#125;(w|c)+k\times q(w)&#125;.</div></pre></td></tr></table></figure></p>
-<p>由此得到NCE loss:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-\mathcal&#123;L&#125;_&#123;\mathrm&#123;NCE&#125;_k&#125; = \sum_&#123;(w,c)\in \mathcal&#123;D&#125;&#125;(\log p(D=1|c,w)+k \mathbb&#123;E&#125;_&#123;\bar w\sim q&#125; \log p(D=0|c,\bar w))</div></pre></td></tr></table></figure></p>
-<p>对于其中的期望项，我们用MC抽样。</p>
+<p>因此，上两式又可写成：<br>$$<br>p(0|c,w) = \frac{k\times q(w)}{u_{\theta}(w|c)+k\times q(w)}</p>
+<p>p(1|c,w) = \frac{\tilde p(w|c)}{u_{\theta}(w|c)+k\times q(w)}.<br>$$<br>由此得到NCE loss:<br>$$<br>-\mathcal{L}_{\mathrm{NCE}_k} = \sum_{(w,c)\in \mathcal{D}}(\log p(D=1|c,w)+k \mathbb{E}_{\bar w\sim q} \log p(D=0|c,\bar w))<br>$$<br>对于其中的期望项，我们用MC抽样。</p>
 <h2 id="Negative-sampling"><a href="#Negative-sampling" class="headerlink" title="Negative sampling"></a>Negative sampling</h2><p>在上面的框架下，negative sampling实际是指定了另一组条件概率<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">p(D=0|c,w) = \frac&#123;1&#125;&#123;u_&#123;\theta&#125;(w,c)+1&#125;</div><div class="line"></div><div class="line">p(D=1|c,w) = \frac&#123;u_&#123;\theta&#125;(w,c)&#125;&#123;u_&#123;\theta&#125;(w,c)+1&#125;,</div></pre></td></tr></table></figure></p>
 <p>等价于在NCE中令<code>$k=\lvert V\rvert, q\sim Uniform Distribution$</code>, 此时<code>$k\times q = 1$</code>.</p>
 <h4 id="直接的角度"><a href="#直接的角度" class="headerlink" title="直接的角度"></a>直接的角度</h4><p>从另一个角度看,在negative sampling中,我们要做得是最大化正样本概率<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\sum_&#123;(w,c)\in \mathcal&#123;D&#125;&#125;\log p(D=1|w,c)</div></pre></td></tr></table></figure></p>
