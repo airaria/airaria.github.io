@@ -328,25 +328,17 @@
 <li>从 $\tilde p(c)$中采样$c$,再从$\tilde p(w|c)$中采样作为正样本(d=1)。</li>
 <li>从$q(w)$采样k个样本作为负样本(d=0)。</li>
 </ol>
-<p>如果给定$c$，那么$(d,w)$的分布是<br>$$<br>p(0,w|c) = \frac{k}{1+k}q(w)</p>
-<p>p(1,w|c) = \frac{1}{1+k}\tilde p(w|c).<br>$$<br>利用条件概率，我们可以把上式变为<br>$$<br>p(0|c,w) = \frac{k\times q(w)}{\tilde p(w|c)+k\times q(w)}</p>
-<p>p(1|c,w) = \frac{\tilde p(w|c)}{\tilde p(w|c)+k\times q(w)}.<br>$$</p>
+<p>如果给定$c$，那么$(d,w)$的分布是<br>$$p(0,w|c) = \frac{k}{1+k}q(w)$$<br>$$p(1,w|c) = \frac{1}{1+k}\tilde p(w|c).$$<br>利用条件概率，我们可以把上式变为<br>$$p(0|c,w) = \frac{k\times q(w)}{\tilde p(w|c)+k\times q(w)}$$<br>$$p(1|c,w) = \frac{\tilde p(w|c)}{\tilde p(w|c)+k\times q(w)}.$$</p>
 <p>在NCE中，针对上式，用$p_{\theta}(w|c)$代替$\tilde p(w|c)$，并且假设</p>
 <ol>
 <li>$Z(c)$是待估计参数</li>
 <li>对于参数众多的NN，固定$Z(c)=1$有效。</li>
 </ol>
-<p>因此，上两式又可写成：<br>$$<br>p(0|c,w) = \frac{k\times q(w)}{u_{\theta}(w|c)+k\times q(w)}</p>
-<p>p(1|c,w) = \frac{\tilde p(w|c)}{u_{\theta}(w|c)+k\times q(w)}.<br>$$<br>由此得到NCE loss:<br>$$<br>-\mathcal{L}_{\mathrm{NCE}_k} = \sum_{(w,c)\in \mathcal{D}}(\log p(D=1|c,w)+k \mathbb{E}_{\bar w\sim q} \log p(D=0|c,\bar w))<br>$$<br>对于其中的期望项，我们用MC抽样。</p>
-<h2 id="Negative-sampling"><a href="#Negative-sampling" class="headerlink" title="Negative sampling"></a>Negative sampling</h2><p>在上面的框架下，negative sampling实际是指定了另一组条件概率<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">p(D=0|c,w) = \frac&#123;1&#125;&#123;u_&#123;\theta&#125;(w,c)+1&#125;</div><div class="line"></div><div class="line">p(D=1|c,w) = \frac&#123;u_&#123;\theta&#125;(w,c)&#125;&#123;u_&#123;\theta&#125;(w,c)+1&#125;,</div></pre></td></tr></table></figure></p>
-<p>等价于在NCE中令<code>$k=\lvert V\rvert, q\sim Uniform Distribution$</code>, 此时<code>$k\times q = 1$</code>.</p>
-<h4 id="直接的角度"><a href="#直接的角度" class="headerlink" title="直接的角度"></a>直接的角度</h4><p>从另一个角度看,在negative sampling中,我们要做得是最大化正样本概率<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\sum_&#123;(w,c)\in \mathcal&#123;D&#125;&#125;\log p(D=1|w,c)</div></pre></td></tr></table></figure></p>
-<p>和最小化负样本概率<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\sum_&#123;(w,c)\notin \mathcal&#123;D&#125;&#125; \log p(D=0|w,c)</div></pre></td></tr></table></figure></p>
-<p>即<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-\mathcal&#123;L&#125;_&#123;\mathrm&#123;NS&#125;&#125; = \sum_&#123;(w,c)\in\mathcal&#123;D&#125;&#125;\log p(D=1|w,c)+\sum_&#123;(w,c)\notin \mathcal&#123;D&#125;&#125;(1-\log(D=1|w,c))</div></pre></td></tr></table></figure></p>
-<p>可以直接通过logistic函数建模:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">p(D=1|w,c)=\frac&#123;1&#125;&#123;e^&#123;-s_&#123;\theta&#125; (w,c)&#125;+1&#125;=\frac&#123;u_&#123;\theta&#125;(w,c)&#125;&#123;u_&#123;\theta&#125;(w,c)+1&#125;</div><div class="line"></div><div class="line">p(D=0|w,c) = \frac&#123;e^&#123;-s_&#123;\theta&#125;(w,c)&#125;&#125;&#123;1+e^&#123;-s_&#123;\theta&#125;(w,c)&#125;&#125;=\frac&#123;1&#125;&#123;u_&#123;\theta&#125;(w,c)+1&#125;,</div></pre></td></tr></table></figure></p>
-<p>回到了上面的结果。</p>
+<p>因此，上两式又可写成：<br>$$p(0|c,w) = \frac{k\times q(w)}{u_{\theta}(w|c)+k\times q(w)}$$<br>$$p(1|c,w) = \frac{\tilde p(w|c)}{u_{\theta}(w|c)+k\times q(w)}.$$<br>由此得到NCE loss:<br>$$-\mathcal{L}_{\mathrm{NCE}_k} = \sum_{(w,c)\in \mathcal{D}}(\log p(D=1|c,w)+k \mathbb{E}_{\bar w\sim q} \log p(D=0|c,\bar w))$$<br>对于其中的期望项，我们用MC抽样。</p>
+<h2 id="Negative-sampling"><a href="#Negative-sampling" class="headerlink" title="Negative sampling"></a>Negative sampling</h2><p>在上面的框架下，negative sampling实际是指定了另一组条件概率<br>$$p(D=0|c,w) = \frac{1}{u_{\theta}(w,c)+1}$$<br>$$p(D=1|c,w) = \frac{u_{\theta}(w,c)}{u_{\theta}(w,c)+1},$$<br>等价于在NCE中令$k=\lvert V\rvert, q\sim Uniform Distribution$, 此时$k\times q = 1$.</p>
+<h4 id="直接的角度"><a href="#直接的角度" class="headerlink" title="直接的角度"></a>直接的角度</h4><p>从另一个角度看,在negative sampling中,我们要做得是最大化正样本概率<br>$$\sum_{(w,c)\in \mathcal{D}}\log p(D=1|w,c)$$<br>和最小化负样本概率<br>$$\sum_{(w,c)\notin \mathcal{D}} \log p(D=0|w,c)$$<br>即<br>$$-\mathcal{L}_{\mathrm{NS}} = \sum_{(w,c)\in\mathcal{D}}\log p(D=1|w,c)+\sum_{(w,c)\notin \mathcal{D}}(1-\log(D=1|w,c))$$<br>可以直接通过logistic函数建模:<br>$$p(D=1|w,c)=\frac{1}{e^{-s_{\theta} (w,c)}+1}=\frac{u_{\theta}(w,c)}{u_{\theta}(w,c)+1}$$<br>$$p(D=0|w,c) = \frac{e^{-s_{\theta}(w,c)}}{1+e^{-s_{\theta}(w,c)}}=\frac{1}{u_{\theta}(w,c)+1},$$<br>回到了上面的结果。</p>
 <h2 id="Candidate-Sampling"><a href="#Candidate-Sampling" class="headerlink" title="Candidate Sampling"></a>Candidate Sampling</h2><p>NCE 和 Negative sampling都属于candidate sampling.</p>
-<h3 id="什么是candicate-sampling"><a href="#什么是candicate-sampling" class="headerlink" title="什么是candicate sampling?"></a>什么是candicate sampling?</h3><p>还以语言模型为例。对于给定的上下文c,我们需要预测下一个单词w,w的候选集大小是<code>$|V|$</code>。在softmax方法中为了计算<code>$p(W=w|c)$</code>,需要计算出每一个类别<code>$p(W=w_i|c)$</code>的概率，这称为是”exanstive”的。在candidate sampling中，为了计算<code>$p(W=w|c)$</code>我们只需对<code>$V$</code>中的一部分某些<code>$w_i$</code>做计算。</p>
+<h3 id="什么是candicate-sampling"><a href="#什么是candicate-sampling" class="headerlink" title="什么是candicate sampling?"></a>什么是candicate sampling?</h3><p>还以语言模型为例。对于给定的上下文c,我们需要预测下一个单词w,w的候选集大小是$|V|$。在softmax方法中为了计算$p(W=w|c)$,需要计算出每一个类别$p(W=w_i|c)$的概率，这称为是”exanstive”的。在candidate sampling中，为了计算$p(W=w|c)$我们只需对$V$中的一部分某些$w_i$做计算。</p>
 <p>candidate sampling的详细一些的介绍可以参见下面的参考文献2.</p>
 <hr>
 <p>参考文献：</p>
