@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="在语言模型中，给定上下文c，要预测单词w:$$p{\theta}(w|c) = \frac{u{\theta}(w,c)}{\sum{w’\in V}u{\theta}(w’,c)} = \frac{u{\theta}(w,c)}{Z{\theta}(c)}$$其中$u{\theta}(w,c)=\mathrm{exp}s{\theta}(w,c)$, 而 $Z_{\theta}(c)$是配分函">
+<meta name="description" content="在语言模型中，给定上下文c，要预测单词w:$$p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w’\in V}u_{\theta}(w’,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)}$$其中$u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)$, 而 $$Z_{\theta">
 <meta name="keywords" content="ML-theory">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NCE and Negative Sampling">
 <meta property="og:url" content="http://yoursite.com/2017/07/05/NCE-and-negative-sampling/index.html">
 <meta property="og:site_name" content="Manifold">
-<meta property="og:description" content="在语言模型中，给定上下文c，要预测单词w:$$p{\theta}(w|c) = \frac{u{\theta}(w,c)}{\sum{w’\in V}u{\theta}(w’,c)} = \frac{u{\theta}(w,c)}{Z{\theta}(c)}$$其中$u{\theta}(w,c)=\mathrm{exp}s{\theta}(w,c)$, 而 $Z_{\theta}(c)$是配分函">
-<meta property="og:updated_time" content="2017-07-05T14:13:18.111Z">
+<meta property="og:description" content="在语言模型中，给定上下文c，要预测单词w:$$p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w’\in V}u_{\theta}(w’,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)}$$其中$u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)$, 而 $$Z_{\theta">
+<meta property="og:updated_time" content="2017-07-05T14:22:23.575Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NCE and Negative Sampling">
-<meta name="twitter:description" content="在语言模型中，给定上下文c，要预测单词w:$$p{\theta}(w|c) = \frac{u{\theta}(w,c)}{\sum{w’\in V}u{\theta}(w’,c)} = \frac{u{\theta}(w,c)}{Z{\theta}(c)}$$其中$u{\theta}(w,c)=\mathrm{exp}s{\theta}(w,c)$, 而 $Z_{\theta}(c)$是配分函">
+<meta name="twitter:description" content="在语言模型中，给定上下文c，要预测单词w:$$p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w’\in V}u_{\theta}(w’,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)}$$其中$u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)$, 而 $$Z_{\theta">
 
 
 
@@ -318,7 +318,7 @@
       
 
       
-        <p> 在语言模型中，给定上下文c，要预测单词w:<br>$$<br>p<em>{\theta}(w|c) = \frac{u</em>{\theta}(w,c)}{\sum<em>{w’\in V}u</em>{\theta}(w’,c)} = \frac{u<em>{\theta}(w,c)}{Z</em>{\theta}(c)}<br>$$<br>其中$u<em>{\theta}(w,c)=\mathrm{exp}s</em>{\theta}(w,c)$, 而 $Z_{\theta}(c)$是配分函数（归一化因子）。然而当字典$V$非常大时，计算归一化因子非常耗时。</p>
+        <p> 在语言模型中，给定上下文c，要预测单词w:<br>$$p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w’\in V}u_{\theta}(w’,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)}$$<br>其中$u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)$, 而 $$Z_{\theta}(c)$$是配分函数（归一化因子）。然而当字典$$V$$非常大时，计算归一化因子非常耗时。</p>
 <hr>
 <p>下面，我们令<code>$\tilde p(w|c)$</code> 和 <code>$\tilde p(c)$</code>代表经验分布，<code>$q(w)$</code>代表噪声分布。</p>
 <hr>
