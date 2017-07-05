@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="在语言模型中，给定上下文c，要预测单词w: 1p_&amp;#123;\theta&amp;#125;(w|c) = \frac&amp;#123;u_&amp;#123;\theta&amp;#125;(w,c)&amp;#125;&amp;#123;\sum_&amp;#123;w&amp;apos;\in V&amp;#125;u_&amp;#123;\theta&amp;#125;(w&amp;apos;,c)&amp;#125; = \frac&amp;#123;u_&amp;#123;\theta&amp;#125;">
+<meta name="description" content="在语言模型中，给定上下文c，要预测单词w:$$p{\theta}(w|c) = \frac{u{\theta}(w,c)}{\sum{w’\in V}u{\theta}(w’,c)} = \frac{u{\theta}(w,c)}{Z{\theta}(c)}$$其中$u{\theta}(w,c)=\mathrm{exp}s{\theta}(w,c)$, 而 $Z_{\theta}(c)$是配分函">
 <meta name="keywords" content="ML-theory">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NCE and Negative Sampling">
 <meta property="og:url" content="http://yoursite.com/2017/07/05/NCE-and-negative-sampling/index.html">
 <meta property="og:site_name" content="Manifold">
-<meta property="og:description" content="在语言模型中，给定上下文c，要预测单词w: 1p_&amp;#123;\theta&amp;#125;(w|c) = \frac&amp;#123;u_&amp;#123;\theta&amp;#125;(w,c)&amp;#125;&amp;#123;\sum_&amp;#123;w&amp;apos;\in V&amp;#125;u_&amp;#123;\theta&amp;#125;(w&amp;apos;,c)&amp;#125; = \frac&amp;#123;u_&amp;#123;\theta&amp;#125;">
-<meta property="og:updated_time" content="2017-07-05T14:04:39.444Z">
+<meta property="og:description" content="在语言模型中，给定上下文c，要预测单词w:$$p{\theta}(w|c) = \frac{u{\theta}(w,c)}{\sum{w’\in V}u{\theta}(w’,c)} = \frac{u{\theta}(w,c)}{Z{\theta}(c)}$$其中$u{\theta}(w,c)=\mathrm{exp}s{\theta}(w,c)$, 而 $Z_{\theta}(c)$是配分函">
+<meta property="og:updated_time" content="2017-07-05T14:13:18.111Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NCE and Negative Sampling">
-<meta name="twitter:description" content="在语言模型中，给定上下文c，要预测单词w: 1p_&amp;#123;\theta&amp;#125;(w|c) = \frac&amp;#123;u_&amp;#123;\theta&amp;#125;(w,c)&amp;#125;&amp;#123;\sum_&amp;#123;w&amp;apos;\in V&amp;#125;u_&amp;#123;\theta&amp;#125;(w&amp;apos;,c)&amp;#125; = \frac&amp;#123;u_&amp;#123;\theta&amp;#125;">
+<meta name="twitter:description" content="在语言模型中，给定上下文c，要预测单词w:$$p{\theta}(w|c) = \frac{u{\theta}(w,c)}{\sum{w’\in V}u{\theta}(w’,c)} = \frac{u{\theta}(w,c)}{Z{\theta}(c)}$$其中$u{\theta}(w,c)=\mathrm{exp}s{\theta}(w,c)$, 而 $Z_{\theta}(c)$是配分函">
 
 
 
@@ -318,8 +318,7 @@
       
 
       
-        <p> 在语言模型中，给定上下文c，要预测单词w:<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">p_&#123;\theta&#125;(w|c) = \frac&#123;u_&#123;\theta&#125;(w,c)&#125;&#123;\sum_&#123;w&apos;\in V&#125;u_&#123;\theta&#125;(w&apos;,c)&#125; = \frac&#123;u_&#123;\theta&#125;(w,c)&#125;&#123;Z_&#123;\theta&#125;(c)&#125;</div></pre></td></tr></table></figure></p>
-<p>其中<code>$u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)$</code>, 而 <code>$Z_{\theta}(c)$</code>是配分函数（归一化因子）。然而当字典<code>$V$</code>非常大时，计算归一化因子非常耗时。</p>
+        <p> 在语言模型中，给定上下文c，要预测单词w:<br>$$<br>p<em>{\theta}(w|c) = \frac{u</em>{\theta}(w,c)}{\sum<em>{w’\in V}u</em>{\theta}(w’,c)} = \frac{u<em>{\theta}(w,c)}{Z</em>{\theta}(c)}<br>$$<br>其中$u<em>{\theta}(w,c)=\mathrm{exp}s</em>{\theta}(w,c)$, 而 $Z_{\theta}(c)$是配分函数（归一化因子）。然而当字典$V$非常大时，计算归一化因子非常耗时。</p>
 <hr>
 <p>下面，我们令<code>$\tilde p(w|c)$</code> 和 <code>$\tilde p(c)$</code>代表经验分布，<code>$q(w)$</code>代表噪声分布。</p>
 <hr>
@@ -345,7 +344,7 @@
 <p>即<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-\mathcal&#123;L&#125;_&#123;\mathrm&#123;NS&#125;&#125; = \sum_&#123;(w,c)\in\mathcal&#123;D&#125;&#125;\log p(D=1|w,c)+\sum_&#123;(w,c)\notin \mathcal&#123;D&#125;&#125;(1-\log(D=1|w,c))</div></pre></td></tr></table></figure></p>
 <p>可以直接通过logistic函数建模:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">p(D=1|w,c)=\frac&#123;1&#125;&#123;e^&#123;-s_&#123;\theta&#125; (w,c)&#125;+1&#125;=\frac&#123;u_&#123;\theta&#125;(w,c)&#125;&#123;u_&#123;\theta&#125;(w,c)+1&#125;</div><div class="line"></div><div class="line">p(D=0|w,c) = \frac&#123;e^&#123;-s_&#123;\theta&#125;(w,c)&#125;&#125;&#123;1+e^&#123;-s_&#123;\theta&#125;(w,c)&#125;&#125;=\frac&#123;1&#125;&#123;u_&#123;\theta&#125;(w,c)+1&#125;,</div></pre></td></tr></table></figure></p>
 <p>回到了上面的结果。</p>
-<h1 id="Candidate-Sampling"><a href="#Candidate-Sampling" class="headerlink" title="Candidate Sampling"></a>Candidate Sampling</h1><p>NCE 和 Negative sampling都属于candidate sampling.</p>
+<h2 id="Candidate-Sampling"><a href="#Candidate-Sampling" class="headerlink" title="Candidate Sampling"></a>Candidate Sampling</h2><p>NCE 和 Negative sampling都属于candidate sampling.</p>
 <h3 id="什么是candicate-sampling"><a href="#什么是candicate-sampling" class="headerlink" title="什么是candicate sampling?"></a>什么是candicate sampling?</h3><p>还以语言模型为例。对于给定的上下文c,我们需要预测下一个单词w,w的候选集大小是<code>$|V|$</code>。在softmax方法中为了计算<code>$p(W=w|c)$</code>,需要计算出每一个类别<code>$p(W=w_i|c)$</code>的概率，这称为是”exanstive”的。在candidate sampling中，为了计算<code>$p(W=w|c)$</code>我们只需对<code>$V$</code>中的一部分某些<code>$w_i$</code>做计算。</p>
 <p>candidate sampling的详细一些的介绍可以参见下面的参考文献2.</p>
 <hr>
@@ -544,7 +543,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Noise-contrastive-estimation-NCE"><span class="nav-number">1.</span> <span class="nav-text">Noise contrastive estimation(NCE)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Negative-sampling"><span class="nav-number">2.</span> <span class="nav-text">Negative sampling</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#直接的角度"><span class="nav-number">2.0.1.</span> <span class="nav-text">直接的角度</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Candidate-Sampling"><span class="nav-number"></span> <span class="nav-text">Candidate Sampling</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是candicate-sampling"><span class="nav-number">0.1.</span> <span class="nav-text">什么是candicate sampling?</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Noise-contrastive-estimation-NCE"><span class="nav-number">1.</span> <span class="nav-text">Noise contrastive estimation(NCE)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Negative-sampling"><span class="nav-number">2.</span> <span class="nav-text">Negative sampling</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#直接的角度"><span class="nav-number">2.0.1.</span> <span class="nav-text">直接的角度</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Candidate-Sampling"><span class="nav-number">3.</span> <span class="nav-text">Candidate Sampling</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是candicate-sampling"><span class="nav-number">3.1.</span> <span class="nav-text">什么是candicate sampling?</span></a></li></ol></li></ol></div>
             
 
           </div>

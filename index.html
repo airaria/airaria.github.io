@@ -319,8 +319,7 @@
       
         
           
-            <p> 在语言模型中，给定上下文c，要预测单词w:<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">p_&#123;\theta&#125;(w|c) = \frac&#123;u_&#123;\theta&#125;(w,c)&#125;&#123;\sum_&#123;w&apos;\in V&#125;u_&#123;\theta&#125;(w&apos;,c)&#125; = \frac&#123;u_&#123;\theta&#125;(w,c)&#125;&#123;Z_&#123;\theta&#125;(c)&#125;</div></pre></td></tr></table></figure></p>
-<p>其中<code>$u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)$</code>, 而 <code>$Z_{\theta}(c)$</code>是配分函数（归一化因子）。然而当字典<code>$V$</code>非常大时，计算归一化因子非常耗时。</p>
+            <p> 在语言模型中，给定上下文c，要预测单词w:<br>$$<br>p<em>{\theta}(w|c) = \frac{u</em>{\theta}(w,c)}{\sum<em>{w’\in V}u</em>{\theta}(w’,c)} = \frac{u<em>{\theta}(w,c)}{Z</em>{\theta}(c)}<br>$$<br>其中$u<em>{\theta}(w,c)=\mathrm{exp}s</em>{\theta}(w,c)$, 而 $Z_{\theta}(c)$是配分函数（归一化因子）。然而当字典$V$非常大时，计算归一化因子非常耗时。</p>
 <hr>
 <p>下面，我们令<code>$\tilde p(w|c)$</code> 和 <code>$\tilde p(c)$</code>代表经验分布，<code>$q(w)$</code>代表噪声分布。</p>
 <hr>
@@ -346,7 +345,7 @@
 <p>即<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-\mathcal&#123;L&#125;_&#123;\mathrm&#123;NS&#125;&#125; = \sum_&#123;(w,c)\in\mathcal&#123;D&#125;&#125;\log p(D=1|w,c)+\sum_&#123;(w,c)\notin \mathcal&#123;D&#125;&#125;(1-\log(D=1|w,c))</div></pre></td></tr></table></figure></p>
 <p>可以直接通过logistic函数建模:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">p(D=1|w,c)=\frac&#123;1&#125;&#123;e^&#123;-s_&#123;\theta&#125; (w,c)&#125;+1&#125;=\frac&#123;u_&#123;\theta&#125;(w,c)&#125;&#123;u_&#123;\theta&#125;(w,c)+1&#125;</div><div class="line"></div><div class="line">p(D=0|w,c) = \frac&#123;e^&#123;-s_&#123;\theta&#125;(w,c)&#125;&#125;&#123;1+e^&#123;-s_&#123;\theta&#125;(w,c)&#125;&#125;=\frac&#123;1&#125;&#123;u_&#123;\theta&#125;(w,c)+1&#125;,</div></pre></td></tr></table></figure></p>
 <p>回到了上面的结果。</p>
-<h1 id="Candidate-Sampling"><a href="#Candidate-Sampling" class="headerlink" title="Candidate Sampling"></a>Candidate Sampling</h1><p>NCE 和 Negative sampling都属于candidate sampling.</p>
+<h2 id="Candidate-Sampling"><a href="#Candidate-Sampling" class="headerlink" title="Candidate Sampling"></a>Candidate Sampling</h2><p>NCE 和 Negative sampling都属于candidate sampling.</p>
 <h3 id="什么是candicate-sampling"><a href="#什么是candicate-sampling" class="headerlink" title="什么是candicate sampling?"></a>什么是candicate sampling?</h3><p>还以语言模型为例。对于给定的上下文c,我们需要预测下一个单词w,w的候选集大小是<code>$|V|$</code>。在softmax方法中为了计算<code>$p(W=w|c)$</code>,需要计算出每一个类别<code>$p(W=w_i|c)$</code>的概率，这称为是”exanstive”的。在candidate sampling中，为了计算<code>$p(W=w|c)$</code>我们只需对<code>$V$</code>中的一部分某些<code>$w_i$</code>做计算。</p>
 <p>candidate sampling的详细一些的介绍可以参见下面的参考文献2.</p>
 <hr>
