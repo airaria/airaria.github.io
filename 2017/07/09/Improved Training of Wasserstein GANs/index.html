@@ -97,7 +97,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/07/09/Improved Training of Wasserstein GANs/index.html">
 <meta property="og:site_name" content="Manifold">
 <meta property="og:description" content="Improved Training of Wasserstein GANs设G是生成网络，D是判别网络(critic)，原始GAN的训练目标是$$\min_G\max_D\ \mathbb{E}_{\mathbf{x}\sim\mathbb{P}_r}[\log(D(x))]+\mathbb{E}_{\mathbf{\tilde x}\sim\mathbb{P}_g}[\log(D(\tilde">
-<meta property="og:updated_time" content="2017-07-16T12:40:25.073Z">
+<meta property="og:updated_time" content="2017-07-16T12:44:19.325Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Improved Training of Wasserstein GANs">
 <meta name="twitter:description" content="Improved Training of Wasserstein GANs设G是生成网络，D是判别网络(critic)，原始GAN的训练目标是$$\min_G\max_D\ \mathbb{E}_{\mathbf{x}\sim\mathbb{P}_r}[\log(D(x))]+\mathbb{E}_{\mathbf{\tilde x}\sim\mathbb{P}_g}[\log(D(\tilde">
@@ -327,7 +327,12 @@
 <h2 id="Properties-of-the-optimal-WGAN-critic"><a href="#Properties-of-the-optimal-WGAN-critic" class="headerlink" title="Properties of the optimal WGAN critic"></a>Properties of the optimal WGAN critic</h2><p>令$D^*$是optimal ciritic，并且假设可微。从$\mathbb{P}_r$和$\mathbb{P}_g$分别采样$x$和$y$，令$x_t=(1-t)x+ty$且$t$位于$[0,1]$。那么<br>$$<br>\nabla D^*(x_t)=\frac{y-x_t}{||y-x_t||}<br>$$<br>也就是说$D^*$在采样区域上的梯度是$1$。</p>
 <h2 id="Gradient-penalty"><a href="#Gradient-penalty" class="headerlink" title="Gradient penalty"></a>Gradient penalty</h2><p>基于optimal critic的性质，作者提出了另一种加上Lipschitz限制的方法，直接要求D的梯度的范数在真实分布和生成分布以及它们之间的区域上接近1。在损失函数中加上对梯度大小的惩罚项<br>$$<br>L=\mathbb{E}_{\tilde{\mathbb{x}}\sim\mathbb{P}_g}[D(\tilde{\mathbb{x}})]-\mathbb{E}_{\mathbb{x}\sim\mathbb{P}_r}[D(\mathbb{x})] + \lambda\mathbb{E}_{\hat{\mathbb{x}}\sim\mathbb{P}_{\hat{\mathbb{x}}}}[(||\nabla_{\hat{\mathbb{x}}}D(\hat{\mathbb{x}})||_2-1)^2].<br>$$<br>作者建议$\lambda$设成10，在D中以使用layer normalization ，而不能使用 batch normalization。</p>
 <p>$\hat{\mathbf{x}}\sim\mathbb{P}_{\hat{\mathbf{x}}}$的意思是：先从$\mathbb{P}_r$和$\mathbb{P}_g$采样一对真假样本$\mathbf{x}$和$\tilde{\mathbf{x}}$ ，从$[0,1]$上的均匀分布采样$\epsilon$ ，然后差值采样$\hat{\mathbf{x}}=\epsilon\mathbf{x}+(1-\epsilon)\tilde{\mathbf{x}}$。</p>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1>
+<hr>
+<p>参考文献</p>
+<ol>
+<li>arxiv:1704.00028,<em>Improved Training of Wasserstein GANs</em></li>
+</ol>
+
       
     </div>
 
@@ -521,7 +526,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Improved-Training-of-Wasserstein-GANs"><span class="nav-number">1.</span> <span class="nav-text">Improved Training of Wasserstein GANs</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Properties-of-the-optimal-WGAN-critic"><span class="nav-number">1.1.</span> <span class="nav-text">Properties of the optimal WGAN critic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradient-penalty"><span class="nav-number">1.2.</span> <span class="nav-text">Gradient penalty</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">2.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Improved-Training-of-Wasserstein-GANs"><span class="nav-number">1.</span> <span class="nav-text">Improved Training of Wasserstein GANs</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Properties-of-the-optimal-WGAN-critic"><span class="nav-number">1.1.</span> <span class="nav-text">Properties of the optimal WGAN critic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradient-penalty"><span class="nav-number">1.2.</span> <span class="nav-text">Gradient penalty</span></a></li></ol></li></ol></div>
             
 
           </div>
