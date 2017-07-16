@@ -251,6 +251,242 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/10/Min Max & Max Min/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="airaria">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Manifold">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/10/Min Max & Max Min/" itemprop="url">Min Max & Max Min</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-10T09:15:00+08:00">
+                2017-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Min-Max-amp-Max-Min"><a href="#Min-Max-amp-Max-Min" class="headerlink" title="Min Max &amp; Max Min"></a>Min Max &amp; Max Min</h1><p>$$<br>\begin{align}<br>\min_y f(x,y) &amp;\le f(x,y),\,  \forall x,y\\<br>\max_x \min_y f(x,y) &amp;\le \max_x f(x,y),\, \forall y \\<br>\max_x \min_y f(x,y) &amp; \le \min_y \max_x f(x,y)<br>\end{align}<br>$$</p>
+<p>对于二元函数$f(x,y)$,肯定是大于对它的任何一个变量取最小值,即 (1)式。</p>
+<p>看成是$x$的函数，对于任意$x$，$\min_y f(x,y)$都小于$f(x,y)$，因此取了最大值后也是，即(2)式。</p>
+<p>此时左边是个数，右边是关于$y$的函数，此式对于任意$y$恒成立，因此对于使得$\max_x f(x,y)$取到最小值的$y$也是，即(3)式。</p>
+<p>瘦死的骆驼((3)式右)比马((3)式左)大。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/09/Improved Training of Wasserstein GANs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="airaria">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Manifold">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/09/Improved Training of Wasserstein GANs/" itemprop="url">Improved Training of Wasserstein GANs</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-09T09:58:00+08:00">
+                2017-07-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Improved-Training-of-Wasserstein-GANs"><a href="#Improved-Training-of-Wasserstein-GANs" class="headerlink" title="Improved Training of Wasserstein GANs"></a>Improved Training of Wasserstein GANs</h1><p>设G是生成网络，D是判别网络(critic)，原始GAN的训练目标是<br>$$<br>\min_G\max_D\ \mathbb{E}_{\mathbf{x}\sim\mathbb{P}_r}[\log(D(x))]+\mathbb{E}_{\mathbf{\tilde x}\sim\mathbb{P}_g}[\log(D(\tilde x))]<br>$$<br>其中$\mathbb{P}_r$是数据分布，$\mathbb{P}_g$是G生成的数据分布。</p>
+<p>WGAN训练的目标是<br>$$<br>\min_G\max_{D\in\mathcal{D}} \mathbb{E}_{\mathbf{x}\sim\mathbb{P}_r}[D(\mathbf{x})] - \mathbb{E}_{\tilde{\mathbf{x}}\sim\mathbb{P}_g}[D(\tilde{\mathbf{x}})]<br>$$<br>其中$\mathcal{D}$是1-Lipschitz函数的集合。最小化G实际上是最小化Wasserstein距离$W(\mathbb{P}_r,\mathbb{P}_g)$，而最大化$D$实际是逼近Wasserstein距离$W(\mathbb{P}_r,\mathbb{P}_g)$。原始的WGAN文献中，为了让D满足Lipschitz条件，对D的参数做了裁剪，限制它们的取值范围为$[-c,c]$，这样得到的的$D$的集合是$k$-Lipschitz函数集合的子集。然而这么裁剪会产生一些问题。</p>
+<ol>
+<li>会限制critic的表达能力，critic会学到非常简单的函数。</li>
+<li>$c$需要精细调节，否则会梯度消失或者梯度爆炸。</li>
+</ol>
+<h2 id="Properties-of-the-optimal-WGAN-critic"><a href="#Properties-of-the-optimal-WGAN-critic" class="headerlink" title="Properties of the optimal WGAN critic"></a>Properties of the optimal WGAN critic</h2><p>令$D^*$是optimal ciritic，并且假设可微。从$\mathbb{P}_r$和$\mathbb{P}_g$分别采样$x$和$y$，令$x_t=(1-t)x+ty$且$t$位于$[0,1]$。那么<br>$$<br>\nabla D^*(x_t)=\frac{y-x_t}{||y-x_t||}<br>$$<br>也就是说$D^*$在采样区域上的梯度是$1$。</p>
+<h2 id="Gradient-penalty"><a href="#Gradient-penalty" class="headerlink" title="Gradient penalty"></a>Gradient penalty</h2><p>基于optimal critic的性质，作者提出了另一种加上Lipschitz限制的方法，直接要求D的梯度的范数在真实分布和生成分布以及它们之间的区域上接近1。在损失函数中加上对梯度大小的惩罚项<br>$$<br>L=\mathbb{E}_{\tilde{\mathbb{x}}\sim\mathbb{P}_g}[D(\tilde{\mathbb{x}})]-\mathbb{E}_{\mathbb{x}\sim\mathbb{P}_r}[D(\mathbb{x})] + \lambda\mathbb{E}_{\hat{\mathbb{x}}\sim\mathbb{P}_{\hat{\mathbb{x}}}}[(||\nabla_{\hat{\mathbb{x}}}D(\hat{\mathbb{x}})||_2-1)^2].<br>$$<br>作者建议$\lambda$设成10，在D中以使用layer normalization ，而不能使用 batch normalization。</p>
+<p>$\hat{\mathbf{x}}\sim\mathbb{P}_{\hat{\mathbf{x}}}$的意思是：先从$\mathbb{P}_r$和$\mathbb{P}_g$采样一对真假样本$\mathbf{x}$和$\tilde{\mathbf{x}}$ ，从$[0,1]$上的均匀分布采样$\epsilon$ ，然后差值采样$\hat{\mathbf{x}}=\epsilon\mathbf{x}+(1-\epsilon)\tilde{\mathbf{x}}$。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/05/NCE-and-negative-sampling/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -674,7 +910,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -687,7 +923,7 @@
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
