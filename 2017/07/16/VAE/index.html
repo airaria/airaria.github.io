@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="VAE假定所有数据$\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}$都是i.i.d,$$\log p_{\theta}(\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}) = \sum^N_{i=1}\log p_{\theta}(\mathbf{x}^{(i)})$$模型后验与真实后验的KL距离(打粗体真累,下面不打粗体了)$$\">
+<meta name="description" content="VAE 假定所有数据\(\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}\)都是i.i.d, \[ \log p_{\theta}(\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}) = \sum^N_{i=1}\log p_{\theta}(\mathbf{x}^{(i)}) \] 模型后验与真实后验的KL距离(打粗体真累,下">
 <meta name="keywords" content="Deep learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="VAE">
 <meta property="og:url" content="http://yoursite.com/2017/07/16/VAE/index.html">
 <meta property="og:site_name" content="Manifold">
-<meta property="og:description" content="VAE假定所有数据$\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}$都是i.i.d,$$\log p_{\theta}(\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}) = \sum^N_{i=1}\log p_{\theta}(\mathbf{x}^{(i)})$$模型后验与真实后验的KL距离(打粗体真累,下面不打粗体了)$$\">
-<meta property="og:updated_time" content="2017-07-16T13:04:13.625Z">
+<meta property="og:description" content="VAE 假定所有数据\(\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}\)都是i.i.d, \[ \log p_{\theta}(\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}) = \sum^N_{i=1}\log p_{\theta}(\mathbf{x}^{(i)}) \] 模型后验与真实后验的KL距离(打粗体真累,下">
+<meta property="og:updated_time" content="2017-07-29T02:26:20.186Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="VAE">
-<meta name="twitter:description" content="VAE假定所有数据$\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}$都是i.i.d,$$\log p_{\theta}(\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}) = \sum^N_{i=1}\log p_{\theta}(\mathbf{x}^{(i)})$$模型后验与真实后验的KL距离(打粗体真累,下面不打粗体了)$$\">
+<meta name="twitter:description" content="VAE 假定所有数据\(\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}\)都是i.i.d, \[ \log p_{\theta}(\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}) = \sum^N_{i=1}\log p_{\theta}(\mathbf{x}^{(i)}) \] 模型后验与真实后验的KL距离(打粗体真累,下">
 
 
 
@@ -318,8 +318,18 @@
       
 
       
-        <h1 id="VAE"><a href="#VAE" class="headerlink" title="VAE"></a>VAE</h1><p>假定所有数据$\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}$都是i.i.d,<br>$$<br>\log p_{\theta}(\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}) = \sum^N_{i=1}\log p_{\theta}(\mathbf{x}^{(i)})<br>$$<br>模型后验与真实后验的KL距离(打粗体真累,下面不打粗体了)<br>$$<br>\begin{align}<br>\mathrm{KL}(q_{\phi}(z|x^{(i)})||p_{\theta}(z|x^{(i)})) = &amp; \mathbb{E}_{q_{\phi}(z|x^{(i)})}\log\frac{q_{\phi}(z|x^{(i)})}{p_{\theta}(z|x^{(i)})}  \<br>= &amp; \mathbb{E}_{q_{\phi}(z|x^{(i)})}\log\frac{q_{\phi}(z|x^{(i)})}{p_{\theta}(z,x^{(i)})}+\log p_{\theta}(x^{(i)})<br>\end{align}<br>$$</p>
-<p>因此<br>$$<br>\log p_{\theta}(x^{(i)}) = \mathrm{KL}(q_{\phi}(z|x^{(i)})||p_{\theta}(z|x^{(i)}))  + \mathcal{L}(\theta,\phi;x^{(i)})<br>$$<br>我们要优化变分下界$\mathcal{L}(\theta,\phi;x^{(i)})$。</p>
+        <h1 id="vae">VAE</h1>
+<p>假定所有数据<span class="math inline">\(\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}\)</span>都是i.i.d, <span class="math display">\[
+\log p_{\theta}(\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}) = \sum^N_{i=1}\log p_{\theta}(\mathbf{x}^{(i)})
+\]</span> 模型后验与真实后验的KL距离(打粗体真累,下面不打粗体了) <span class="math display">\[
+\begin{align}
+\mathrm{KL}(q_{\phi}(z|x^{(i)})||p_{\theta}(z|x^{(i)})) = &amp; \mathbb{E}_{q_{\phi}(z|x^{(i)})}\log\frac{q_{\phi}(z|x^{(i)})}{p_{\theta}(z|x^{(i)})}  \\
+= &amp; \mathbb{E}_{q_{\phi}(z|x^{(i)})}\log\frac{q_{\phi}(z|x^{(i)})}{p_{\theta}(z,x^{(i)})}+\log p_{\theta}(x^{(i)})
+\end{align}
+\]</span></p>
+<p>因此 <span class="math display">\[
+\log p_{\theta}(x^{(i)}) = \mathrm{KL}(q_{\phi}(z|x^{(i)})||p_{\theta}(z|x^{(i)}))  + \mathcal{L}(\theta,\phi;x^{(i)})
+\]</span> 我们要优化变分下界<span class="math inline">\(\mathcal{L}(\theta,\phi;x^{(i)})\)</span>。</p>
 <p>To be continue…</p>
 
       
@@ -511,7 +521,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#VAE"><span class="nav-number">1.</span> <span class="nav-text">VAE</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#vae"><span class="nav-number">1.</span> <span class="nav-text">VAE</span></a></li></ol></div>
             
 
           </div>

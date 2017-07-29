@@ -319,8 +319,18 @@
       
         
           
-            <h1 id="VAE"><a href="#VAE" class="headerlink" title="VAE"></a>VAE</h1><p>假定所有数据$\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}$都是i.i.d,<br>$$<br>\log p_{\theta}(\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}) = \sum^N_{i=1}\log p_{\theta}(\mathbf{x}^{(i)})<br>$$<br>模型后验与真实后验的KL距离(打粗体真累,下面不打粗体了)<br>$$<br>\begin{align}<br>\mathrm{KL}(q_{\phi}(z|x^{(i)})||p_{\theta}(z|x^{(i)})) = &amp; \mathbb{E}_{q_{\phi}(z|x^{(i)})}\log\frac{q_{\phi}(z|x^{(i)})}{p_{\theta}(z|x^{(i)})}  \<br>= &amp; \mathbb{E}_{q_{\phi}(z|x^{(i)})}\log\frac{q_{\phi}(z|x^{(i)})}{p_{\theta}(z,x^{(i)})}+\log p_{\theta}(x^{(i)})<br>\end{align}<br>$$</p>
-<p>因此<br>$$<br>\log p_{\theta}(x^{(i)}) = \mathrm{KL}(q_{\phi}(z|x^{(i)})||p_{\theta}(z|x^{(i)}))  + \mathcal{L}(\theta,\phi;x^{(i)})<br>$$<br>我们要优化变分下界$\mathcal{L}(\theta,\phi;x^{(i)})$。</p>
+            <h1 id="vae">VAE</h1>
+<p>假定所有数据<span class="math inline">\(\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}\)</span>都是i.i.d, <span class="math display">\[
+\log p_{\theta}(\mathbf{x}^{(1)},\ldots,\mathbf{x}^{(N)}) = \sum^N_{i=1}\log p_{\theta}(\mathbf{x}^{(i)})
+\]</span> 模型后验与真实后验的KL距离(打粗体真累,下面不打粗体了) <span class="math display">\[
+\begin{align}
+\mathrm{KL}(q_{\phi}(z|x^{(i)})||p_{\theta}(z|x^{(i)})) = &amp; \mathbb{E}_{q_{\phi}(z|x^{(i)})}\log\frac{q_{\phi}(z|x^{(i)})}{p_{\theta}(z|x^{(i)})}  \\
+= &amp; \mathbb{E}_{q_{\phi}(z|x^{(i)})}\log\frac{q_{\phi}(z|x^{(i)})}{p_{\theta}(z,x^{(i)})}+\log p_{\theta}(x^{(i)})
+\end{align}
+\]</span></p>
+<p>因此 <span class="math display">\[
+\log p_{\theta}(x^{(i)}) = \mathrm{KL}(q_{\phi}(z|x^{(i)})||p_{\theta}(z|x^{(i)}))  + \mathcal{L}(\theta,\phi;x^{(i)})
+\]</span> 我们要优化变分下界<span class="math inline">\(\mathcal{L}(\theta,\phi;x^{(i)})\)</span>。</p>
 <p>To be continue…</p>
 
           
@@ -433,10 +443,17 @@
       
         
           
-            <h1 id="Min-Max-amp-Max-Min"><a href="#Min-Max-amp-Max-Min" class="headerlink" title="Min Max &amp; Max Min"></a>Min Max &amp; Max Min</h1><p>$$<br>\begin{align}<br>\min_y f(x,y) &amp;\le f(x,y),\,  \forall x,y\\<br>\max_x \min_y f(x,y) &amp;\le \max_x f(x,y),\, \forall y \\<br>\max_x \min_y f(x,y) &amp; \le \min_y \max_x f(x,y)<br>\end{align}<br>$$</p>
-<p>对于二元函数$f(x,y)$,必然大于对它的任何一个变量取最小值,即 (1)式。</p>
-<p>看成是$x$的函数，对于任意$x$，$\min_y f(x,y)$都小于$f(x,y)$，因此取了最大值后也是，即(2)式。</p>
-<p>此时左边是个数，右边是关于$y$的函数，此式对于任意$y$恒成立，因此对于使得$\max_x f(x,y)$取到最小值的$y$也是，即(3)式。</p>
+            <h1 id="min-max-max-min">Min Max &amp; Max Min</h1>
+<p><span class="math display">\[
+\begin{align}
+\min_y f(x,y) &amp;\le f(x,y),\,  \forall x,y\\\
+\max_x \min_y f(x,y) &amp;\le \max_x f(x,y),\, \forall y \\\
+\max_x \min_y f(x,y) &amp; \le \min_y \max_x f(x,y)
+\end{align}
+\]</span></p>
+<p>对于二元函数<span class="math inline">\(f(x,y)\)</span>,必然大于对它的任何一个变量取最小值,即 (1)式。</p>
+<p>看成是<span class="math inline">\(x\)</span>的函数，对于任意<span class="math inline">\(x\)</span>，<span class="math inline">\(\min_y f(x,y)\)</span>都小于<span class="math inline">\(f(x,y)\)</span>，因此取了最大值后也是，即(2)式。</p>
+<p>此时左边是个数，右边是关于<span class="math inline">\(y\)</span>的函数，此式对于任意<span class="math inline">\(y\)</span>恒成立，因此对于使得<span class="math inline">\(\max_x f(x,y)\)</span>取到最小值的<span class="math inline">\(y\)</span>也是，即(3)式。</p>
 <p>瘦死的骆驼比马大。</p>
 
           
@@ -549,18 +566,29 @@
       
         
           
-            <h1 id="Improved-Training-of-Wasserstein-GANs"><a href="#Improved-Training-of-Wasserstein-GANs" class="headerlink" title="Improved Training of Wasserstein GANs"></a>Improved Training of Wasserstein GANs</h1><p>设G是生成网络，D是判别网络(critic)，原始GAN的训练目标是<br>$$<br>\min_G\max_D\ \mathbb{E}_{\mathbf{x}\sim\mathbb{P}_r}[\log(D(x))]+\mathbb{E}_{\mathbf{\tilde x}\sim\mathbb{P}_g}[\log(D(\tilde x))]<br>$$<br>其中$\mathbb{P}_r$是数据分布，$\mathbb{P}_g$是G生成的数据分布。</p>
-<p>WGAN训练的目标是<br>$$<br>\min_G\max_{D\in\mathcal{D}} \mathbb{E}_{\mathbf{x}\sim\mathbb{P}_r}[D(\mathbf{x})] - \mathbb{E}_{\tilde{\mathbf{x}}\sim\mathbb{P}_g}[D(\tilde{\mathbf{x}})]<br>$$<br>其中$\mathcal{D}$是1-Lipschitz函数的集合。最小化G实际上是最小化Wasserstein距离$W(\mathbb{P}_r,\mathbb{P}_g)$，而最大化$D$实际是逼近Wasserstein距离$W(\mathbb{P}_r,\mathbb{P}_g)$。原始的WGAN文献中，为了让D满足Lipschitz条件，对D的参数做了裁剪，限制它们的取值范围为$[-c,c]$，这样得到的的$D$的集合是$k$-Lipschitz函数集合的子集。然而这么裁剪会产生一些问题。</p>
-<ol>
+            <h1 id="improved-training-of-wasserstein-gans">Improved Training of Wasserstein GANs</h1>
+<p>设G是生成网络，D是判别网络(critic)，原始GAN的训练目标是 <span class="math display">\[
+\min_G\max_D\ \mathbb{E}_{\mathbf{x}\sim\mathbb{P}_r}[\log(D(x))]+\mathbb{E}_{\mathbf{\tilde x}\sim\mathbb{P}_g}[\log(D(\tilde x))]
+\]</span> 其中<span class="math inline">\(\mathbb{P}_r\)</span>是数据分布，<span class="math inline">\(\mathbb{P}_g\)</span>是G生成的数据分布。</p>
+<p>WGAN训练的目标是 <span class="math display">\[
+\min_G\max_{D\in\mathcal{D}} \mathbb{E}_{\mathbf{x}\sim\mathbb{P}_r}[D(\mathbf{x})] - \mathbb{E}_{\tilde{\mathbf{x}}\sim\mathbb{P}_g}[D(\tilde{\mathbf{x}})]
+\]</span> 其中<span class="math inline">\(\mathcal{D}\)</span>是1-Lipschitz函数的集合。最小化G实际上是最小化Wasserstein距离<span class="math inline">\(W(\mathbb{P}_r,\mathbb{P}_g)\)</span>，而最大化<span class="math inline">\(D\)</span>实际是逼近Wasserstein距离<span class="math inline">\(W(\mathbb{P}_r,\mathbb{P}_g)\)</span>。原始的WGAN文献中，为了让D满足Lipschitz条件，对D的参数做了裁剪，限制它们的取值范围为<span class="math inline">\([-c,c]\)</span>，这样得到的的<span class="math inline">\(D\)</span>的集合是<span class="math inline">\(k\)</span>-Lipschitz函数集合的子集。然而这么裁剪会产生一些问题。</p>
+<ol style="list-style-type: decimal">
 <li>会限制critic的表达能力，critic会学到非常简单的函数。</li>
-<li>$c$需要精细调节，否则会梯度消失或者梯度爆炸。</li>
+<li><span class="math inline">\(c\)</span>需要精细调节，否则会梯度消失或者梯度爆炸。</li>
 </ol>
-<h2 id="Properties-of-the-optimal-WGAN-critic"><a href="#Properties-of-the-optimal-WGAN-critic" class="headerlink" title="Properties of the optimal WGAN critic"></a>Properties of the optimal WGAN critic</h2><p>令$D^*$是optimal ciritic，并且假设可微。从$\mathbb{P}_r$和$\mathbb{P}_g$分别采样$x$和$y$，令$x_t=(1-t)x+ty$且$t$位于$[0,1]$。那么<br>$$<br>\nabla D^*(x_t)=\frac{y-x_t}{||y-x_t||}<br>$$<br>也就是说$D^*$在采样区域上的梯度是$1$。</p>
-<h2 id="Gradient-penalty"><a href="#Gradient-penalty" class="headerlink" title="Gradient penalty"></a>Gradient penalty</h2><p>基于optimal critic的性质，作者提出了另一种加上Lipschitz限制的方法，直接要求D的梯度的范数在真实分布和生成分布以及它们之间的区域上接近1。在损失函数中加上对梯度大小的惩罚项<br>$$<br>L=\mathbb{E}_{\tilde{\mathbb{x}}\sim\mathbb{P}_g}[D(\tilde{\mathbb{x}})]-\mathbb{E}_{\mathbb{x}\sim\mathbb{P}_r}[D(\mathbb{x})] + \lambda\mathbb{E}_{\hat{\mathbb{x}}\sim\mathbb{P}_{\hat{\mathbb{x}}}}[(||\nabla_{\hat{\mathbb{x}}}D(\hat{\mathbb{x}})||_2-1)^2].<br>$$<br>作者建议$\lambda$设成10，在D中以使用layer normalization ，而不能使用 batch normalization。</p>
-<p>$\hat{\mathbf{x}}\sim\mathbb{P}_{\hat{\mathbf{x}}}$的意思是：先从$\mathbb{P}_r$和$\mathbb{P}_g$采样一对真假样本$\mathbf{x}$和$\tilde{\mathbf{x}}$ ，从$[0,1]$上的均匀分布采样$\epsilon$ ，然后差值采样$\hat{\mathbf{x}}=\epsilon\mathbf{x}+(1-\epsilon)\tilde{\mathbf{x}}$。</p>
+<h2 id="properties-of-the-optimal-wgan-critic">Properties of the optimal WGAN critic</h2>
+<p>令<span class="math inline">\(D^*\)</span>是optimal ciritic，并且假设可微。从<span class="math inline">\(\mathbb{P}_r\)</span>和<span class="math inline">\(\mathbb{P}_g\)</span>分别采样<span class="math inline">\(x\)</span>和<span class="math inline">\(y\)</span>，令<span class="math inline">\(x_t=(1-t)x+ty\)</span>且<span class="math inline">\(t\)</span>位于<span class="math inline">\([0,1]\)</span>。那么 <span class="math display">\[
+\nabla D^*(x_t)=\frac{y-x_t}{||y-x_t||}
+\]</span> 也就是说<span class="math inline">\(D^*\)</span>在采样区域上的梯度是<span class="math inline">\(1\)</span>。</p>
+<h2 id="gradient-penalty">Gradient penalty</h2>
+<p>基于optimal critic的性质，作者提出了另一种加上Lipschitz限制的方法，直接要求D的梯度的范数在真实分布和生成分布以及它们之间的区域上接近1。在损失函数中加上对梯度大小的惩罚项 <span class="math display">\[
+L=\mathbb{E}_{\tilde{\mathbb{x}}\sim\mathbb{P}_g}[D(\tilde{\mathbb{x}})]-\mathbb{E}_{\mathbb{x}\sim\mathbb{P}_r}[D(\mathbb{x})] + \lambda\mathbb{E}_{\hat{\mathbb{x}}\sim\mathbb{P}_{\hat{\mathbb{x}}}}[(||\nabla_{\hat{\mathbb{x}}}D(\hat{\mathbb{x}})||_2-1)^2].
+\]</span> 作者建议<span class="math inline">\(\lambda​\)</span>设成10，在D中以使用layer normalization ，而不能使用 batch normalization。</p>
+<p><span class="math inline">\(\hat{\mathbf{x}}\sim\mathbb{P}_{\hat{\mathbf{x}}}\)</span>的意思是：先从<span class="math inline">\(\mathbb{P}_r\)</span>和<span class="math inline">\(\mathbb{P}_g\)</span>采样一对真假样本<span class="math inline">\(\mathbf{x}\)</span>和<span class="math inline">\(\tilde{\mathbf{x}}\)</span> ，从<span class="math inline">\([0,1]\)</span>上的均匀分布采样<span class="math inline">\(\epsilon\)</span> ，然后差值采样<span class="math inline">\(\hat{\mathbf{x}}=\epsilon\mathbf{x}+(1-\epsilon)\tilde{\mathbf{x}}\)</span>。</p>
 <hr>
 <p>参考文献</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>arxiv:1704.00028,<em>Improved Training of Wasserstein GANs</em></li>
 </ol>
 
@@ -674,32 +702,62 @@
       
         
           
-            <p> 在语言模型中，给定上下文c，要预测单词w:<br>\begin{align}<br>p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w’\in V}u_{\theta}(w’,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)}<br>\end{align}<br>其中$u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)$, 而 $Z_{\theta}(c)$是配分函数（归一化因子）。然而当字典$V$非常大时，计算归一化因子非常耗时。</p>
-<hr>
-<p>下面，我们令$\tilde p(w|c)$ 和 $\tilde p(c)$代表经验分布，$q(w)$代表噪声分布。</p>
-<hr>
-<h2 id="Noise-contrastive-estimation-NCE"><a href="#Noise-contrastive-estimation-NCE" class="headerlink" title="Noise contrastive estimation(NCE)"></a>Noise contrastive estimation(NCE)</h2><p>NCE把语言模型的参数估计问题变成一个二分类问题的参数估计。二分类中的两类分别是真实样本和噪声样本。<br>具体地，</p>
-<ol>
-<li>从 $\tilde p(c)$中采样$c$,再从$\tilde p(w|c)$中采样作为正样本(d=1)。</li>
-<li>从$q(w)$采样k个样本作为负样本(d=0)。</li>
-</ol>
-<p>如果给定$c$，那么$(d,w)$的分布是<br>\begin{align}<br>p(0,w|c) = \frac{k}{1+k}q(w) \\<br>p(1,w|c) = \frac{1}{1+k}\tilde p(w|c).<br>\end{align}<br>利用条件概率，我们可以把上式变为<br>\begin{align}<br>p(0|c,w) = \frac{k\times q(w)}{\tilde p(w|c)+k\times q(w)}\\<br>p(1|c,w) = \frac{\tilde p(w|c)}{\tilde p(w|c)+k\times q(w)}.<br>\end{align}</p>
-<p>在NCE中，针对上式，用$p_{\theta}(w|c)$代替$\tilde p(w|c)$，并且假设</p>
-<ol>
-<li>$Z(c)$是待估计参数</li>
-<li>对于参数众多的NN，固定$Z(c)=1$有效。</li>
-</ol>
-<p>因此，上两式又可写成：<br>\begin{align}<br>p(0|c,w) = \frac{k\times q(w)}{u_{\theta}(w|c)+k\times q(w)}\\<br>p(1|c,w) = \frac{\tilde p(w|c)}{u_{\theta}(w|c)+k\times q(w)}.<br>\end{align}<br>由此得到NCE loss:<br>\begin{align}<br>-\mathcal{L}_{\mathrm{NCE}_k} = \sum_{(w,c)\in \mathcal{D}}(\log p(D=1|c,w)+k \mathbb{E}_{\bar w\sim q} \log p(D=0|c,\bar w))<br>\end{align}<br>对于其中的期望项，我们用MC抽样。</p>
-<h2 id="Negative-sampling"><a href="#Negative-sampling" class="headerlink" title="Negative sampling"></a>Negative sampling</h2><p>在上面的框架下，negative sampling实际是指定了另一组条件概率<br>\begin{align}<br>p(D=0|c,w) = \frac{1}{u_{\theta}(w,c)+1}\\<br>p(D=1|c,w) = \frac{u_{\theta}(w,c)}{u_{\theta}(w,c)+1},<br>\end{align}<br>等价于在NCE中令$k=\lvert V\rvert, q\sim Uniform Distribution$, 此时$k\times q = 1$.</p>
-<h4 id="直接的角度"><a href="#直接的角度" class="headerlink" title="直接的角度"></a>直接的角度</h4><p>从另一个角度看,在negative sampling中,我们要做得是最大化正样本概率<br>\begin{align}<br>\sum_{(w,c)\in \mathcal{D}}\log p(D=1|w,c)<br>\end{align}<br>和最小化负样本概率<br>\begin{align}<br>\sum_{(w,c)\notin \mathcal{D}} \log p(D=0|w,c)<br>\end{align}<br>即<br>\begin{align}<br>-\mathcal{L}_{\mathrm{NS}} = \sum_{(w,c)\in\mathcal{D}}\log p(D=1|w,c)+\sum_{(w,c)\notin \mathcal{D}}(1-\log(D=1|w,c))<br>\end{align}<br>可以直接通过logistic函数建模:<br>\begin{align}<br>p(D=1|w,c)=\frac{1}{e^{-s_{\theta} (w,c)}+1}=\frac{u_{\theta}(w,c)}{u_{\theta}(w,c)+1}\\<br>p(D=0|w,c) = \frac{e^{-s_{\theta}(w,c)}}{1+e^{-s_{\theta}(w,c)}}=\frac{1}{u_{\theta}(w,c)+1},<br>\end{align}<br>回到了上面的结果。</p>
-<h2 id="Candidate-Sampling"><a href="#Candidate-Sampling" class="headerlink" title="Candidate Sampling"></a>Candidate Sampling</h2><p>NCE 和 Negative sampling都属于candidate sampling.</p>
-<h3 id="什么是candicate-sampling"><a href="#什么是candicate-sampling" class="headerlink" title="什么是candicate sampling?"></a>什么是candicate sampling?</h3><p>还以语言模型为例。对于给定的上下文c,我们需要预测下一个单词w,w的候选集大小是$|V|$。在softmax方法中为了计算$p(W=w|c)$,需要计算出每一个类别$p(W=w_i|c)$的概率，这称为是”exanstive”的。在candidate sampling中，为了计算$p(W=w|c)$我们只需对$V$中的一部分某些$w_i$做计算。</p>
+            <p>在语言模型中，给定上下文c，要预测单词w: <span class="math display">\[
+\begin{align}
+p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w&#39;\in V}u_{\theta}(w&#39;,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)}
+\end{align}
+\]</span> 其中<span class="math inline">\(u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)\)</span>, 而 <span class="math inline">\(Z_{\theta}(c)\)</span>是配分函数（归一化因子）。然而当字典<span class="math inline">\(V\)</span>非常大时，计算归一化因子非常耗时。 <strong><em> 下面，我们令<span class="math inline">\(\tilde p(w|c)\)</span> 和 <span class="math inline">\(\tilde p(c)\)</span>代表经验分布，<span class="math inline">\(q(w)\)</span>代表噪声分布。 </em></strong> ## Noise contrastive estimation(NCE) NCE把语言模型的参数估计问题变成一个二分类问题的参数估计。二分类中的两类分别是真实样本和噪声样本。 具体地， 1. 从 <span class="math inline">\(\tilde p(c)\)</span>中采样<span class="math inline">\(c\)</span>,再从<span class="math inline">\(\tilde p(w|c)\)</span>中采样作为正样本(d=1)。 2. 从<span class="math inline">\(q(w)\)</span>采样k个样本作为负样本(d=0)。</p>
+<p>如果给定<span class="math inline">\(c\)</span>，那么<span class="math inline">\((d,w)\)</span>的分布是 <span class="math display">\[
+\begin{align}
+p(0,w|c) = \frac{k}{1+k}q(w) \\\
+p(1,w|c) = \frac{1}{1+k}\tilde p(w|c).
+\end{align}
+\]</span> 利用条件概率，我们可以把上式变为 <span class="math display">\[
+\begin{align}
+p(0|c,w) = \frac{k\times q(w)}{\tilde p(w|c)+k\times q(w)}\\\
+p(1|c,w) = \frac{\tilde p(w|c)}{\tilde p(w|c)+k\times q(w)}.
+\end{align}
+\]</span></p>
+<p>在NCE中，针对上式，用<span class="math inline">\(p_{\theta}(w|c)\)</span>代替<span class="math inline">\(\tilde p(w|c)\)</span>，并且假设 1. <span class="math inline">\(Z(c)\)</span>是待估计参数 2. 对于参数众多的NN，固定<span class="math inline">\(Z(c)=1\)</span>有效。</p>
+<p>因此，上两式又可写成： <span class="math display">\[
+\begin{align}
+p(0|c,w) = \frac{k\times q(w)}{u_{\theta}(w|c)+k\times q(w)}\\\
+p(1|c,w) = \frac{\tilde p(w|c)}{u_{\theta}(w|c)+k\times q(w)}.
+\end{align}
+\]</span> 由此得到NCE loss: <span class="math display">\[
+\begin{align}
+-\mathcal{L}_{\mathrm{NCE}_k} = \sum_{(w,c)\in \mathcal{D}}(\log p(D=1|c,w)+k \mathbb{E}_{\bar w\sim q} \log p(D=0|c,\bar w))
+\end{align}
+\]</span> 对于其中的期望项，我们用MC抽样。</p>
+<h2 id="negative-sampling">Negative sampling</h2>
+在上面的框架下，negative sampling实际是指定了另一组条件概率 $$
+<span class="math display">\[\begin{align}
+
+p(D=0|c,w) = \frac{1}{u_{\theta}(w,c)+1}\\
+
+p(D=1|c,w) = \frac{u_{\theta}(w,c)}{u_{\theta}(w,c)+1},
+
+\end{align}\]</span>
+<p><span class="math inline">\($ 等价于在NCE中令\)</span>k=V, qUniform Distribution<span class="math inline">\(, 此时\)</span>kq = 1$.</p>
+<h4 id="直接的角度">直接的角度</h4>
+<p>从另一个角度看,在negative sampling中,我们要做得是最大化正样本概率 <span class="math display">\[
+\sum_{(w,c)\in \mathcal{D}}\log p(D=1|w,c)
+\]</span> 和最小化负样本概率 <span class="math display">\[
+\sum_{(w,c)\notin \mathcal{D}} \log p(D=0|w,c)
+\]</span> 即 <span class="math display">\[
+-\mathcal{L}_{\mathrm{NS}} = \sum_{(w,c)\in\mathcal{D}}\log p(D=1|w,c)+\sum_{(w,c)\notin \mathcal{D}}(1-\log(D=1|w,c))
+\]</span> 可以直接通过logistic函数建模: <span class="math display">\[
+p(D=1|w,c)=\frac{1}{e^{-s_{\theta} (w,c)}+1}=\frac{u_{\theta}(w,c)}{u_{\theta}(w,c)+1}\\\
+p(D=0|w,c) = \frac{e^{-s_{\theta}(w,c)}}{1+e^{-s_{\theta}(w,c)}}=\frac{1}{u_{\theta}(w,c)+1},
+\]</span> 回到了上面的结果。</p>
+<h2 id="candidate-sampling">Candidate Sampling</h2>
+<p>NCE 和 Negative sampling都属于candidate sampling. ### 什么是candicate sampling? 还以语言模型为例。对于给定的上下文c,我们需要预测下一个单词w,w的候选集大小是<span class="math inline">\(|V|\)</span>。在softmax方法中为了计算<span class="math inline">\(p(W=w|c)\)</span>,需要计算出每一个类别<span class="math inline">\(p(W=w_i|c)\)</span>的概率，这称为是“exanstive”的。在candidate sampling中，为了计算<span class="math inline">\(p(W=w|c)\)</span>我们只需对<span class="math inline">\(V\)</span>中的一部分某些<span class="math inline">\(w_i\)</span>做计算。</p>
 <p>candidate sampling的详细一些的介绍可以参见下面的参考文献2.</p>
 <hr>
 <p>参考文献：</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>arxiv:1410.8251</li>
-<li><em>What is Candidate Sampling</em> from <em>TensorFlow</em> </li>
+<li><em>What is Candidate Sampling</em> from <em>TensorFlow</em></li>
 </ol>
 
           
@@ -813,20 +871,18 @@
         
           
             <p>直接用代码 举例说明。</p>
-<p>先准备数据：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">num_examples = <span class="number">10</span></div><div class="line">num_features = <span class="number">2</span></div><div class="line">data = np.reshape(np.arange(num_examples*num_features), (num_examples,num_features))</div><div class="line">tdata = tf.constant(data,<span class="string">'float32'</span>)</div><div class="line"><span class="comment">#print (data)</span></div><div class="line"><span class="keyword">print</span> (<span class="string">'--------------'</span>)</div><div class="line">sess = tf.Session()</div><div class="line">coord = tf.train.Coordinator()</div></pre></td></tr></table></figure></p>
+<p>先准备数据： <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">num_examples = <span class="number">10</span></div><div class="line">num_features = <span class="number">2</span></div><div class="line">data = np.reshape(np.arange(num_examples*num_features), (num_examples,num_features))</div><div class="line">tdata = tf.constant(data,<span class="string">'float32'</span>)</div><div class="line"><span class="comment">#print (data)</span></div><div class="line"><span class="keyword">print</span> (<span class="string">'--------------'</span>)</div><div class="line">sess = tf.Session()</div><div class="line">coord = tf.train.Coordinator()</div></pre></td></tr></table></figure></p>
 <p><strong>运行以下各段代码前先运行上方的代码。</strong></p>
-<p>以下各段代码之间互相独立。</p>
-<h2 id="How-to-use-queue"><a href="#How-to-use-queue" class="headerlink" title="How to use queue?"></a>How to use queue?</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">q = tf.FIFOQueue(num_examples*<span class="number">5</span>,<span class="string">'float'</span>)</div><div class="line">inc_q = q.enqueue_many(tdata)  <span class="comment">#ok!  As long as queue is not full</span></div><div class="line">x = q.dequeue()  <span class="comment"># ok!  As long as queue is not empty</span></div><div class="line">sess.run(tf.global_variables_initializer())</div><div class="line">sess.run(inc_q)</div><div class="line">sess.run(x)  <span class="comment"># array([0., 1.], dtype=float32)</span></div></pre></td></tr></table></figure>
-<p> 当队列满或者空时会阻塞。</p>
-<h2 id="How-to-use-coordinator"><a href="#How-to-use-coordinator" class="headerlink" title="How to use coordinator?"></a>How to use coordinator?</h2><p> Coordinator是用来协调各个线程的。<br> 引用tensorflow官网上的说明：</p>
-<blockquote>
-<p>Any of the threads can call coord.request_stop() to ask for all the threads to stop.<br>To cooperate with the requests,<br>each thread must check for coord.should_stop() on a regular basis.<br>coord.should_stop() returns True as soon as coord.request_stop() has been called.</p>
-</blockquote>
+<p>以下各段代码之间互相独立。 ## How to use queue? <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">q = tf.FIFOQueue(num_examples*<span class="number">5</span>,<span class="string">'float'</span>)</div><div class="line">inc_q = q.enqueue_many(tdata)  <span class="comment">#ok!  As long as queue is not full</span></div><div class="line">x = q.dequeue()  <span class="comment"># ok!  As long as queue is not empty</span></div><div class="line">sess.run(tf.global_variables_initializer())</div><div class="line">sess.run(inc_q)</div><div class="line">sess.run(x)  <span class="comment"># array([0., 1.], dtype=float32)</span></div></pre></td></tr></table></figure></p>
+<p>当队列满或者空时会阻塞。</p>
+<p>## How to use coordinator? Coordinator是用来协调各个线程的。 引用tensorflow官网上的说明： &gt; Any of the threads can call coord.request_stop() to ask for all the threads to stop. To cooperate with the requests, each thread must check for coord.should_stop() on a regular basis. coord.should_stop() returns True as soon as coord.request_stop() has been called.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">q = tf.FIFOQueue(num_examples,<span class="string">'float'</span>)</div><div class="line">inc_q = q.enqueue_many(tdata)</div><div class="line">x = q.dequeue()</div><div class="line"></div><div class="line">qr = tf.train.QueueRunner(q,[inc_q] * <span class="number">4</span>)   </div><div class="line">enq_threads = qr.create_threads(sess,coord=coord,start=<span class="keyword">True</span>) <span class="comment">#创建并执行4个线程</span></div><div class="line"><span class="keyword">for</span> iter <span class="keyword">in</span> range(<span class="number">10</span>):</div><div class="line">    r = sess.run(x)</div><div class="line">    <span class="keyword">print</span> (r) <span class="comment"># [[0, 1],[1, 2] ... [18, 19]]</span></div><div class="line">coord.request_stop()</div><div class="line">coord.join(enq_threads)  <span class="comment">#q is closed. Instead of block, a error raises if  there is no more elements in q.3</span></div></pre></td></tr></table></figure>
-<p> 在调用coord.request_stop() 并且等待 enq_threads都终止之后，如果我们继续 一直执行出队操作x,那么当队列空时会产生OutOfRangeError。</p>
-<h2 id="How-to-use-producer"><a href="#How-to-use-producer" class="headerlink" title="How to use producer?"></a>How to use producer?</h2><p>Tensorflow 中提供了各种producer，让我们不必直接控制线程的创建以及队列的出队入队。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">str_q = tf.train.string_input_producer([<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>],num_epochs=<span class="number">3</span>)</div><div class="line">sess.run(tf.local_variables_initializer())  <span class="comment">#MUST DO  when num_epochs != None</span></div><div class="line">y = str_q.size()</div><div class="line">sess.run(y)   <span class="comment"># 0 , 此时队列空!</span></div><div class="line">threads = tf.train.start_queue_runners(sess=sess,coord=coord)</div><div class="line">sess.run(str_q.size()) <span class="comment"># 15 = 5 * 3</span></div><div class="line"><span class="keyword">try</span>:</div><div class="line">    <span class="keyword">while</span> <span class="keyword">not</span> coord.should_stop():</div><div class="line">        r = sess.run(str_q.dequeue())</div><div class="line">        <span class="keyword">print</span> (r)</div><div class="line"><span class="keyword">except</span> tf.errors.OutOfRangeError:</div><div class="line">    print(<span class="string">'no more inputs.'</span>)</div><div class="line"><span class="keyword">finally</span>:</div><div class="line">    coord.request_stop()</div><div class="line"></div><div class="line">coord.join(threads)</div></pre></td></tr></table></figure></p>
+<p>在调用coord.request_stop() 并且等待 enq_threads都终止之后，如果我们继续 一直执行出队操作x,那么当队列空时会产生OutOfRangeError。</p>
+<h2 id="how-to-use-producer">How to use producer?</h2>
+<p>Tensorflow 中提供了各种producer，让我们不必直接控制线程的创建以及队列的出队入队。 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">str_q = tf.train.string_input_producer([<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>],num_epochs=<span class="number">3</span>)</div><div class="line">sess.run(tf.local_variables_initializer())  <span class="comment">#MUST DO  when num_epochs != None</span></div><div class="line">y = str_q.size()</div><div class="line">sess.run(y)   <span class="comment"># 0 , 此时队列空!</span></div><div class="line">threads = tf.train.start_queue_runners(sess=sess,coord=coord)</div><div class="line">sess.run(str_q.size()) <span class="comment"># 15 = 5 * 3</span></div><div class="line"><span class="keyword">try</span>:</div><div class="line">    <span class="keyword">while</span> <span class="keyword">not</span> coord.should_stop():</div><div class="line">        r = sess.run(str_q.dequeue())</div><div class="line">        <span class="keyword">print</span> (r)</div><div class="line"><span class="keyword">except</span> tf.errors.OutOfRangeError:</div><div class="line">    print(<span class="string">'no more inputs.'</span>)</div><div class="line"><span class="keyword">finally</span>:</div><div class="line">    coord.request_stop()</div><div class="line"></div><div class="line">coord.join(threads)</div></pre></td></tr></table></figure></p>
 <p>Produer的作用是自动入队，返回值是出队的Tensor?</p>
-<h2 id="How-to-use-tf-train-batch"><a href="#How-to-use-tf-train-batch" class="headerlink" title="How to use tf.train.batch?"></a>How to use tf.train.batch?</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">data_q = tf.train.slice_input_producer([tdata], num_epochs=<span class="number">2</span>, shuffle=<span class="keyword">False</span>,capacity=<span class="number">512</span>)</div><div class="line">sess.run(tf.local_variables_initializer())  <span class="comment"># MUST DO when num_epochs != None!</span></div><div class="line"></div><div class="line"><span class="comment">#batch_data = tf.train.batch([tdata],batch_size=2,enqueue_many=True) #也可直接用Tensor初始化</span></div><div class="line">batch_data = tf.train.batch([data_q],batch_size=<span class="number">2</span>,enqueue_many=<span class="keyword">True</span>)</div><div class="line"></div><div class="line">threads = tf.train.start_queue_runners(sess=sess,coord=coord)</div><div class="line"></div><div class="line">sess.run(batch_data)</div><div class="line">sess.run(batch_data)</div></pre></td></tr></table></figure>
+<h2 id="how-to-use-tf.train.batch">How to use tf.train.batch?</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">data_q = tf.train.slice_input_producer([tdata], num_epochs=<span class="number">2</span>, shuffle=<span class="keyword">False</span>,capacity=<span class="number">512</span>)</div><div class="line">sess.run(tf.local_variables_initializer())  <span class="comment"># MUST DO when num_epochs != None!</span></div><div class="line"></div><div class="line"><span class="comment">#batch_data = tf.train.batch([tdata],batch_size=2,enqueue_many=True) #也可直接用Tensor初始化</span></div><div class="line">batch_data = tf.train.batch([data_q],batch_size=<span class="number">2</span>,enqueue_many=<span class="keyword">True</span>)</div><div class="line"></div><div class="line">threads = tf.train.start_queue_runners(sess=sess,coord=coord)</div><div class="line"></div><div class="line">sess.run(batch_data)</div><div class="line">sess.run(batch_data)</div></pre></td></tr></table></figure>
 <p>当队列空时，抛出OutOfRangeError。如果用Tensor初始化batch,那么永远不会抛出OutOfRangeError。</p>
 
           
@@ -946,11 +1002,11 @@
 <blockquote>
 <p>今夕复何夕，共此灯烛光</p>
 </blockquote>
-<p>$$E=mc^2$$</p>
-<p>$$\hat{H} \lvert\psi\rangle = i\hbar\frac{\partial}{\partial t}\lvert\psi\rangle$$</p>
-<p>$$\sum_i a_i = \infty $$</p>
-<p>$$g_{\mu\nu} = g_{\nu\mu}$$</p>
-<p>$$D*$$</p>
+<p><span class="math display">\[E=mc^2\]</span></p>
+<p><span class="math display">\[\hat{H} \lvert\psi\rangle = i\hbar\frac{\partial}{\partial t}\lvert\psi\rangle\]</span></p>
+<p><span class="math display">\[\sum_i a_i = \infty \]</span></p>
+<p><span class="math display">\[g_{\mu\nu} = g_{\nu\mu}\]</span></p>
+<p><span class="math display">\[D*\]</span></p>
 
           
         
