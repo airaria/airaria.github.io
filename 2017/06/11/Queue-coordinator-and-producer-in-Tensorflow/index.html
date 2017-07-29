@@ -97,7 +97,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/06/11/Queue-coordinator-and-producer-in-Tensorflow/index.html">
 <meta property="og:site_name" content="Manifold">
 <meta property="og:description" content="直接用代码 举例说明。 先准备数据： 12345678910import tensorflow as tfimport numpy as npnum_examples = 10num_features = 2data = np.reshape(np.arange(num_examples*num_features), (num_examples,num_features))tdata = tf.">
-<meta property="og:updated_time" content="2017-07-05T14:38:29.781Z">
+<meta property="og:updated_time" content="2017-07-29T02:35:26.045Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Queue, Coordinator and Producer in Tensorflow">
 <meta name="twitter:description" content="直接用代码 举例说明。 先准备数据： 12345678910import tensorflow as tfimport numpy as npnum_examples = 10num_features = 2data = np.reshape(np.arange(num_examples*num_features), (num_examples,num_features))tdata = tf.">
@@ -323,7 +323,8 @@
 <p><strong>运行以下各段代码前先运行上方的代码。</strong></p>
 <p>以下各段代码之间互相独立。 ## How to use queue? <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">q = tf.FIFOQueue(num_examples*<span class="number">5</span>,<span class="string">'float'</span>)</div><div class="line">inc_q = q.enqueue_many(tdata)  <span class="comment">#ok!  As long as queue is not full</span></div><div class="line">x = q.dequeue()  <span class="comment"># ok!  As long as queue is not empty</span></div><div class="line">sess.run(tf.global_variables_initializer())</div><div class="line">sess.run(inc_q)</div><div class="line">sess.run(x)  <span class="comment"># array([0., 1.], dtype=float32)</span></div></pre></td></tr></table></figure></p>
 <p>当队列满或者空时会阻塞。</p>
-<p>## How to use coordinator? Coordinator是用来协调各个线程的。 引用tensorflow官网上的说明： &gt; Any of the threads can call coord.request_stop() to ask for all the threads to stop. To cooperate with the requests, each thread must check for coord.should_stop() on a regular basis. coord.should_stop() returns True as soon as coord.request_stop() has been called.</p>
+<h2 id="how-to-use-coordinator">How to use coordinator?</h2>
+<p>Coordinator是用来协调各个线程的。 引用tensorflow官网上的说明： &gt; Any of the threads can call coord.request_stop() to ask for all the threads to stop. &gt; To cooperate with the requests, &gt; each thread must check for coord.should_stop() on a regular basis. &gt; coord.should_stop() returns True as soon as coord.request_stop() has been called.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">q = tf.FIFOQueue(num_examples,<span class="string">'float'</span>)</div><div class="line">inc_q = q.enqueue_many(tdata)</div><div class="line">x = q.dequeue()</div><div class="line"></div><div class="line">qr = tf.train.QueueRunner(q,[inc_q] * <span class="number">4</span>)   </div><div class="line">enq_threads = qr.create_threads(sess,coord=coord,start=<span class="keyword">True</span>) <span class="comment">#创建并执行4个线程</span></div><div class="line"><span class="keyword">for</span> iter <span class="keyword">in</span> range(<span class="number">10</span>):</div><div class="line">    r = sess.run(x)</div><div class="line">    <span class="keyword">print</span> (r) <span class="comment"># [[0, 1],[1, 2] ... [18, 19]]</span></div><div class="line">coord.request_stop()</div><div class="line">coord.join(enq_threads)  <span class="comment">#q is closed. Instead of block, a error raises if  there is no more elements in q.3</span></div></pre></td></tr></table></figure>
 <p>在调用coord.request_stop() 并且等待 enq_threads都终止之后，如果我们继续 一直执行出队操作x,那么当队列空时会产生OutOfRangeError。</p>
 <h2 id="how-to-use-producer">How to use producer?</h2>
@@ -458,7 +459,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -470,10 +471,10 @@
             
             
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags/index.html">
                 <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
@@ -526,7 +527,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#how-to-use-producer"><span class="nav-number">1.</span> <span class="nav-text">How to use producer?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#how-to-use-tf.train.batch"><span class="nav-number">2.</span> <span class="nav-text">How to use tf.train.batch?</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#how-to-use-coordinator"><span class="nav-number">1.</span> <span class="nav-text">How to use coordinator?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#how-to-use-producer"><span class="nav-number">2.</span> <span class="nav-text">How to use producer?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#how-to-use-tf.train.batch"><span class="nav-number">3.</span> <span class="nav-text">How to use tf.train.batch?</span></a></li></ol></div>
             
 
           </div>

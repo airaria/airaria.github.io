@@ -1,0 +1,867 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Deep learning," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Batch/Layer/Instance/Weight Normalization 从使用最广泛的batch norm说起。 Batch Normalization1 batch norm是为了解决网络中各个层的输入数据的分布不稳定的问题( (internal) covariate shift) )，因为若此的话各个层要不停地去适应新的数据分布。 设网络中的某一层的输入\(x=(x^{(1">
+<meta name="keywords" content="Deep learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="各种Normalization">
+<meta property="og:url" content="http://yoursite.com/2017/07/07/Batch,Layer,Instance,Weight Normalization/index.html">
+<meta property="og:site_name" content="Manifold">
+<meta property="og:description" content="Batch/Layer/Instance/Weight Normalization 从使用最广泛的batch norm说起。 Batch Normalization1 batch norm是为了解决网络中各个层的输入数据的分布不稳定的问题( (internal) covariate shift) )，因为若此的话各个层要不停地去适应新的数据分布。 设网络中的某一层的输入\(x=(x^{(1">
+<meta property="og:updated_time" content="2017-07-29T02:59:21.299Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="各种Normalization">
+<meta name="twitter:description" content="Batch/Layer/Instance/Weight Normalization 从使用最广泛的batch norm说起。 Batch Normalization1 batch norm是为了解决网络中各个层的输入数据的分布不稳定的问题( (internal) covariate shift) )，因为若此的话各个层要不停地去适应新的数据分布。 设网络中的某一层的输入\(x=(x^{(1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/07/Batch,Layer,Instance,Weight Normalization/"/>
+
+
+
+
+
+  <title>各种Normalization | Manifold</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Manifold</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">where strings viberate</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/07/Batch,Layer,Instance,Weight Normalization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="airaria">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Manifold">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">各种Normalization</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-07T10:34:00+08:00">
+                2017-07-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="batchlayerinstanceweight-normalization">Batch/Layer/Instance/Weight Normalization</h1>
+<p>从使用最广泛的batch norm说起。</p>
+<h2 id="batch-normalization1">Batch Normalization<a href="https://arxiv.org/abs/1502.03167" title="Batch Normalization" target="_blank" rel="external">1</a></h2>
+<p>batch norm是为了解决网络中各个层的输入数据的分布不稳定的问题( <em>(internal) covariate shift)</em> )，因为若此的话各个层要不停地去适应新的数据分布。</p>
+<p>设网络中的某一层的输入<span class="math inline">\(x=(x^{(1)},…,x^{(k)})\)</span>是d维的,那么按如下的方式normalize它: <span class="math display">\[
+\hat x^{(k)} = \frac{x^{(k)}-\mathrm{E}[x^{(k)}]}{\sqrt{\mathrm{Var}[x^{(k)}]}}
+\]</span></p>
+<p>为了让网络有恢复数据scale的能力，即能学习到恒等映射，还要对<span class="math inline">\(\hat x^{(k)}\)</span>再做一次变换： <span class="math display">\[
+y^{(k)}=\gamma^{(k)}\hat x^{(k)}+\beta^{(k)}
+\]</span> 其中<span class="math inline">\(\gamma^{(k)}\)</span>和<span class="math inline">\(\beta^{(k)}\)</span>是待学习参数。</p>
+<p>在实际的训练中，我们不太可能拿整个数据集来计算期望E和方差Var，所以实际上E和Var是在每个batch上做。</p>
+<p>在inference阶段，</p>
+<blockquote>
+<p>we want the output to depend only on the input, deterministically.</p>
+</blockquote>
+<p>所以此时的E和Var是针对整个训练集得到的结果。在实际使用中常采用移动平均的方法计算population mean 和 population variance。</p>
+<h2 id="weight-normalization2">Weight normalization<a href="https://arxiv.org/abs/1602.07868" title="Weight Normalization" target="_blank" rel="external">2</a></h2>
+<p>网络中的一个神经元做的事就是对接收到的按权重求和的输入特征做非线性变换 <span class="math display">\[
+y = \phi(\mathbf{w}\cdot\mathbf{x}+b),
+\]</span> （上一节的<span class="math inline">\(x\)</span> 是这一节的<span class="math inline">\(\mathbf{w}\cdot\mathbf{x}+b\)</span>)。论文的作者提出<span class="math inline">\(\mathbf{w}\)</span>可以重参数化为如下形式 <span class="math display">\[
+\mathbf{w} = \frac{g}{||\mathbf{v}||}\mathbf{v}
+\]</span> 其中<span class="math inline">\(g\)</span>是一个待学习标量，<span class="math inline">\(\mathbf{v}\)</span>是与<span class="math inline">\(\mathbf{w}\)</span> 同维度的矢量。注意到<span class="math inline">\(\mathbf{w}\)</span> 有确定的欧式范数<span class="math inline">\(g\)</span>。</p>
+<p>这样参数化之后，损失<span class="math inline">\(L\)</span> 对<span class="math inline">\(\mathbf{w}\)</span>的梯度可写成： <span class="math display">\[
+\nabla_g L = \frac{\nabla_{\mathrm{w}}L\cdot\mathbf{v}}{||\mathbf{v}||},\quad\nabla_{\mathbf{v}}L = \frac{g}{||\mathbf{v}||}\nabla_{\mathbf{w}}L-\frac{g\nabla_g L}{||\mathbf{v}||^2}\mathbf{v} \label{gradient1}
+\]</span></p>
+<p>其中<span class="math inline">\(\nabla_\mathbf{w}L​\)</span>是通常计算方式下的<span class="math inline">\(L​\)</span>对<span class="math inline">\(\mathbf{w}​\)</span>的梯度。</p>
+<p><span class="math inline">\(\eqref{gradient1}\)</span> 中的第二式还可写成 <span class="math display">\[
+\nabla_{\mathbf{v}}L = \frac{g}{||\mathbf{v}||}M_{\mathbf{w}}\nabla_{\mathbf{w}}L,\quad \mathrm{with \quad M_{\mathbf{w}}}=I-\frac{\mathbf{w}\mathbf{w}^T}{||\mathbf{w}||^2}
+\]</span> <span class="math inline">\(M_{\mathbf{w}}\)</span>可看成投影到<span class="math inline">\(\mathbf{w}\)</span>正交方向上的投影矩阵。</p>
+<p>作者的一通分析后指出，采用weight normalization可以使得优化过程对learning rate不那么挑剔。</p>
+<h3 id="初始化问题">初始化问题</h3>
+<p>与batch normalization不同，weight normalization需要合适地选取初始化方案。</p>
+<p>一种方法是，先让网络过一个mini-batch，</p>
+<ol style="list-style-type: decimal">
+<li><p>在每个neuron的输入<span class="math inline">\(\mathbf{x}\)</span>上计算<span class="math inline">\(t=\frac{\mathbf{v}\cdot\mathbf{x}}{||\mathbf{v}||}\)</span>。</p></li>
+<li><p>neuron的输出<span class="math inline">\(y=\phi\left(\frac{t-\mu[t]}{\sigma[t]}\right)\)</span> , <span class="math inline">\(\mu\)</span>和<span class="math inline">\(\sigma\)</span> 是minibatch上的平均值和标准差。</p></li>
+<li><p>初始化<span class="math inline">\(g\leftarrow\frac{1}{\sigma[t]},\quad b\leftarrow\frac{-\mu[t]}{\sigma[t]}\)</span></p></li>
+</ol>
+<p>实际上在不采用weight normalization的网络上也可采用这样的初始化方案。然而无法应用到RNN。</p>
+<h3 id="mean-only-batch-normalization">Mean-only Batch Normalization</h3>
+<p>论文中用这种方法得到了CIFAR-10上不使用data augmentation下的state-of-the-art。</p>
+<p>对每个神经元计算</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(t=\mathbf{w}\cdot\mathbf{x}\)</span>, 其中<span class="math inline">\(\mathbf{w}\)</span>仍按上文的方式参数化</li>
+<li><span class="math inline">\(\tilde t=t-\mu[t]+b\)</span></li>
+<li><span class="math inline">\(y = \phi(\tilde t)=\phi(t-\mu[t]+b)\)</span></li>
+</ol>
+<p>损失<span class="math inline">\(L\)</span>对<span class="math inline">\(t\)</span>的梯度为 <span class="math display">\[
+\nabla_t L = \nabla_{\tilde t} L -\mu[\nabla_{\tilde t}L]
+\]</span> 与完整的batch normalization相比计算量较小。</p>
+<p>引用一下原文</p>
+<blockquote>
+<p>Mean-only batch normalization thus has the effect of centering the gradients that are backpropagated.</p>
+</blockquote>
+<h2 id="layer-normalization3">Layer normalization<a href="https://arxiv.org/abs/1607.06450" title="Layer Normalization" target="_blank" rel="external">3</a></h2>
+<p>在一个layer的所有input上做normalization，仅在样本内部做，和batch内的其他样本无关： <span class="math display">\[
+\mu = \frac{1}{k}\sum_{i=1}^{k}x^{(i)} \\
+\sigma = \sqrt{\frac{1}{k}\sum_{i=1}^{k}(x^{(k)}-\mu)}
+\]</span> 注意到这里对所有input的求和并不包括bias。Layer normalization 配合RNN使用最佳。</p>
+<p>特点：</p>
+<ol style="list-style-type: decimal">
+<li>不依赖batch大小。</li>
+<li>可直接用于RNN。</li>
+<li>训练和测试的计算过程是一样的。</li>
+</ol>
+<h3 id="权重和数据变换下的不变性">权重和数据变换下的不变性</h3>
+<p>三种normalization都可以总结为对neuron的summed inputs <span class="math inline">\(x\)</span> 用<span class="math inline">\(\sigma\)</span>和<span class="math inline">\(\mu\)</span>做normalization后喂给激活函数 <span class="math display">\[
+y=\phi(\frac{g}{\sigma}(x-\mu)+b)
+\]</span> <span class="math inline">\(g\)</span>和<span class="math inline">\(b\)</span>是学习参数。对于weight normalization来说 <span class="math inline">\(\mu=0, \sigma=||\mathbf{w}||\)</span>。</p>
+<p>三种normalization在不同变换下的性质如下，摘自<a href="https://arxiv.org/abs/1607.06450" title="Layer Normalization" target="_blank" rel="external">3</a>,W表示权重矩阵，w表示权重向量:</p>
+<table style="width:100%;">
+<colgroup>
+<col width="4%">
+<col width="11%">
+<col width="13%">
+<col width="11%">
+<col width="17%">
+<col width="18%">
+<col width="22%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>W re-scaling</th>
+<th>W re-centering</th>
+<th>w re-scaling</th>
+<th>dataset re-scaling</th>
+<th>dataset re-centering</th>
+<th>single sample re-scaling</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>BN</td>
+<td>Invariant</td>
+<td>No</td>
+<td>Invariant</td>
+<td>Invariant</td>
+<td>Invariant</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>WN</td>
+<td>Invariant</td>
+<td>No</td>
+<td>Invariant</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td>LN</td>
+<td>Invariant</td>
+<td>Invariant</td>
+<td>No</td>
+<td>Invariant</td>
+<td>No</td>
+<td>Invariant</td>
+</tr>
+</tbody>
+</table>
+<h1 id="instance-normalization4">Instance normalization<a href="https://arxiv.org/abs/1607.08022" title="Instance Normalization" target="_blank" rel="external">4</a></h1>
+<p>Instance normalization主要用在风格转移中，用于提升生成图片质量。论文的作者建议，在生成网络中，用如下的 <em>instance normalization</em> 替换batch normalization: <span class="math display">\[
+y_{tijk}=\frac{x_{tijk}-\mu_{ti}}{\sqrt{\sigma^2_{ti}+\epsilon}},\ \mu_{ti}=\frac{1}{HW}\sum^W_{l=1}\sum^H_{m=1}x_{tilm},\ \sigma^2_{ti}=\frac{1}{HW}\sum^W_{l=1}\sum^H_{m=1}(x_{tilm}-\mu_{ti})^2
+\]</span> <span class="math inline">\(x\)</span>的四个下标分别表示index in batch, channel, width and hight.</p>
+<p>与batch normalization不同的是，instance normalization在训练时与在测试时的使用没有差别。</p>
+<p>两点值得比较的地方：</p>
+<ol style="list-style-type: decimal">
+<li>若采用batch normalization , 那么<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\sigma\)</span>的计算式中会多出对<span class="math inline">\(t\)</span>的求和，即，要跨样本算平均。</li>
+<li>若采用layer normalization, 那么<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\sigma\)</span>的计算式中会多出对<span class="math inline">\(i\)</span>的求和，即，要跨通道算平均。</li>
+</ol>
+<h1 id="参考文献">参考文献</h1>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Deep-learning/" rel="tag"># Deep learning</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/05/NCE-and-negative-sampling/" rel="next" title="NCE and Negative Sampling">
+                <i class="fa fa-chevron-left"></i> NCE and Negative Sampling
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/09/Improved Training of Wasserstein GANs/" rel="prev" title="Improved Training of Wasserstein GANs">
+                Improved Training of Wasserstein GANs <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="airaria" />
+          <p class="site-author-name" itemprop="name">airaria</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/ziqing-yang-70" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/airaria" target="_blank" title="github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  github
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#batchlayerinstanceweight-normalization"><span class="nav-number">1.</span> <span class="nav-text">Batch/Layer/Instance/Weight Normalization</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#batch-normalization1"><span class="nav-number">1.1.</span> <span class="nav-text">Batch Normalization1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#weight-normalization2"><span class="nav-number">1.2.</span> <span class="nav-text">Weight normalization2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化问题"><span class="nav-number">1.2.1.</span> <span class="nav-text">初始化问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mean-only-batch-normalization"><span class="nav-number">1.2.2.</span> <span class="nav-text">Mean-only Batch Normalization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#layer-normalization3"><span class="nav-number">1.3.</span> <span class="nav-text">Layer normalization3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#权重和数据变换下的不变性"><span class="nav-number">1.3.1.</span> <span class="nav-text">权重和数据变换下的不变性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#instance-normalization4"><span class="nav-number">2.</span> <span class="nav-text">Instance normalization4</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">airaria</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
