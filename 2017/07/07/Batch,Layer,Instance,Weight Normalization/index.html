@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="Batch/Layer/Instance/Weight Normalization 从使用最广泛的batch norm说起。 Batch Normalization1 batch norm是为了解决网络中各个层的输入数据的分布不稳定的问题( (internal) covariate shift) )，因为若此的话各个层要不停地去适应新的数据分布。 设网络中的某一层的输入\(x=(x^{(1">
+<meta name="description" content="Batch/Layer/Instance/Weight Normalization 从使用最广泛的batch norm说起。 Batch Normalization batch norm是为了解决网络中各个层的输入数据的分布不稳定的问题( (internal) covariate shift) )，因为若此的话各个层要不停地去适应新的数据分布。 设网络中的某一层的输入\(x=(x^{(1)">
 <meta name="keywords" content="Deep learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="各种Normalization">
 <meta property="og:url" content="http://yoursite.com/2017/07/07/Batch,Layer,Instance,Weight Normalization/index.html">
 <meta property="og:site_name" content="Manifold">
-<meta property="og:description" content="Batch/Layer/Instance/Weight Normalization 从使用最广泛的batch norm说起。 Batch Normalization1 batch norm是为了解决网络中各个层的输入数据的分布不稳定的问题( (internal) covariate shift) )，因为若此的话各个层要不停地去适应新的数据分布。 设网络中的某一层的输入\(x=(x^{(1">
-<meta property="og:updated_time" content="2017-07-29T02:59:21.299Z">
+<meta property="og:description" content="Batch/Layer/Instance/Weight Normalization 从使用最广泛的batch norm说起。 Batch Normalization batch norm是为了解决网络中各个层的输入数据的分布不稳定的问题( (internal) covariate shift) )，因为若此的话各个层要不停地去适应新的数据分布。 设网络中的某一层的输入\(x=(x^{(1)">
+<meta property="og:updated_time" content="2017-09-10T11:51:45.667Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="各种Normalization">
-<meta name="twitter:description" content="Batch/Layer/Instance/Weight Normalization 从使用最广泛的batch norm说起。 Batch Normalization1 batch norm是为了解决网络中各个层的输入数据的分布不稳定的问题( (internal) covariate shift) )，因为若此的话各个层要不停地去适应新的数据分布。 设网络中的某一层的输入\(x=(x^{(1">
+<meta name="twitter:description" content="Batch/Layer/Instance/Weight Normalization 从使用最广泛的batch norm说起。 Batch Normalization batch norm是为了解决网络中各个层的输入数据的分布不稳定的问题( (internal) covariate shift) )，因为若此的话各个层要不停地去适应新的数据分布。 设网络中的某一层的输入\(x=(x^{(1)">
 
 
 
@@ -320,7 +320,7 @@
       
         <h1 id="batchlayerinstanceweight-normalization">Batch/Layer/Instance/Weight Normalization</h1>
 <p>从使用最广泛的batch norm说起。</p>
-<h2 id="batch-normalization1">Batch Normalization<a href="https://arxiv.org/abs/1502.03167" title="Batch Normalization" target="_blank" rel="external">1</a></h2>
+<h2 id="batch-normalization">Batch Normalization</h2>
 <p>batch norm是为了解决网络中各个层的输入数据的分布不稳定的问题( <em>(internal) covariate shift)</em> )，因为若此的话各个层要不停地去适应新的数据分布。</p>
 <p>设网络中的某一层的输入<span class="math inline">\(x=(x^{(1)},…,x^{(k)})\)</span>是d维的,那么按如下的方式normalize它: <span class="math display">\[
 \hat x^{(k)} = \frac{x^{(k)}-\mathrm{E}[x^{(k)}]}{\sqrt{\mathrm{Var}[x^{(k)}]}}
@@ -334,7 +334,7 @@ y^{(k)}=\gamma^{(k)}\hat x^{(k)}+\beta^{(k)}
 <p>we want the output to depend only on the input, deterministically.</p>
 </blockquote>
 <p>所以此时的E和Var是针对整个训练集得到的结果。在实际使用中常采用移动平均的方法计算population mean 和 population variance。</p>
-<h2 id="weight-normalization2">Weight normalization<a href="https://arxiv.org/abs/1602.07868" title="Weight Normalization" target="_blank" rel="external">2</a></h2>
+<h2 id="weight-normalization">Weight normalization</h2>
 <p>网络中的一个神经元做的事就是对接收到的按权重求和的输入特征做非线性变换 <span class="math display">\[
 y = \phi(\mathbf{w}\cdot\mathbf{x}+b),
 \]</span> （上一节的<span class="math inline">\(x\)</span> 是这一节的<span class="math inline">\(\mathbf{w}\cdot\mathbf{x}+b\)</span>)。论文的作者提出<span class="math inline">\(\mathbf{w}\)</span>可以重参数化为如下形式 <span class="math display">\[
@@ -344,7 +344,7 @@ y = \phi(\mathbf{w}\cdot\mathbf{x}+b),
 \nabla_g L = \frac{\nabla_{\mathrm{w}}L\cdot\mathbf{v}}{||\mathbf{v}||},\quad\nabla_{\mathbf{v}}L = \frac{g}{||\mathbf{v}||}\nabla_{\mathbf{w}}L-\frac{g\nabla_g L}{||\mathbf{v}||^2}\mathbf{v} \label{gradient1}
 \]</span></p>
 <p>其中<span class="math inline">\(\nabla_\mathbf{w}L​\)</span>是通常计算方式下的<span class="math inline">\(L​\)</span>对<span class="math inline">\(\mathbf{w}​\)</span>的梯度。</p>
-<p><span class="math inline">\(\eqref{gradient1}\)</span> 中的第二式还可写成 <span class="math display">\[
+<p>上式中的第二式还可写成 <span class="math display">\[
 \nabla_{\mathbf{v}}L = \frac{g}{||\mathbf{v}||}M_{\mathbf{w}}\nabla_{\mathbf{w}}L,\quad \mathrm{with \quad M_{\mathbf{w}}}=I-\frac{\mathbf{w}\mathbf{w}^T}{||\mathbf{w}||^2}
 \]</span> <span class="math inline">\(M_{\mathbf{w}}\)</span>可看成投影到<span class="math inline">\(\mathbf{w}\)</span>正交方向上的投影矩阵。</p>
 <p>作者的一通分析后指出，采用weight normalization可以使得优化过程对learning rate不那么挑剔。</p>
@@ -372,7 +372,7 @@ y = \phi(\mathbf{w}\cdot\mathbf{x}+b),
 <blockquote>
 <p>Mean-only batch normalization thus has the effect of centering the gradients that are backpropagated.</p>
 </blockquote>
-<h2 id="layer-normalization3">Layer normalization<a href="https://arxiv.org/abs/1607.06450" title="Layer Normalization" target="_blank" rel="external">3</a></h2>
+<h2 id="layer-normalization">Layer normalization</h2>
 <p>在一个layer的所有input上做normalization，仅在样本内部做，和batch内的其他样本无关： <span class="math display">\[
 \mu = \frac{1}{k}\sum_{i=1}^{k}x^{(i)} \\
 \sigma = \sqrt{\frac{1}{k}\sum_{i=1}^{k}(x^{(k)}-\mu)}
@@ -387,7 +387,7 @@ y = \phi(\mathbf{w}\cdot\mathbf{x}+b),
 <p>三种normalization都可以总结为对neuron的summed inputs <span class="math inline">\(x\)</span> 用<span class="math inline">\(\sigma\)</span>和<span class="math inline">\(\mu\)</span>做normalization后喂给激活函数 <span class="math display">\[
 y=\phi(\frac{g}{\sigma}(x-\mu)+b)
 \]</span> <span class="math inline">\(g\)</span>和<span class="math inline">\(b\)</span>是学习参数。对于weight normalization来说 <span class="math inline">\(\mu=0, \sigma=||\mathbf{w}||\)</span>。</p>
-<p>三种normalization在不同变换下的性质如下，摘自<a href="https://arxiv.org/abs/1607.06450" title="Layer Normalization" target="_blank" rel="external">3</a>,W表示权重矩阵，w表示权重向量:</p>
+<p>三种normalization在不同变换下的性质如下，摘自文献[3], W表示权重矩阵，w表示权重向量:</p>
 <table style="width:100%;">
 <colgroup>
 <col width="4%">
@@ -439,8 +439,8 @@ y=\phi(\frac{g}{\sigma}(x-\mu)+b)
 </tr>
 </tbody>
 </table>
-<h1 id="instance-normalization4">Instance normalization<a href="https://arxiv.org/abs/1607.08022" title="Instance Normalization" target="_blank" rel="external">4</a></h1>
-<p>Instance normalization主要用在风格转移中，用于提升生成图片质量。论文的作者建议，在生成网络中，用如下的 <em>instance normalization</em> 替换batch normalization: <span class="math display">\[
+<h1 id="instance-normalization">Instance normalization</h1>
+<p>Instance normalization主要用在风格转移中，用于提升生成图片质量。论文的作者建议，在生成网络中，用如下的 instance normalization 替换batch normalization: <span class="math display">\[
 y_{tijk}=\frac{x_{tijk}-\mu_{ti}}{\sqrt{\sigma^2_{ti}+\epsilon}},\ \mu_{ti}=\frac{1}{HW}\sum^W_{l=1}\sum^H_{m=1}x_{tilm},\ \sigma^2_{ti}=\frac{1}{HW}\sum^W_{l=1}\sum^H_{m=1}(x_{tilm}-\mu_{ti})^2
 \]</span> <span class="math inline">\(x\)</span>的四个下标分别表示index in batch, channel, width and hight.</p>
 <p>与batch normalization不同的是，instance normalization在训练时与在测试时的使用没有差别。</p>
@@ -450,6 +450,10 @@ y_{tijk}=\frac{x_{tijk}-\mu_{ti}}{\sqrt{\sigma^2_{ti}+\epsilon}},\ \mu_{ti}=\fra
 <li>若采用layer normalization, 那么<span class="math inline">\(\mu\)</span>和<span class="math inline">\(\sigma\)</span>的计算式中会多出对<span class="math inline">\(i\)</span>的求和，即，要跨通道算平均。</li>
 </ol>
 <h1 id="参考文献">参考文献</h1>
+<p>[1]. https://arxiv.org/abs/1502.03167 Batch Normalization</p>
+<p>[2]. https://arxiv.org/abs/1602.07868 Weight Normalization</p>
+<p>[3]. https://arxiv.org/abs/1607.06450 Layer Normalization</p>
+<p>[4]. https://arxiv.org/abs/1607.08022 Instance Normalization</p>
 
       
     </div>
@@ -576,7 +580,7 @@ y_{tijk}=\frac{x_{tijk}-\mu_{ti}}{\sqrt{\sigma^2_{ti}+\epsilon}},\ \mu_{ti}=\fra
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -589,7 +593,7 @@ y_{tijk}=\frac{x_{tijk}-\mu_{ti}}{\sqrt{\sigma^2_{ti}+\epsilon}},\ \mu_{ti}=\fra
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -644,7 +648,7 @@ y_{tijk}=\frac{x_{tijk}-\mu_{ti}}{\sqrt{\sigma^2_{ti}+\epsilon}},\ \mu_{ti}=\fra
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#batchlayerinstanceweight-normalization"><span class="nav-number">1.</span> <span class="nav-text">Batch/Layer/Instance/Weight Normalization</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#batch-normalization1"><span class="nav-number">1.1.</span> <span class="nav-text">Batch Normalization1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#weight-normalization2"><span class="nav-number">1.2.</span> <span class="nav-text">Weight normalization2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化问题"><span class="nav-number">1.2.1.</span> <span class="nav-text">初始化问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mean-only-batch-normalization"><span class="nav-number">1.2.2.</span> <span class="nav-text">Mean-only Batch Normalization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#layer-normalization3"><span class="nav-number">1.3.</span> <span class="nav-text">Layer normalization3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#权重和数据变换下的不变性"><span class="nav-number">1.3.1.</span> <span class="nav-text">权重和数据变换下的不变性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#instance-normalization4"><span class="nav-number">2.</span> <span class="nav-text">Instance normalization4</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#batchlayerinstanceweight-normalization"><span class="nav-number">1.</span> <span class="nav-text">Batch/Layer/Instance/Weight Normalization</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#batch-normalization"><span class="nav-number">1.1.</span> <span class="nav-text">Batch Normalization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#weight-normalization"><span class="nav-number">1.2.</span> <span class="nav-text">Weight normalization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化问题"><span class="nav-number">1.2.1.</span> <span class="nav-text">初始化问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mean-only-batch-normalization"><span class="nav-number">1.2.2.</span> <span class="nav-text">Mean-only Batch Normalization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#layer-normalization"><span class="nav-number">1.3.</span> <span class="nav-text">Layer normalization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#权重和数据变换下的不变性"><span class="nav-number">1.3.1.</span> <span class="nav-text">权重和数据变换下的不变性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#instance-normalization"><span class="nav-number">2.</span> <span class="nav-text">Instance normalization</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
             
 
           </div>

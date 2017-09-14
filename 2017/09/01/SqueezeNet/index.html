@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Testing," />
+  <meta name="keywords" content="Deep learning," />
 
 
 
@@ -90,17 +90,19 @@
 
 
 
-<meta name="description" content="This is a testing. I hope it will work.   今夕复何夕，共此灯烛光  \[E=mc^2\] \[\hat{H} \lvert\psi\rangle = i\hbar\frac{\partial}{\partial t}\lvert\psi\rangle\] \[\sum_i a_i = \infty \] \[g_{\mu\nu} =">
-<meta name="keywords" content="Testing">
+<meta name="description" content="SqueezeNet与模型压缩 基础模块是fire，由（\(s_1\)个1x1卷积）接上（ \(e_1\)个1x1卷积+\(e_3\)个3x3卷积）。 第一层是卷积层，输出Channel=96，之后接fire模块。在1、4、8层插入max pooling以减小图像尺寸。 最后接个输出channel=1000的卷积层，followed by softmax。 SqueezeNet的优势在于参">
+<meta name="keywords" content="Deep learning">
 <meta property="og:type" content="article">
-<meta property="og:title" content="First Post Test">
-<meta property="og:url" content="http://yoursite.com/2017/05/30/First-post-test/index.html">
+<meta property="og:title" content="SqueezeNet与模型压缩">
+<meta property="og:url" content="http://yoursite.com/2017/09/01/SqueezeNet/index.html">
 <meta property="og:site_name" content="Manifold">
-<meta property="og:description" content="This is a testing. I hope it will work.   今夕复何夕，共此灯烛光  \[E=mc^2\] \[\hat{H} \lvert\psi\rangle = i\hbar\frac{\partial}{\partial t}\lvert\psi\rangle\] \[\sum_i a_i = \infty \] \[g_{\mu\nu} =">
-<meta property="og:updated_time" content="2017-07-29T02:17:30.726Z">
+<meta property="og:description" content="SqueezeNet与模型压缩 基础模块是fire，由（\(s_1\)个1x1卷积）接上（ \(e_1\)个1x1卷积+\(e_3\)个3x3卷积）。 第一层是卷积层，输出Channel=96，之后接fire模块。在1、4、8层插入max pooling以减小图像尺寸。 最后接个输出channel=1000的卷积层，followed by softmax。 SqueezeNet的优势在于参">
+<meta property="og:image" content="http://yoursite.com/image/squeezeNet.png">
+<meta property="og:updated_time" content="2017-09-10T12:12:53.476Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="First Post Test">
-<meta name="twitter:description" content="This is a testing. I hope it will work.   今夕复何夕，共此灯烛光  \[E=mc^2\] \[\hat{H} \lvert\psi\rangle = i\hbar\frac{\partial}{\partial t}\lvert\psi\rangle\] \[\sum_i a_i = \infty \] \[g_{\mu\nu} =">
+<meta name="twitter:title" content="SqueezeNet与模型压缩">
+<meta name="twitter:description" content="SqueezeNet与模型压缩 基础模块是fire，由（\(s_1\)个1x1卷积）接上（ \(e_1\)个1x1卷积+\(e_3\)个3x3卷积）。 第一层是卷积层，输出Channel=96，之后接fire模块。在1、4、8层插入max pooling以减小图像尺寸。 最后接个输出channel=1000的卷积层，followed by softmax。 SqueezeNet的优势在于参">
+<meta name="twitter:image" content="http://yoursite.com/image/squeezeNet.png">
 
 
 
@@ -128,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/05/30/First-post-test/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/01/SqueezeNet/"/>
 
 
 
 
 
-  <title>First Post Test | Manifold</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>SqueezeNet与模型压缩 | Manifold</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -254,7 +256,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/30/First-post-test/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/01/SqueezeNet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="airaria">
@@ -271,7 +273,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">First Post Test</h1>
+          <h1 class="post-title" itemprop="name headline">SqueezeNet与模型压缩</h1>
         
 
         <div class="post-meta">
@@ -283,8 +285,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-30T00:41:40+08:00">
-                2017-05-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-01T00:04:01+08:00">
+                2017-09-01
               </time>
             
 
@@ -318,18 +320,20 @@
       
 
       
-        <ul>
-<li>This is a testing.</li>
-<li>I hope it will work.</li>
-</ul>
-<blockquote>
-<p>今夕复何夕，共此灯烛光</p>
-</blockquote>
-<p><span class="math display">\[E=mc^2\]</span></p>
-<p><span class="math display">\[\hat{H} \lvert\psi\rangle = i\hbar\frac{\partial}{\partial t}\lvert\psi\rangle\]</span></p>
-<p><span class="math display">\[\sum_i a_i = \infty \]</span></p>
-<p><span class="math display">\[g_{\mu\nu} = g_{\nu\mu}\]</span></p>
-<p><span class="math display">\[D*\]</span></p>
+        <h1 id="squeezenet与模型压缩">SqueezeNet与模型压缩</h1>
+<p>基础模块是fire，由（<span class="math inline">\(s_1\)</span>个1x1卷积）接上（ <span class="math inline">\(e_1\)</span>个1x1卷积+<span class="math inline">\(e_3\)</span>个3x3卷积）。</p>
+<p>第一层是卷积层，输出Channel=96，之后接fire模块。在1、4、8层插入max pooling以减小图像尺寸。</p>
+<p>最后接个输出channel=1000的卷积层，followed by softmax。</p>
+<p>SqueezeNet的优势在于参数少，模型大小只有5MB，在使用deep compresion之后，更是压缩到0.5MB。分类精度与AlexNet相当。</p>
+<div class="figure">
+<img src="/image/squeezeNet.png" alt="squeezeNet">
+<p class="caption">squeezeNet</p>
+</div>
+<h2 id="关于deep-compresion">关于deep compresion</h2>
+<p>主要有三种手段: 量化，裁剪，编码。 此外，作者还发现，使用裁剪之后的模型为初始值，再次训练，正确率还会提升。 模型压缩相当于一种正则化。这种方法称为dense-sparse-dense（DSD)。</p>
+<p>先记录这么多，细节再慢慢看论文补吧。</p>
+<h2 id="参考文献">参考文献</h2>
+<p>[1] SqueezeNet https://arxiv.org/pdf/1602.07360.pdf [2] Deep Compression https://arxiv.org/abs/1510.00149</p>
 
       
     </div>
@@ -359,7 +363,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Testing/" rel="tag"># Testing</a>
+            <a href="/tags/Deep-learning/" rel="tag"># Deep learning</a>
           
         </div>
       
@@ -372,14 +376,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/09/01/Attention_query_keys_values/" rel="next" title="Attention 中的Query, Keys, Values">
+                <i class="fa fa-chevron-left"></i> Attention 中的Query, Keys, Values
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/11/Queue-coordinator-and-producer-in-Tensorflow/" rel="prev" title="Queue, Coordinator and Producer in Tensorflow">
-                Queue, Coordinator and Producer in Tensorflow <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/02/Clustering by fast search and find of density peaks/" rel="prev" title="聚类算法——Clustering by Fast Search and Find of Density Peaks">
+                聚类算法——Clustering by Fast Search and Find of Density Peaks <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -427,8 +435,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -501,6 +518,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#squeezenet与模型压缩"><span class="nav-number">1.</span> <span class="nav-text">SqueezeNet与模型压缩</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于deep-compresion"><span class="nav-number">1.1.</span> <span class="nav-text">关于deep compresion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">1.2.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

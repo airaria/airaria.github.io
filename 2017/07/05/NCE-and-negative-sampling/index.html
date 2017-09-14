@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="在语言模型中，给定上下文c，要预测单词w: \[ \begin{align} p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w&amp;#39;\in V}u_{\theta}(w&amp;#39;,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)} \end{align} \] 其中\(u_{\theta}(w,c)=\">
+<meta name="description" content="在语言模型中，给定上下文c，要预测单词w: \[ \begin{align} p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w&amp;#39;\in V}u_{\theta}(w&amp;#39;,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)} \end{align} \] 其中\(u_{\theta}(w,c)=e">
 <meta name="keywords" content="ML-theory">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NCE and Negative Sampling">
 <meta property="og:url" content="http://yoursite.com/2017/07/05/NCE-and-negative-sampling/index.html">
 <meta property="og:site_name" content="Manifold">
-<meta property="og:description" content="在语言模型中，给定上下文c，要预测单词w: \[ \begin{align} p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w&amp;#39;\in V}u_{\theta}(w&amp;#39;,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)} \end{align} \] 其中\(u_{\theta}(w,c)=\">
-<meta property="og:updated_time" content="2017-09-10T11:28:10.105Z">
+<meta property="og:description" content="在语言模型中，给定上下文c，要预测单词w: \[ \begin{align} p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w&amp;#39;\in V}u_{\theta}(w&amp;#39;,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)} \end{align} \] 其中\(u_{\theta}(w,c)=e">
+<meta property="og:updated_time" content="2017-09-10T11:46:54.625Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NCE and Negative Sampling">
-<meta name="twitter:description" content="在语言模型中，给定上下文c，要预测单词w: \[ \begin{align} p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w&amp;#39;\in V}u_{\theta}(w&amp;#39;,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)} \end{align} \] 其中\(u_{\theta}(w,c)=\">
+<meta name="twitter:description" content="在语言模型中，给定上下文c，要预测单词w: \[ \begin{align} p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w&amp;#39;\in V}u_{\theta}(w&amp;#39;,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)} \end{align} \] 其中\(u_{\theta}(w,c)=e">
 
 
 
@@ -322,9 +322,10 @@
 \begin{align}
 p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w&#39;\in V}u_{\theta}(w&#39;,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)}
 \end{align}
-\]</span> 其中<span class="math inline">\(u_{\theta}(w,c)=\mathrm{exp}s_{\theta}(w,c)\)</span>, 而 <span class="math inline">\(Z_{\theta}(c)\)</span>是配分函数（归一化因子）。然而当字典<span class="math inline">\(V\)</span>非常大时，计算归一化因子非常耗时。</p>
+\]</span> 其中<span class="math inline">\(u_{\theta}(w,c)=e^{s_{\theta}(w,c)}\)</span>, 而 <span class="math inline">\(Z_{\theta}(c)\)</span>是配分函数（归一化因子）。然而当字典<span class="math inline">\(V\)</span>非常大时，计算归一化因子非常耗时。</p>
 <hr>
-<p>下面，我们令<span class="math inline">\(\tilde p(w|c)\)</span> 和 <span class="math inline">\(\tilde p(c)\)</span>代表经验分布，<span class="math inline">\(q(w)\)</span>代表噪声分布。 ***</p>
+<p>下面，我们令<span class="math inline">\(\tilde p(w|c)\)</span> 和 <span class="math inline">\(\tilde p(c)\)</span>代表经验分布，<span class="math inline">\(q(w)\)</span>代表噪声分布。</p>
+<hr>
 <h2 id="noise-contrastive-estimationnce">Noise contrastive estimation(NCE)</h2>
 <p>NCE把语言模型的参数估计问题变成一个二分类问题的参数估计。二分类中的两类分别是真实样本和噪声样本。 具体地， 1. 从 <span class="math inline">\(\tilde p(c)\)</span>中采样<span class="math inline">\(c\)</span>,再从<span class="math inline">\(\tilde p(w|c)\)</span>中采样作为正样本(d=1)。 2. 从<span class="math inline">\(q(w)\)</span>采样k个样本作为负样本(d=0)。</p>
 <p>如果给定<span class="math inline">\(c\)</span>，那么<span class="math inline">\((d,w)\)</span>的分布是 <span class="math display">\[
@@ -338,11 +339,11 @@ p(0|c,w) = \frac{k\times q(w)}{\tilde p(w|c)+k\times q(w)}\\\
 p(1|c,w) = \frac{\tilde p(w|c)}{\tilde p(w|c)+k\times q(w)}.
 \end{align}
 \]</span></p>
-<p>在NCE中，针对上式，用<span class="math inline">\(p_{\theta}(w|c)\)</span>代替<span class="math inline">\(\tilde p(w|c)\)</span>，并且假设 1. <span class="math inline">\(Z(c)\)</span>是待估计参数 2. 对于参数众多的NN，固定<span class="math inline">\(Z(c)=1\)</span>有效。</p>
+<p>在NCE中，针对上式，用<span class="math inline">\(p_{\theta}(w|c)\)</span>近似<span class="math inline">\(\tilde p(w|c)\)</span>，并且假设 1. <span class="math inline">\(Z(c)\)</span>是待估计参数 2. 对于参数众多的NN，固定<span class="math inline">\(Z(c)=1\)</span>有效。</p>
 <p>因此，上两式又可写成： <span class="math display">\[
 \begin{align}
 p(0|c,w) = \frac{k\times q(w)}{u_{\theta}(w|c)+k\times q(w)}\\\
-p(1|c,w) = \frac{\tilde p(w|c)}{u_{\theta}(w|c)+k\times q(w)}.
+p(1|c,w) = \frac{u_\theta(w|c)}{u_{\theta}(w|c)+k\times q(w)}.
 \end{align}
 \]</span> 由此得到NCE loss: <span class="math display">\[
 \begin{align}
@@ -506,7 +507,7 @@ p(D=0|w,c) = \frac{e^{-s_{\theta}(w,c)}}{1+e^{-s_{\theta}(w,c)}}=\frac{1}{u_{\th
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -519,7 +520,7 @@ p(D=0|w,c) = \frac{e^{-s_{\theta}(w,c)}}{1+e^{-s_{\theta}(w,c)}}=\frac{1}{u_{\th
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

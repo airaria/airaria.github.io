@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="Improved Training of Wasserstein GANs 设G是生成网络，D是判别网络(critic)，原始GAN的训练目标是 \[ \min_G\max_D\ \mathbb{E}_{\mathbf{x}\sim\mathbb{P}_r}[\log(D(x))]+\mathbb{E}_{\mathbf{\tilde x}\sim\mathbb{P}_g}[\log(D(\t">
+<meta name="description" content="Improved Training of Wasserstein GANs 设G是生成网络(generator)，D是判别网络(critic)，原始GAN的训练目标是 \[ \min_G\max_D\ \mathbb{E}_{\mathbf{x}\sim\mathbb{P}_r}[\log(D(x))]+\mathbb{E}_{\mathbf{\tilde x}\sim\mathbb{P}_g">
 <meta name="keywords" content="Deep learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Improved Training of Wasserstein GANs">
 <meta property="og:url" content="http://yoursite.com/2017/07/09/Improved Training of Wasserstein GANs/index.html">
 <meta property="og:site_name" content="Manifold">
-<meta property="og:description" content="Improved Training of Wasserstein GANs 设G是生成网络，D是判别网络(critic)，原始GAN的训练目标是 \[ \min_G\max_D\ \mathbb{E}_{\mathbf{x}\sim\mathbb{P}_r}[\log(D(x))]+\mathbb{E}_{\mathbf{\tilde x}\sim\mathbb{P}_g}[\log(D(\t">
-<meta property="og:updated_time" content="2017-07-29T02:33:35.413Z">
+<meta property="og:description" content="Improved Training of Wasserstein GANs 设G是生成网络(generator)，D是判别网络(critic)，原始GAN的训练目标是 \[ \min_G\max_D\ \mathbb{E}_{\mathbf{x}\sim\mathbb{P}_r}[\log(D(x))]+\mathbb{E}_{\mathbf{\tilde x}\sim\mathbb{P}_g">
+<meta property="og:updated_time" content="2017-09-10T11:55:57.481Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Improved Training of Wasserstein GANs">
-<meta name="twitter:description" content="Improved Training of Wasserstein GANs 设G是生成网络，D是判别网络(critic)，原始GAN的训练目标是 \[ \min_G\max_D\ \mathbb{E}_{\mathbf{x}\sim\mathbb{P}_r}[\log(D(x))]+\mathbb{E}_{\mathbf{\tilde x}\sim\mathbb{P}_g}[\log(D(\t">
+<meta name="twitter:description" content="Improved Training of Wasserstein GANs 设G是生成网络(generator)，D是判别网络(critic)，原始GAN的训练目标是 \[ \min_G\max_D\ \mathbb{E}_{\mathbf{x}\sim\mathbb{P}_r}[\log(D(x))]+\mathbb{E}_{\mathbf{\tilde x}\sim\mathbb{P}_g">
 
 
 
@@ -319,7 +319,7 @@
 
       
         <h1 id="improved-training-of-wasserstein-gans">Improved Training of Wasserstein GANs</h1>
-<p>设G是生成网络，D是判别网络(critic)，原始GAN的训练目标是 <span class="math display">\[
+<p>设G是生成网络(generator)，D是判别网络(critic)，原始GAN的训练目标是 <span class="math display">\[
 \min_G\max_D\ \mathbb{E}_{\mathbf{x}\sim\mathbb{P}_r}[\log(D(x))]+\mathbb{E}_{\mathbf{\tilde x}\sim\mathbb{P}_g}[\log(D(\tilde x))]
 \]</span> 其中<span class="math inline">\(\mathbb{P}_r\)</span>是数据分布，<span class="math inline">\(\mathbb{P}_g\)</span>是G生成的数据分布。</p>
 <p>WGAN训练的目标是 <span class="math display">\[
@@ -469,7 +469,7 @@ L=\mathbb{E}_{\tilde{\mathbb{x}}\sim\mathbb{P}_g}[D(\tilde{\mathbb{x}})]-\mathbb
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -482,7 +482,7 @@ L=\mathbb{E}_{\tilde{\mathbb{x}}\sim\mathbb{P}_g}[D(\tilde{\mathbb{x}})]-\mathbb
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

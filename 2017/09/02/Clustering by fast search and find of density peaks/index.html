@@ -1,0 +1,772 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Machine learning," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="聚类算法——Clustering by fast search and find of density peaks 这是14年发表在Science上的一篇文章，论文中提出了一种基于密度的聚类算法，这种算法不需要指定类别的个数。聚类中心基于数据的局域密度峰给出，并且聚类中心一旦确定后就不会再迭代。 整个算法是下面这个流程。 1. 寻找密度峰 对于每一个数据点，计算它的局域密度\(\rho_i">
+<meta name="keywords" content="Machine learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聚类算法——Clustering by Fast Search and Find of Density Peaks">
+<meta property="og:url" content="http://yoursite.com/2017/09/02/Clustering by fast search and find of density peaks/index.html">
+<meta property="og:site_name" content="Manifold">
+<meta property="og:description" content="聚类算法——Clustering by fast search and find of density peaks 这是14年发表在Science上的一篇文章，论文中提出了一种基于密度的聚类算法，这种算法不需要指定类别的个数。聚类中心基于数据的局域密度峰给出，并且聚类中心一旦确定后就不会再迭代。 整个算法是下面这个流程。 1. 寻找密度峰 对于每一个数据点，计算它的局域密度\(\rho_i">
+<meta property="og:image" content="http://yoursite.com/image/clusterAB.png">
+<meta property="og:updated_time" content="2017-09-10T12:16:29.296Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="聚类算法——Clustering by Fast Search and Find of Density Peaks">
+<meta name="twitter:description" content="聚类算法——Clustering by fast search and find of density peaks 这是14年发表在Science上的一篇文章，论文中提出了一种基于密度的聚类算法，这种算法不需要指定类别的个数。聚类中心基于数据的局域密度峰给出，并且聚类中心一旦确定后就不会再迭代。 整个算法是下面这个流程。 1. 寻找密度峰 对于每一个数据点，计算它的局域密度\(\rho_i">
+<meta name="twitter:image" content="http://yoursite.com/image/clusterAB.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/02/Clustering by fast search and find of density peaks/"/>
+
+
+
+
+
+  <title>聚类算法——Clustering by Fast Search and Find of Density Peaks | Manifold</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Manifold</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">where strings viberate</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/02/Clustering by fast search and find of density peaks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="airaria">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Manifold">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">聚类算法——Clustering by Fast Search and Find of Density Peaks</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-02T00:05:31+08:00">
+                2017-09-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="聚类算法clustering-by-fast-search-and-find-of-density-peaks">聚类算法——Clustering by fast search and find of density peaks</h1>
+<p>这是14年发表在<em>Science</em>上的一篇文章，论文中提出了一种基于密度的聚类算法，这种算法不需要指定类别的个数。聚类中心基于数据的局域密度峰给出，并且聚类中心一旦确定后就不会再迭代。</p>
+<p>整个算法是下面这个流程。</p>
+<h3 id="寻找密度峰">1. 寻找密度峰</h3>
+<p>对于每一个数据点，计算它的局域密度<span class="math inline">\(\rho_i\)</span>： <span class="math display">\[
+\rho_i = \sum_j \chi(d_{ij}-d_c)
+\]</span></p>
+<p>其中<span class="math inline">\(\chi\)</span>是Heaviside阶梯函数，<span class="math inline">\(d_c\)</span>是一个选定的阈值。从式子可以看出<span class="math inline">\(\rho_i\)</span>等于距离点<span class="math inline">\(i\)</span>距离小于等于<span class="math inline">\(d_c\)</span>的点的个数。也可以使用指数衰减计算： <span class="math display">\[
+\rho_i = \sum_j e^{-\left(\frac{d_{ij}}{d_c}\right)^2}
+\]</span></p>
+<h3 id="计算delta_i">2. 计算<span class="math inline">\(\delta_i\)</span></h3>
+<p><span class="math inline">\(\delta_i\)</span>定义为局域密度比<span class="math inline">\(\rho_i\)</span>高的点到点<span class="math inline">\(i\)</span>的最小距离。也就是从如果从<span class="math inline">\(i\)</span>出发，那么至少走<span class="math inline">\(\delta_i\)</span>的距离才能找到第一个密度比<span class="math inline">\(i\)</span>高的点： <span class="math display">\[
+\delta_i = \mathop{\mathrm{min}}\limits_{j:\rho_j&gt;\rho_i} d_{ij}
+\]</span> 对于密度最大的点，令<span class="math inline">\(\delta_i\)</span>等于它到最远的点的距离$_i=<em>j d</em>{ij} <span class="math inline">\(例如，数据如图A所示。计算\)</span>_i<span class="math inline">\(和\)</span>_i$，并分别以它们为横轴和纵轴，绘于图B。</p>
+<div class="figure">
+<img src="/image/clusterAB.png" alt="clusterAB">
+<p class="caption">clusterAB</p>
+</div>
+<h3 id="选择聚类中心">3. 选择聚类中心</h3>
+<p>聚类中心的特点是<span class="math inline">\(\rho_i\)</span>和<span class="math inline">\(\delta_i\)</span>都比较高，既有高密度，又离“潜在对手”比较远。在图B中为1和10两个点。可以看出聚类中心在决策图(图B)上明显地与其他点分离。通过这种方式，可以较轻易地把聚类中心挑出来。图B还包含了其他信息。例如，左上方的点是密度低又离其他点远的，这些点一般是噪声点。</p>
+<h3 id="聚类">4.聚类</h3>
+<p>在确定了聚类中心后, 其它点依据局部密度从高到低排列，依次确定所属的类别。每个点的类别为距离最近的且密度高于该点的点所属的类别，这是一个逐步扩张的过程。这样的方式使得数据的聚出的类可以反映数据的真实分布，这是相对于kmeans的一大优势，因为如果数据分布非球形，kmeans是很难聚出非球形类的。</p>
+<h3 id="参数选择">参数选择</h3>
+<p>这个算法对<span class="math inline">\(d_c\)</span>的选择较不敏感。作者建议升序排列所有的点点距离，然后取前1%到2%分位数作为<span class="math inline">\(d_c\)</span>。或者使得平均邻居数是总点数的1%到2%。</p>
+<p>选择聚类中心时还要指定两个阈值<span class="math inline">\(\rho_c\)</span>和<span class="math inline">\(\delta_c\)</span>，可以参数化为 <span class="math display">\[
+\begin{align*}
+\rho_c &amp;= \rho_{min}+\alpha (\rho_{max}-\rho_{min})\\
+\delta_c &amp;=\delta_{min} + \beta(\delta_{max}-\delta_{min})
+\end{align*}
+\]</span> 根据上图看,<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(\beta\)</span>取0.15左右似乎就可以有不错的效果。或者画出决策图，人工挑选参数。</p>
+<p>各个数据上的实验的图就不贴了，可以参见原文。</p>
+<h2 id="实现代码">实现代码</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">from</span> scipy.spatial.distance <span class="keyword">import</span> distance</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">clustering</span><span class="params">(dw,gamma=<span class="number">0.02</span>,decision_graph=False,</span></span></div><div class="line">              alpha=<span class="number">0.5</span>,beta=<span class="number">0.5</span>,cluster=True,metric=<span class="string">'euclidean'</span>):</div><div class="line">    <span class="comment">#step1: pairwise distance</span></div><div class="line">    condensed_distance = distance.pdist(dw,metric=metric)</div><div class="line">    d_c = np.sort(condensed_distance)[int(len(condensed_distance)*gamma)]</div><div class="line">    redundant_distance = distance.squareform(condensed_distance)</div><div class="line">    <span class="comment">#step2: calculate local density</span></div><div class="line">    rho = np.sum(np.exp(-(redundant_distance/d_c)**<span class="number">2</span>),axis=<span class="number">1</span>)</div><div class="line">    <span class="comment">#step3: calculate delta</span></div><div class="line">    order_distance = np.argsort(redundant_distance,axis=<span class="number">1</span>)</div><div class="line">    delta=np.zeros_like(rho)</div><div class="line">    nn = np.zeros_like(rho).astype(int)</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(delta)):</div><div class="line">        mask = rho[order_distance[i]]&gt;rho[i]</div><div class="line">        <span class="keyword">if</span> mask.sum()&gt;<span class="number">0</span>:  <span class="comment">#not the highest density point</span></div><div class="line">            nn[i] = order_distance[i][mask][<span class="number">0</span>]</div><div class="line">            delta[i] = redundant_distance[i,nn[i]]</div><div class="line">        <span class="keyword">else</span>:  <span class="comment"># the highest density point</span></div><div class="line">            nn[i] = order_distance[i,<span class="number">-1</span>]</div><div class="line">            delta[i] = redundant_distance[i,nn[i]]</div><div class="line">    <span class="keyword">if</span> decision_graph:</div><div class="line">        plt.scatter(rho.delta)</div><div class="line">        plt.show()</div><div class="line">        </div><div class="line">    rho_c = min(rho)+(max(rho)-min(rho))*alpha</div><div class="line">    delta_c = min(delta)+(max(delta)-min(delta))*beta</div><div class="line">    centers = np.where(np.logical_and(rho&gt;rho_c,delta&gt;delta_c))[<span class="number">0</span>]</div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> cluster:</div><div class="line">        <span class="keyword">return</span> centers</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        labels = np.zeros_like(rho)</div><div class="line">        <span class="keyword">for</span> i,v <span class="keyword">in</span> enumerate(centers):</div><div class="line">            labels[v]=i</div><div class="line">        order_rho = np.argsort(rho)[::<span class="number">-1</span>]</div><div class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> order_rho:</div><div class="line">            <span class="keyword">if</span> p <span class="keyword">not</span> <span class="keyword">in</span> centers:</div><div class="line">                labels[p] = labels[nn[p]]</div><div class="line">        <span class="keyword">return</span> centers,labels</div></pre></td></tr></table></figure>
+<h2 id="参考文献">参考文献</h2>
+<p>[1] Clustering by fast search and find of density peaks, <em>Science</em>, Alex Rodriguez and Alessandro Laio.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Machine-learning/" rel="tag"># Machine learning</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/01/SqueezeNet/" rel="next" title="SqueezeNet与模型压缩">
+                <i class="fa fa-chevron-left"></i> SqueezeNet与模型压缩
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/09/policy_gradient/" rel="prev" title="强化学习中的策略优化方法1">
+                强化学习中的策略优化方法1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="airaria" />
+          <p class="site-author-name" itemprop="name">airaria</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/ziqing-yang-70" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/airaria" target="_blank" title="github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  github
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#聚类算法clustering-by-fast-search-and-find-of-density-peaks"><span class="nav-number">1.</span> <span class="nav-text">聚类算法——Clustering by fast search and find of density peaks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#寻找密度峰"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. 寻找密度峰</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算delta_i"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. 计算\(\delta_i\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择聚类中心"><span class="nav-number">1.0.3.</span> <span class="nav-text">3. 选择聚类中心</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#聚类"><span class="nav-number">1.0.4.</span> <span class="nav-text">4.聚类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数选择"><span class="nav-number">1.0.5.</span> <span class="nav-text">参数选择</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现代码"><span class="nav-number">1.1.</span> <span class="nav-text">实现代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">1.2.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">airaria</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

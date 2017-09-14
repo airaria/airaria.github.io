@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Testing," />
+  <meta name="keywords" content="Deep learning," />
 
 
 
@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="This is a testing. I hope it will work.   今夕复何夕，共此灯烛光  \[E=mc^2\] \[\hat{H} \lvert\psi\rangle = i\hbar\frac{\partial}{\partial t}\lvert\psi\rangle\] \[\sum_i a_i = \infty \] \[g_{\mu\nu} =">
-<meta name="keywords" content="Testing">
+<meta name="description" content="Attention 中的query, keys, values 计算attention的过程可以看成在(key,value) pairs中查询query： 在Seq2Seq模型中，query是decoder当前的状态，所有的key是encoder每一步的hidden state。计算align score的过程就可以看成计算query和key的相似度。把这些相似度作为权重，计算encoder的">
+<meta name="keywords" content="Deep learning">
 <meta property="og:type" content="article">
-<meta property="og:title" content="First Post Test">
-<meta property="og:url" content="http://yoursite.com/2017/05/30/First-post-test/index.html">
+<meta property="og:title" content="Attention 中的Query, Keys, Values">
+<meta property="og:url" content="http://yoursite.com/2017/09/01/Attention_query_keys_values/index.html">
 <meta property="og:site_name" content="Manifold">
-<meta property="og:description" content="This is a testing. I hope it will work.   今夕复何夕，共此灯烛光  \[E=mc^2\] \[\hat{H} \lvert\psi\rangle = i\hbar\frac{\partial}{\partial t}\lvert\psi\rangle\] \[\sum_i a_i = \infty \] \[g_{\mu\nu} =">
-<meta property="og:updated_time" content="2017-07-29T02:17:30.726Z">
+<meta property="og:description" content="Attention 中的query, keys, values 计算attention的过程可以看成在(key,value) pairs中查询query： 在Seq2Seq模型中，query是decoder当前的状态，所有的key是encoder每一步的hidden state。计算align score的过程就可以看成计算query和key的相似度。把这些相似度作为权重，计算encoder的">
+<meta property="og:updated_time" content="2017-09-10T12:04:58.946Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="First Post Test">
-<meta name="twitter:description" content="This is a testing. I hope it will work.   今夕复何夕，共此灯烛光  \[E=mc^2\] \[\hat{H} \lvert\psi\rangle = i\hbar\frac{\partial}{\partial t}\lvert\psi\rangle\] \[\sum_i a_i = \infty \] \[g_{\mu\nu} =">
+<meta name="twitter:title" content="Attention 中的Query, Keys, Values">
+<meta name="twitter:description" content="Attention 中的query, keys, values 计算attention的过程可以看成在(key,value) pairs中查询query： 在Seq2Seq模型中，query是decoder当前的状态，所有的key是encoder每一步的hidden state。计算align score的过程就可以看成计算query和key的相似度。把这些相似度作为权重，计算encoder的">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/05/30/First-post-test/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/01/Attention_query_keys_values/"/>
 
 
 
 
 
-  <title>First Post Test | Manifold</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Attention 中的Query, Keys, Values | Manifold</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -254,7 +254,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/30/First-post-test/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/01/Attention_query_keys_values/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="airaria">
@@ -271,7 +271,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">First Post Test</h1>
+          <h1 class="post-title" itemprop="name headline">Attention 中的Query, Keys, Values</h1>
         
 
         <div class="post-meta">
@@ -283,8 +283,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-30T00:41:40+08:00">
-                2017-05-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-01T00:01:00+08:00">
+                2017-09-01
               </time>
             
 
@@ -318,18 +318,9 @@
       
 
       
-        <ul>
-<li>This is a testing.</li>
-<li>I hope it will work.</li>
-</ul>
-<blockquote>
-<p>今夕复何夕，共此灯烛光</p>
-</blockquote>
-<p><span class="math display">\[E=mc^2\]</span></p>
-<p><span class="math display">\[\hat{H} \lvert\psi\rangle = i\hbar\frac{\partial}{\partial t}\lvert\psi\rangle\]</span></p>
-<p><span class="math display">\[\sum_i a_i = \infty \]</span></p>
-<p><span class="math display">\[g_{\mu\nu} = g_{\nu\mu}\]</span></p>
-<p><span class="math display">\[D*\]</span></p>
+        <h1 id="attention-中的query-keys-values">Attention 中的query, keys, values</h1>
+<p>计算attention的过程可以看成在(key,value) pairs中查询query：</p>
+<p>在Seq2Seq模型中，query是decoder当前的状态，所有的key是encoder每一步的hidden state。计算align score的过程就可以看成计算query和key的相似度。把这些相似度作为权重，计算encoder的所有hidden state的按权重求和，得到context vector。所以在Seq2Seq模型中，value和key是同一个东西。但是从 query, keys, values 的角度看attention更具有启发性。</p>
 
       
     </div>
@@ -359,7 +350,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Testing/" rel="tag"># Testing</a>
+            <a href="/tags/Deep-learning/" rel="tag"># Deep learning</a>
           
         </div>
       
@@ -372,14 +363,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/09/01/on L1 sparsity/" rel="next" title="L1的稀疏性与L2">
+                <i class="fa fa-chevron-left"></i> L1的稀疏性与L2
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/11/Queue-coordinator-and-producer-in-Tensorflow/" rel="prev" title="Queue, Coordinator and Producer in Tensorflow">
-                Queue, Coordinator and Producer in Tensorflow <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/01/SqueezeNet/" rel="prev" title="SqueezeNet与模型压缩">
+                SqueezeNet与模型压缩 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -427,8 +422,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -501,6 +505,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#attention-中的query-keys-values"><span class="nav-number">1.</span> <span class="nav-text">Attention 中的query, keys, values</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
