@@ -97,7 +97,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/08/26/CTC/index.html">
 <meta property="og:site_name" content="Manifold">
 <meta property="og:description" content="CTC Connectionist temporal classification, 直译为连接主义时序分类，简称CTC。用于端到端的语音识别中。设一段音频有T帧，而对应的音素一般来说只有U个(\(T\ge U\))，CTC要解决的问题就是从\(T\)帧的预测概率映射到长度\(U\)的音素，而这里\(U\)的大小是不确定的，因此如何对齐也是CTC要解决的问题之一。 设一共有\(k\)个音素，那">
-<meta property="og:updated_time" content="2017-09-26T15:02:01.312Z">
+<meta property="og:updated_time" content="2017-09-26T15:16:44.165Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解CTC">
 <meta name="twitter:description" content="CTC Connectionist temporal classification, 直译为连接主义时序分类，简称CTC。用于端到端的语音识别中。设一段音频有T帧，而对应的音素一般来说只有U个(\(T\ge U\))，CTC要解决的问题就是从\(T\)帧的预测概率映射到长度\(U\)的音素，而这里\(U\)的大小是不确定的，因此如何对齐也是CTC要解决的问题之一。 设一共有\(k\)个音素，那">
@@ -415,7 +415,7 @@ p(l|x)=\sum^{|l&#39;|}_{s=1}\frac{\alpha_t(s)\beta_t(s)}{y^t_{l&#39;_s}}
 &amp; = -\frac{1}{p(l|x)} \sum_{k&#39;}\frac{\partial p(l|x)}{\partial y^t_{k&#39;}}\frac{\partial y^t_{k&#39;}}{\partial u^t_k} \\
 &amp;=-\frac{1}{p(l|x)} \sum_{k&#39;}\frac{\partial p(l|x)}{\partial y^t_{k&#39;}}(y^t_{k&#39;}\delta_{kk&#39;}-y^t_{k&#39;}y^t_k) \\
 &amp;= -\frac{1}{p(l|x)} \sum_{k&#39;}\frac{1}{y_{k&#39;}^t}\sum_{s\in\mathrm{lab}(l,k&#39;)}\alpha_t(s)\beta_t(s)(\delta_{kk&#39;}-y^t_k) \\
-&amp;= -\frac{1}{p(l|x)} (\frac{1}\sum_{s\in\mathrm{lab}(l,k)}\alpha_t(s)\beta_t(s)-y^t_k p(l|x)) \\
+&amp;= -\frac{1}{p(l|x)} (\frac{1}{y_k^t}\sum_{s\in\mathrm{lab}(l,k)}\alpha_t(s)\beta_t(s)-y^t_k p(l|x)) \\
 &amp;= y^t_k - \frac{1}{y^t_k}\frac{\sum_{s\in\mathrm{lab}(l,k)}\alpha_t(s)\beta_t(s)}{p(l|x)} \\
 &amp;=y^t_k - \frac{1}{y^t_k}\frac{\sum_{s\in\mathrm{lab}(l,k)}\hat\alpha_t(s)\hat\beta_t(s)}{Z_t}
 \end{align*}
