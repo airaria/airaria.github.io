@@ -97,7 +97,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/08/26/CTC/index.html">
 <meta property="og:site_name" content="Manifold">
 <meta property="og:description" content="CTC Connectionist temporal classification, 直译为连接主义时序分类，简称CTC。用于端到端的语音识别中。设一段音频有T帧，而对应的音素一般来说只有U个(\(T\ge U\))，CTC要解决的问题就是从\(T\)帧的预测概率映射到长度\(U\)的音素，而这里\(U\)的大小是不确定的，因此如何对齐也是CTC要解决的问题之一。 设一共有\(k\)个音素，那">
-<meta property="og:updated_time" content="2017-09-26T14:08:49.256Z">
+<meta property="og:updated_time" content="2017-09-26T14:31:37.679Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解CTC">
 <meta name="twitter:description" content="CTC Connectionist temporal classification, 直译为连接主义时序分类，简称CTC。用于端到端的语音识别中。设一段音频有T帧，而对应的音素一般来说只有U个(\(T\ge U\))，CTC要解决的问题就是从\(T\)帧的预测概率映射到长度\(U\)的音素，而这里\(U\)的大小是不确定的，因此如何对齐也是CTC要解决的问题之一。 设一共有\(k\)个音素，那">
@@ -362,11 +362,33 @@ l&#39;=\mathrm{\_C\_A\_T\_}
 \]</span> <em>t(s) </em>{t-1}(s) + _{t-1}(s-1). <span class="math display">\[
 并且令
 \]</span> _t(s) = 0 s &lt;|l’|-2(T-t)-1, $$ 这是因为如果从这些变量出发，剩下的时间步不足以补全序列。</p>
-<p>最终的<span class="math inline">\(l\)</span>的概率是 <span class="math display">\[
+最终的<span class="math inline">\(l\)</span>的概率是 <span class="math display">\[
 p(l|x)=\alpha_T(|l&#39;|)+\alpha_T(|l&#39;|-1).
 \]</span> 类似地，可以定义反向概率<span class="math inline">\(\beta_t(s)\)</span>等于在<span class="math inline">\(t\)</span>时刻标签<span class="math inline">\(l_{s:|l|}\)</span>的概率 <span class="math display">\[
 \beta_t(s)\equiv\sum_{\mathcal{B}(\pi_{t:T})=l_{s:|l|}}\prod^T_{t&#39;=t}y^{t&#39;}_{\pi_{t&#39;}}
-\]</span> 其反向传播与<span class="math inline">\(\alpha\)</span>的正向传播类似。</p>
+\]</span> 其反向传播与<span class="math inline">\(\alpha\)</span>的正向传播类似： <span class="math display">\[
+\begin{align*}
+\beta_T(|l&#39;|) &amp;= y_b^T \\
+\beta_T(|l&#39;|-1) &amp;= y_{l_{|l|}}^T \\
+\beta_T(s) &amp;=0,\ \forall s&lt;|l&#39;|-1
+\end{align*}
+\]</span> 递归公式 $$
+<span class="math display">\[\begin{align}
+&amp;\beta_t(s)=0 \ \forall s&gt;|l&#39;|,\\
+&amp;\beta_t(s) = \left\{
+    \begin{aligned}
+    &amp;\bar\beta_t(s)y^t_{l&#39;_s}\quad &amp;\mathrm{if}\ l&#39;_s=b\ \mathrm{or} l&#39;_{s+2}=l&#39;_s \\
+    &amp;(\bar\beta_t(s)+\beta_{t+1}(s+2))y^t_{l&#39;_s}\quad&amp; \mathrm{otherwise}
+    \end{aligned}
+
+
+\right.
+\end{align}\]</span>
+<p><span class="math display">\[
+其中
+\]</span> <em>t(s) </em>{t+1}(s) + _{t+1}(s+1). <span class="math display">\[
+并且令
+\]</span> _t(s) = 0 s &gt;2t. $$</p>
 <p>为了避免正向-反向传播过程中的数值下溢(underflow)，通常用<span class="math inline">\(\hat\alpha\)</span>代替(7)、(8)式中的<span class="math inline">\(\alpha\)</span>： <span class="math display">\[
 C_t\equiv \sum_s\alpha_t(s),\quad\hat\alpha_t(s)\equiv\frac{\alpha_t(s)}{C_t}
 \]</span> 对于<span class="math inline">\(\beta\)</span>的处理类似。在这组新的变量下目标标签的对数概率为 <span class="math display">\[
