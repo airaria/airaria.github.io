@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="CTC Connectionist temporal classification, 直译为连接主义时序分类，简称CTC。用于端到端的语音识别中。设一段音频有T帧，而对应的音素一般来说只有U个(\(T\ge U\))，CTC要解决的问题就是从\(M\)帧的预测概率映射到长度\(U\)的音素，而这里\(U\)的大小是不确定的，因此如何对齐也是CTC要解决的问题之一。 设一共有\(k\)个音素，那">
+<meta name="description" content="CTC Connectionist temporal classification, 直译为连接主义时序分类，简称CTC。用于端到端的语音识别中。设一段音频有T帧，而对应的音素一般来说只有U个(\(T\ge U\))，CTC要解决的问题就是从\(T\)帧的预测概率映射到长度\(U\)的音素，而这里\(U\)的大小是不确定的，因此如何对齐也是CTC要解决的问题之一。 设一共有\(k\)个音素，那">
 <meta name="keywords" content="Deep learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解CTC">
 <meta property="og:url" content="http://yoursite.com/2017/08/26/CTC/index.html">
 <meta property="og:site_name" content="Manifold">
-<meta property="og:description" content="CTC Connectionist temporal classification, 直译为连接主义时序分类，简称CTC。用于端到端的语音识别中。设一段音频有T帧，而对应的音素一般来说只有U个(\(T\ge U\))，CTC要解决的问题就是从\(M\)帧的预测概率映射到长度\(U\)的音素，而这里\(U\)的大小是不确定的，因此如何对齐也是CTC要解决的问题之一。 设一共有\(k\)个音素，那">
-<meta property="og:updated_time" content="2017-09-10T12:56:20.916Z">
+<meta property="og:description" content="CTC Connectionist temporal classification, 直译为连接主义时序分类，简称CTC。用于端到端的语音识别中。设一段音频有T帧，而对应的音素一般来说只有U个(\(T\ge U\))，CTC要解决的问题就是从\(T\)帧的预测概率映射到长度\(U\)的音素，而这里\(U\)的大小是不确定的，因此如何对齐也是CTC要解决的问题之一。 设一共有\(k\)个音素，那">
+<meta property="og:updated_time" content="2017-09-26T14:08:49.256Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解CTC">
-<meta name="twitter:description" content="CTC Connectionist temporal classification, 直译为连接主义时序分类，简称CTC。用于端到端的语音识别中。设一段音频有T帧，而对应的音素一般来说只有U个(\(T\ge U\))，CTC要解决的问题就是从\(M\)帧的预测概率映射到长度\(U\)的音素，而这里\(U\)的大小是不确定的，因此如何对齐也是CTC要解决的问题之一。 设一共有\(k\)个音素，那">
+<meta name="twitter:description" content="CTC Connectionist temporal classification, 直译为连接主义时序分类，简称CTC。用于端到端的语音识别中。设一段音频有T帧，而对应的音素一般来说只有U个(\(T\ge U\))，CTC要解决的问题就是从\(T\)帧的预测概率映射到长度\(U\)的音素，而这里\(U\)的大小是不确定的，因此如何对齐也是CTC要解决的问题之一。 设一共有\(k\)个音素，那">
 
 
 
@@ -319,7 +319,7 @@
 
       
         <h1 id="ctc">CTC</h1>
-<p>Connectionist temporal classification, 直译为连接主义时序分类，简称CTC。用于端到端的语音识别中。设一段音频有T帧，而对应的音素一般来说只有U个(<span class="math inline">\(T\ge U\)</span>)，CTC要解决的问题就是从<span class="math inline">\(M\)</span>帧的预测概率映射到长度<span class="math inline">\(U\)</span>的音素，而这里<span class="math inline">\(U\)</span>的大小是不确定的，因此如何对齐也是CTC要解决的问题之一。</p>
+<p>Connectionist temporal classification, 直译为连接主义时序分类，简称CTC。用于端到端的语音识别中。设一段音频有T帧，而对应的音素一般来说只有U个(<span class="math inline">\(T\ge U\)</span>)，CTC要解决的问题就是从<span class="math inline">\(T\)</span>帧的预测概率映射到长度<span class="math inline">\(U\)</span>的音素，而这里<span class="math inline">\(U\)</span>的大小是不确定的，因此如何对齐也是CTC要解决的问题之一。</p>
 <p>设一共有<span class="math inline">\(k\)</span>个音素，那么我们的RNN模型的输出结果是每一帧在<span class="math inline">\(k+1\)</span>个类别上的概率，额外的1来自于我们新添加的标识{blank}。</p>
 <h1 id="形式化描述">形式化描述</h1>
 <p>令<span class="math inline">\(S\)</span>是从分布<span class="math inline">\(\mathcal{D}_{\mathcal{X}\times\mathcal{Z}}\)</span>中抽样出的样本的集合，其中<span class="math inline">\(\mathcal{X}=(\mathbb{R}^m)^*\)</span>是所有的<span class="math inline">\(m\)</span>维矢量输入序列，<span class="math inline">\(\mathcal{Z}=L^*\)</span>是目标空间，是所有有限长的由字母表<span class="math inline">\(L\)</span>中的字母组合成的序列的集合。<span class="math inline">\(S\)</span>中的每一个样本包含一对序列<span class="math inline">\((x,z)\)</span>，<span class="math inline">\(z=(z_1,z_2,\ldots,z_U)\)</span>，<span class="math inline">\(\ x=(x_1,x_2,\ldots,x_T)\)</span>，并且<span class="math inline">\(U\le T\)</span>。CTC的目标是训练一个分类器 <span class="math inline">\(h:\mathcal{X}\mapsto\mathcal{Z}\)</span>以最小化指定的error measure。</p>
@@ -328,7 +328,7 @@ p(\pi|x)=\prod^T_{t=1}y^t_{\pi_t}, \forall \pi\in L&#39;^T.
 \]</span> <span class="math inline">\(L&#39;^T\)</span>是所有长度为<span class="math inline">\(T\)</span>的由字母表<span class="math inline">\(L&#39;\)</span>中的字母组合成的序列的集合。把<span class="math inline">\(L&#39;^T\)</span>中的元素称为paths。</p>
 <p>然后我们要定义一个many-to-one的映射<span class="math inline">\(\mathcal{B}\)</span>：<span class="math inline">\(L&#39;^T\mapsto L^{\le T}\)</span>，<span class="math inline">\(L^{\le T}\)</span> 是由原字母表<span class="math inline">\(L\)</span>的字母构成的长度不长于<span class="math inline">\(T\)</span>的序列的集合。这一步可以简单地通过移除path中的{blank}得到 (比如 <span class="math inline">\(\mathcal{B}(a—bc—d-)=abcd\)</span>)。</p>
 <p>最后，通过<span class="math inline">\(\mathcal{B}\)</span> 可以定义给定输入<span class="math inline">\(x\)</span>，预测标签<span class="math inline">\(l\in L^{\le T}\)</span>的条件概率 <span class="math display">\[
-p(l|x) = \sum_{x\in\mathcal{B}^{-1}(l)}p(\pi|x).
+p(l|x) = \sum_{\pi\in\mathcal{B}^{-1}(l)}p(\pi|x).
 \]</span> 有了上面的定义，我们期望CTC可以给出最可几的标签序列 <span class="math display">\[
 h(x) = \mathrm{arg\max}_{l\in L^{\le T}}p(l|x).
 \]</span></p>
