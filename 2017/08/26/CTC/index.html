@@ -97,7 +97,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/08/26/CTC/index.html">
 <meta property="og:site_name" content="Manifold">
 <meta property="og:description" content="CTC Connectionist temporal classification, 直译为连接主义时序分类，简称CTC。用于端到端的语音识别中。设一段音频有T帧，而对应的音素一般来说只有U个(\(T\ge U\))，CTC要解决的问题就是从\(T\)帧的预测概率映射到长度\(U\)的音素，而这里\(U\)的大小是不确定的，因此如何对齐也是CTC要解决的问题之一。 设一共有\(k\)个音素，那">
-<meta property="og:updated_time" content="2017-09-26T14:44:21.496Z">
+<meta property="og:updated_time" content="2017-09-26T15:02:01.312Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解CTC">
 <meta name="twitter:description" content="CTC Connectionist temporal classification, 直译为连接主义时序分类，简称CTC。用于端到端的语音识别中。设一段音频有T帧，而对应的音素一般来说只有U个(\(T\ge U\))，CTC要解决的问题就是从\(T\)帧的预测概率映射到长度\(U\)的音素，而这里\(U\)的大小是不确定的，因此如何对齐也是CTC要解决的问题之一。 设一共有\(k\)个音素，那">
@@ -339,29 +339,30 @@ h(x) = \mathrm{arg\max}_{l\in L^{\le T}}p(l|x).
 \]</span> 把在<span class="math inline">\(l\)</span>的每个标签之间和两端插入blank得到的序列称作<span class="math inline">\(l&#39;\)</span>。 例如, <span class="math inline">\(l=\mathrm{CAT}\)</span> ，那么 <span class="math display">\[
 l&#39;=\mathrm{\_C\_A\_T\_}
 \]</span> 其中“_“表示blank。<span class="math inline">\(l&#39;\)</span>的长度是<span class="math inline">\(2|l|+1\)</span>。</p>
-允许预测出的前缀以blank或<span class="math inline">\(l\)</span>的第一个符号 开始，考虑在<span class="math inline">\(l&#39;\)</span>上的前向传播，<span class="math inline">\(\alpha\)</span>的初始化如下 <span class="math display">\[
+<p>允许预测出的前缀以blank或<span class="math inline">\(l\)</span>的第一个符号 开始，考虑在<span class="math inline">\(l&#39;\)</span>上的前向传播，<span class="math inline">\(\alpha\)</span>的初始化如下 <span class="math display">\[
 \begin{align*}
 \alpha_1(1) &amp;= y_b^1 \\
 \alpha_1(2) &amp;= y_{l_1}^1 \\
 \alpha_1(s) &amp;=0,\ \forall s&gt;2
 \end{align*}
-\]</span> 递归公式 $$
-<span class="math display">\[\begin{align}
+\]</span> 递归公式</p>
+<p><span class="math display">\[
+\begin{align}
 &amp;\alpha_t(s)=0 \ \forall s&lt;1,\\
 &amp;\alpha_t(s) = \left\{
     \begin{aligned}
     &amp;\bar\alpha_t(s)y^t_{l&#39;_s}\quad &amp;\mathrm{if}\ l&#39;_s=b\ \mathrm{or} l&#39;_{s-2}=l&#39;_s \\
     &amp;(\bar\alpha_t(s)+\alpha_{t-1}(s-2))y^t_{l&#39;_s}\quad&amp; \mathrm{otherwise}
     \end{aligned}
-
-
 \right.
-\end{align}\]</span>
+\end{align}
+\]</span> 其中</p>
 <p><span class="math display">\[
-其中
-\]</span> <em>t(s) </em>{t-1}(s) + _{t-1}(s-1). <span class="math display">\[
-并且令
-\]</span> _t(s) = 0 s &lt;|l’|-2(T-t)-1, $$ 这是因为如果从这些变量出发，剩下的时间步不足以补全序列。</p>
+\bar\alpha_t(s) \equiv \alpha_{t-1}(s) + \alpha_{t-1}(s-1).
+\]</span> 并且令</p>
+<p><span class="math display">\[
+\alpha_t(s) = 0\ \forall s &lt;|l&#39;|-2(T-t)-1,
+\]</span> 这是因为如果从这些变量出发，剩下的时间步不足以补全序列。</p>
 <p>最终的<span class="math inline">\(l\)</span>的概率是 <span class="math display">\[
 p(l|x)=\alpha_T(|l&#39;|)+\alpha_T(|l&#39;|-1).
 \]</span> 类似地，可以定义反向概率<span class="math inline">\(\beta_t(s)\)</span>等于在<span class="math inline">\(t\)</span>时刻标签<span class="math inline">\(l_{s:|l|}\)</span>的概率 <span class="math display">\[
@@ -373,7 +374,8 @@ p(l|x)=\alpha_T(|l&#39;|)+\alpha_T(|l&#39;|-1).
 \beta_T(|l&#39;|-1) &amp;= y_{l_{|l|}}^T \\
 \beta_T(s) &amp;=0,\ \forall s&lt;|l&#39;|-1
 \end{align*}
-\]</span> 递归公式 <span class="math display">\[
+\]</span> 递归公式</p>
+<p><span class="math display">\[
 \begin{align}
 &amp;\beta_t(s)=0 \ \forall s&gt;|l&#39;|,\\
 &amp;\beta_t(s) = \left\{
@@ -383,9 +385,11 @@ p(l|x)=\alpha_T(|l&#39;|)+\alpha_T(|l&#39;|-1).
       \end{aligned}
 \right.
 \end{align}
-\]</span> 其中 <span class="math display">\[
+\]</span> 其中</p>
+<p><span class="math display">\[
 \bar\beta_t(s) \equiv \beta_{t+1}(s) + \beta_{t+1}(s+1).
-\]</span> 并且令 <span class="math display">\[
+\]</span> 并且令</p>
+<p><span class="math display">\[
 \beta_t(s) = 0\ \forall s &gt;2t.
 \]</span></p>
 <p>为了避免正向-反向传播过程中的数值下溢(underflow)，通常用<span class="math inline">\(\hat\alpha\)</span>代替(7)、(8)式中的<span class="math inline">\(\alpha\)</span>： <span class="math display">\[
