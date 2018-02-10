@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="ML-theory," />
+  <meta name="keywords" content="Reinforcement Learning," />
 
 
 
@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="在语言模型中，给定上下文c，要预测单词w: \[ \begin{align} p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w&amp;#39;\in V}u_{\theta}(w&amp;#39;,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)} \end{align} \] 其中\(u_{\theta}(w,c)=e">
-<meta name="keywords" content="ML-theory">
+<meta name="description" content="强化学习中的策略优化方法3 - DPG&amp;amp;DDPG Deterministic Policy Gradient Algorithms(DPG) 首先回顾一下随机策略梯度。 在这里我们把策略\(\pi\)下的累积奖赏记为\(J(\pi)=\mathbb{E}[r^\gamma_1|\pi]\)，从状态s经过t步转移到状态s’的概率为\(p(s\rightarrow s&amp;#39;,t,\p">
+<meta name="keywords" content="Reinforcement Learning">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NCE and Negative Sampling">
-<meta property="og:url" content="http://yoursite.com/2017/07/05/NCE-and-negative-sampling/index.html">
+<meta property="og:title" content="强化学习中的策略优化方法3 - DPG&amp;DDPG">
+<meta property="og:url" content="http://yoursite.com/2017/10/31/强化学习中的策略优化方法3 - DPG&DDPG/index.html">
 <meta property="og:site_name" content="Manifold">
-<meta property="og:description" content="在语言模型中，给定上下文c，要预测单词w: \[ \begin{align} p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w&amp;#39;\in V}u_{\theta}(w&amp;#39;,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)} \end{align} \] 其中\(u_{\theta}(w,c)=e">
-<meta property="og:updated_time" content="2017-09-10T11:46:54.625Z">
+<meta property="og:description" content="强化学习中的策略优化方法3 - DPG&amp;amp;DDPG Deterministic Policy Gradient Algorithms(DPG) 首先回顾一下随机策略梯度。 在这里我们把策略\(\pi\)下的累积奖赏记为\(J(\pi)=\mathbb{E}[r^\gamma_1|\pi]\)，从状态s经过t步转移到状态s’的概率为\(p(s\rightarrow s&amp;#39;,t,\p">
+<meta property="og:updated_time" content="2018-02-10T13:18:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="NCE and Negative Sampling">
-<meta name="twitter:description" content="在语言模型中，给定上下文c，要预测单词w: \[ \begin{align} p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w&amp;#39;\in V}u_{\theta}(w&amp;#39;,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)} \end{align} \] 其中\(u_{\theta}(w,c)=e">
+<meta name="twitter:title" content="强化学习中的策略优化方法3 - DPG&amp;DDPG">
+<meta name="twitter:description" content="强化学习中的策略优化方法3 - DPG&amp;amp;DDPG Deterministic Policy Gradient Algorithms(DPG) 首先回顾一下随机策略梯度。 在这里我们把策略\(\pi\)下的累积奖赏记为\(J(\pi)=\mathbb{E}[r^\gamma_1|\pi]\)，从状态s经过t步转移到状态s’的概率为\(p(s\rightarrow s&amp;#39;,t,\p">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/05/NCE-and-negative-sampling/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/10/31/强化学习中的策略优化方法3 - DPG&DDPG/"/>
 
 
 
 
 
-  <title>NCE and Negative Sampling | Manifold</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>强化学习中的策略优化方法3 - DPG&DDPG | Manifold</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -254,7 +254,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/05/NCE-and-negative-sampling/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/31/强化学习中的策略优化方法3 - DPG&DDPG/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="airaria">
@@ -271,7 +271,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">NCE and Negative Sampling</h1>
+          <h1 class="post-title" itemprop="name headline">强化学习中的策略优化方法3 - DPG&DDPG</h1>
         
 
         <div class="post-meta">
@@ -283,8 +283,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-05T22:03:10+08:00">
-                2017-07-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-31T21:17:23+08:00">
+                2017-10-31
               </time>
             
 
@@ -318,69 +318,59 @@
       
 
       
-        <p>在语言模型中，给定上下文c，要预测单词w: <span class="math display">\[
+        <h1 id="强化学习中的策略优化方法3---dpgddpg">强化学习中的策略优化方法3 - DPG&amp;DDPG</h1>
+<h2 id="deterministic-policy-gradient-algorithmsdpg">Deterministic Policy Gradient Algorithms(DPG)</h2>
+<p>首先回顾一下随机策略梯度。</p>
+<p>在这里我们把策略<span class="math inline">\(\pi\)</span>下的累积奖赏记为<span class="math inline">\(J(\pi)=\mathbb{E}[r^\gamma_1|\pi]\)</span>，从状态s经过t步转移到状态s’的概率为<span class="math inline">\(p(s\rightarrow s&#39;,t,\pi)\)</span>，折扣态密度为<span class="math inline">\(\rho^\pi(s&#39;)=\int_{\mathcal{S}}\sum^\infty_{t=1}\gamma^{t-1}p_1(s)p(s\rightarrow s&#39;,t,\pi)\mathrm{d}s\)</span>， <span class="math display">\[
 \begin{align}
-p_{\theta}(w|c) = \frac{u_{\theta}(w,c)}{\sum_{w&#39;\in V}u_{\theta}(w&#39;,c)} = \frac{u_{\theta}(w,c)}{Z_{\theta}(c)}
+J(\pi_\theta)&amp;=\int_\mathcal{S}\rho^\pi(s)\int_\mathcal{A}\pi_{\theta}(s,a)r(s,a)\mathrm{d}a\mathrm{d}s\\
+&amp;=\mathbb{E}_{s\sim\rho^\pi,a\sim\pi_\theta}[r(s,a)]
 \end{align}
-\]</span> 其中<span class="math inline">\(u_{\theta}(w,c)=e^{s_{\theta}(w,c)}\)</span>, 而 <span class="math inline">\(Z_{\theta}(c)\)</span>是配分函数（归一化因子）。然而当字典<span class="math inline">\(V\)</span>非常大时，计算归一化因子非常耗时。</p>
-<hr>
-<p>下面，我们令<span class="math inline">\(\tilde p(w|c)\)</span> 和 <span class="math inline">\(\tilde p(c)\)</span>代表经验分布，<span class="math inline">\(q(w)\)</span>代表噪声分布。</p>
-<hr>
-<h2 id="noise-contrastive-estimationnce">Noise contrastive estimation(NCE)</h2>
-<p>NCE把语言模型的参数估计问题变成一个二分类问题的参数估计。二分类中的两类分别是真实样本和噪声样本。 具体地， 1. 从 <span class="math inline">\(\tilde p(c)\)</span>中采样<span class="math inline">\(c\)</span>,再从<span class="math inline">\(\tilde p(w|c)\)</span>中采样作为正样本(d=1)。 2. 从<span class="math inline">\(q(w)\)</span>采样k个样本作为负样本(d=0)。</p>
-<p>如果给定<span class="math inline">\(c\)</span>，那么<span class="math inline">\((d,w)\)</span>的分布是 <span class="math display">\[
+\]</span> 策略梯度定理为 <span class="math display">\[
 \begin{align}
-p(0,w|c) = \frac{k}{1+k}q(w) \\\
-p(1,w|c) = \frac{1}{1+k}\tilde p(w|c).
-\end{align}
-\]</span> 利用条件概率，我们可以把上式变为 <span class="math display">\[
-\begin{align}
-p(0|c,w) = \frac{k\times q(w)}{\tilde p(w|c)+k\times q(w)}\\\
-p(1|c,w) = \frac{\tilde p(w|c)}{\tilde p(w|c)+k\times q(w)}.
+\nabla_\theta J(\pi_\theta) &amp;= \int_\mathcal{S}\rho^\pi(s)\int_\mathcal{A}\nabla_\theta\pi_\theta(a|s)Q^\pi(s,a)\mathrm{d}a\mathrm{d}s \\
+&amp;=\mathbb{E}_{s\sim\rho^\pi,a\sim\pi_\theta}[\nabla_\theta \log \pi_\theta(a|s)Q^\pi(s,a)]
 \end{align}
 \]</span></p>
-<p>在NCE中，针对上式，用<span class="math inline">\(p_{\theta}(w|c)\)</span>近似<span class="math inline">\(\tilde p(w|c)\)</span>，并且假设 1. <span class="math inline">\(Z(c)\)</span>是待估计参数 2. 对于参数众多的NN，固定<span class="math inline">\(Z(c)=1\)</span>有效。</p>
-<p>因此，上两式又可写成： <span class="math display">\[
+<p>对于确定性策略<span class="math inline">\(a=\mu_\theta(s)\)</span>，<span class="math inline">\(J(\mu_\theta)=\int_\mathcal{S}\rho^\mu(s)r(s,\mu_\theta(s))\mathrm{d}s=\mathbb{E}_{s\sim\rho^\mu}[r(s,\mu_\theta(s))]\)</span>，对应的策略梯度定理为 <span class="math display">\[
 \begin{align}
-p(0|c,w) = \frac{k\times q(w)}{u_{\theta}(w|c)+k\times q(w)}\\\
-p(1|c,w) = \frac{u_\theta(w|c)}{u_{\theta}(w|c)+k\times q(w)}.
+\nabla_\theta J(\mu_\theta)&amp;=\int_\mathcal{S}\rho^\mu(s)\nabla_\theta\mu_\theta(s)\nabla_a Q^\mu(s,a)|_{a=\mu_\theta(s)}\mathrm{d}s \\
+&amp;=\mathbb{E}_{s\sim\rho^\mu}[\nabla_\theta\mu_\theta(s)\nabla_aQ^\mu(s,a)|_{a=\mu_\theta(s)}]
 \end{align}
-\]</span> 由此得到NCE loss: <span class="math display">\[
-\begin{align}
--\mathcal{L}_{\mathrm{NCE}_k} = \sum_{(w,c)\in \mathcal{D}}(\log p(D=1|c,w)+k \mathbb{E}_{\bar w\sim q} \log p(D=0|c,\bar w))
-\end{align}
-\]</span> 对于其中的期望项，我们用MC抽样。</p>
-<h2 id="negative-sampling">Negative sampling</h2>
-<p>在上面的框架下，negative sampling实际是指定了另一组条件概率</p>
-<p><span class="math display">\[
-\begin{align}
-p(D=0|c,w) = \frac{1}{u_{\theta}(w,c)+1}\\
-p(D=1|c,w) = \frac{u_{\theta}(w,c)}{u_{\theta}(w,c)+1},
-\end{align}
-\]</span></p>
-<p>等价于在NCE中令<span class="math inline">\(k=\lvert V\rvert, q\sim Uniform Distribution\)</span>, 此时<span class="math inline">\(k\times q = 1\)</span>.</p>
-<h4 id="直接的角度">直接的角度</h4>
-<p>从另一个角度看,在negative sampling中,我们要做得是最大化正样本概率 <span class="math display">\[
-\sum_{(w,c)\in \mathcal{D}}\log p(D=1|w,c)
-\]</span> 和最小化负样本概率 <span class="math display">\[
-\sum_{(w,c)\notin \mathcal{D}} \log p(D=0|w,c)
-\]</span> 即 <span class="math display">\[
--\mathcal{L}_{\mathrm{NS}} = \sum_{(w,c)\in\mathcal{D}}\log p(D=1|w,c)+\sum_{(w,c)\notin \mathcal{D}}(1-\log(D=1|w,c))
-\]</span> 可以直接通过logistic函数建模: <span class="math display">\[
-p(D=1|w,c)=\frac{1}{e^{-s_{\theta} (w,c)}+1}=\frac{u_{\theta}(w,c)}{u_{\theta}(w,c)+1}\\\
-p(D=0|w,c) = \frac{e^{-s_{\theta}(w,c)}}{1+e^{-s_{\theta}(w,c)}}=\frac{1}{u_{\theta}(w,c)+1},
-\]</span> 回到了上面的结果。</p>
-<h2 id="candidate-sampling">Candidate Sampling</h2>
-<p>NCE 和 Negative sampling都属于candidate sampling.</p>
-<h3 id="什么是candicate-sampling">什么是candicate sampling?</h3>
-<p>还以语言模型为例。对于给定的上下文c,我们需要预测下一个单词w,w的候选集大小是<span class="math inline">\(|V|\)</span>。在softmax方法中为了计算<span class="math inline">\(p(W=w|c)\)</span>,需要计算出每一个类别<span class="math inline">\(p(W=w_i|c)\)</span>的概率，这称为是“exanstive”的。在candidate sampling中，为了计算<span class="math inline">\(p(W=w|c)\)</span>我们只需对<span class="math inline">\(V\)</span>中的一部分某些<span class="math inline">\(w_i\)</span>做计算。</p>
-<p>candidate sampling的详细一些的介绍可以参见下面的参考文献2.</p>
+\]</span> 还有对应的off-policy版本的策略梯度定理，这里就不写了，可以参阅DPG原文。</p>
+<h2 id="deep-deterministic-policy-gradient-ddpg">Deep Deterministic Policy Gradient (DDPG)</h2>
+<p>DDPG结合了DPG和DQN。也就是说，在DPG的基础上，引入了DQN中的关键技术：加入replay buffer 减少样本直接的关联；使用target actor network和target critic network计算target，并缓慢更新他们的参数: <span class="math inline">\(\theta&#39;\leftarrow \tau\theta +(1-\tau)\theta, \tau\ll1\)</span>；此外在input层还使用了batch normalization。因为DDPG是off-policy的，为了充分探索环境 ，可以设计一个探索策略 <span class="math display">\[
+\mu&#39;(s_t)=\mu(s_t|\theta^\mu_t)+\mathcal{N}
+\]</span> 其中<span class="math inline">\(\mathcal{N}\)</span>是噪声，可以根据实际问题调整。在DDPG原文中作者使用的是Ornstein-Uhlenbeck过程：</p>
+<blockquote>
+<p>For the exploration noise process we used temporally correlated noise in order to explore well in physical environments that have momentum. We used an Ornstein-Uhlenbeck process (Uhlenbeck &amp; Ornstein, 1930) with θ = 0.15 and σ = 0.3. The Ornstein-Uhlenbeck process models the velocity of a Brownian particle with friction, which results in temporally correlated values centered around 0.</p>
+</blockquote>
+<p>整个算法如下</p>
 <hr>
-<p>参考文献：</p>
-<ol style="list-style-type: decimal">
-<li>arxiv:1410.8251</li>
-<li><em>What is Candidate Sampling</em> from <em>TensorFlow</em></li>
-</ol>
+<p>Randomly initialize critic network <span class="math inline">\(Q(s,a|\theta^Q)\)</span> and actor <span class="math inline">\(\mu(s|\theta^\mu)\)</span> with weights <span class="math inline">\(\theta^Q\)</span> and <span class="math inline">\(\theta^\mu\)</span>.</p>
+<p>Initialize target network <span class="math inline">\(Q&#39;\)</span> and <span class="math inline">\(\mu&#39;\)</span> with weights <span class="math inline">\(\theta^{Q&#39;} \leftarrow \theta^Q\)</span> , <span class="math inline">\(\theta^{\mu&#39;}\leftarrow\theta^{\mu}\)</span>.</p>
+<p>Initialize replay buffer R.</p>
+<p><strong>for</strong> episode =1, M <strong>do</strong></p>
+<p>​ Initialize a random process <span class="math inline">\(\mathcal{N}\)</span> for action exploration</p>
+<p>​ Receive initial observation state <span class="math inline">\(s_1\)</span></p>
+<p>​ <strong>for</strong> <span class="math inline">\(t=1,M\)</span> <strong>do</strong></p>
+<p>​ Select action <span class="math inline">\(a_t=\mu(s_t|\theta^\mu)+\mathcal{N}_t\)</span> according to the current policy and exploration noise</p>
+<p>​ Execute action <span class="math inline">\(a_t\)</span> and observe reward <span class="math inline">\(r_t\)</span> and new state <span class="math inline">\(s_{t+1}\)</span></p>
+<p>​ Store transition <span class="math inline">\((s_t,a_t,r_t,s_{t+1})\)</span> in <span class="math inline">\(R\)</span></p>
+<p>​ Sample a random minibatch of <span class="math inline">\(N\)</span> transitions from <span class="math inline">\(R\)</span></p>
+<p>​ Set <span class="math inline">\(y_i=r_i+\gamma Q&#39;(s_{i+1},\mu&#39;(s_{i+1}|\theta^{\mu&#39;})|\theta^{Q&#39;})\)</span></p>
+<p>​ Update critic by minimizing the loss: <span class="math inline">\(L=\frac{1}{N}\sum_i(y_i-Q(s_i,a_i|\theta^Q)^2)\)</span></p>
+<p>​ Update the actor policy using the sampled gradient: <span class="math display">\[
+\begin{align*}
+\nabla_{\theta^\mu}\mu|_{s_i}\approx\frac{1}{N}\sum_i\nabla_aQ(s,a|\theta^Q)|_{s=s_i,a=\mu(s_i)}\nabla_{\theta^\mu}\mu(s|\theta^\mu)|_{s_i}
+\end{align*}
+\]</span> ​ Update the target networks: <span class="math display">\[
+\begin{align*}
+\theta^{Q&#39;}&amp;\leftarrow\tau\theta^Q+(1-\tau)\theta^{Q&#39;}\\
+\theta^{\mu&#39;}&amp;\leftarrow\tau\theta^\mu+(1-\tau)\theta^{\mu&#39;}
+\end{align*}
+\]</span> ​ <strong>end for</strong></p>
+<p><strong>end for</strong></p>
 
       
     </div>
@@ -410,7 +400,7 @@ p(D=0|w,c) = \frac{e^{-s_{\theta}(w,c)}}{1+e^{-s_{\theta}(w,c)}}=\frac{1}{u_{\th
       
         <div class="post-tags">
           
-            <a href="/tags/ML-theory/" rel="tag"># ML-theory</a>
+            <a href="/tags/Reinforcement-Learning/" rel="tag"># Reinforcement Learning</a>
           
         </div>
       
@@ -423,8 +413,8 @@ p(D=0|w,c) = \frac{e^{-s_{\theta}(w,c)}}{1+e^{-s_{\theta}(w,c)}}=\frac{1}{u_{\th
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/11/Queue-coordinator-and-producer-in-Tensorflow/" rel="next" title="Queue, Coordinator and Producer in Tensorflow">
-                <i class="fa fa-chevron-left"></i> Queue, Coordinator and Producer in Tensorflow
+              <a href="/2017/10/28/CNN RF calculator/" rel="next" title="CNN Receptive Field Calculator -- CNN感受野计算器">
+                <i class="fa fa-chevron-left"></i> CNN Receptive Field Calculator -- CNN感受野计算器
               </a>
             
           </div>
@@ -433,8 +423,8 @@ p(D=0|w,c) = \frac{e^{-s_{\theta}(w,c)}}{1+e^{-s_{\theta}(w,c)}}=\frac{1}{u_{\th
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/07/Batch,Layer,Instance,Weight Normalization/" rel="prev" title="各种Normalization">
-                各种Normalization <i class="fa fa-chevron-right"></i>
+              <a href="/2018/01/04/DQN注意事项/" rel="prev" title="DQN注意事项">
+                DQN注意事项 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -575,7 +565,7 @@ p(D=0|w,c) = \frac{e^{-s_{\theta}(w,c)}}{1+e^{-s_{\theta}(w,c)}}=\frac{1}{u_{\th
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#noise-contrastive-estimationnce"><span class="nav-number">1.</span> <span class="nav-text">Noise contrastive estimation(NCE)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#negative-sampling"><span class="nav-number">2.</span> <span class="nav-text">Negative sampling</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#直接的角度"><span class="nav-number">2.0.1.</span> <span class="nav-text">直接的角度</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#candidate-sampling"><span class="nav-number">3.</span> <span class="nav-text">Candidate Sampling</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是candicate-sampling"><span class="nav-number">3.1.</span> <span class="nav-text">什么是candicate sampling?</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#强化学习中的策略优化方法3---dpgddpg"><span class="nav-number">1.</span> <span class="nav-text">强化学习中的策略优化方法3 - DPG&DDPG</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#deterministic-policy-gradient-algorithmsdpg"><span class="nav-number">1.1.</span> <span class="nav-text">Deterministic Policy Gradient Algorithms(DPG)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deep-deterministic-policy-gradient-ddpg"><span class="nav-number">1.2.</span> <span class="nav-text">Deep Deterministic Policy Gradient (DDPG)</span></a></li></ol></li></ol></div>
             
 
           </div>

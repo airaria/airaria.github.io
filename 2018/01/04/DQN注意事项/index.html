@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Reinforcement Learning," />
 
 
 
@@ -90,12 +90,17 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Manifold">
-<meta property="og:url" content="http://yoursite.com/tags/Mathematics/index.html">
+<meta name="description" content="DQN注意事项 本文的内容主要来自论文 Implementing the Deep Q-Network(arxiv:1711.10748)。 DQN比较难训练，为了得到较好的实验结果，可能需要用到许多技巧。这篇文章复现了Mnih et al. 的实验，并总结了需要注意的关键细节。 Q-Learning 根据Bellman方程，最优策略\(\pi^*\)对应的的Q函数\(Q^*\)可以递归地">
+<meta name="keywords" content="Reinforcement Learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DQN注意事项">
+<meta property="og:url" content="http://yoursite.com/2018/01/04/DQN注意事项/index.html">
 <meta property="og:site_name" content="Manifold">
+<meta property="og:description" content="DQN注意事项 本文的内容主要来自论文 Implementing the Deep Q-Network(arxiv:1711.10748)。 DQN比较难训练，为了得到较好的实验结果，可能需要用到许多技巧。这篇文章复现了Mnih et al. 的实验，并总结了需要注意的关键细节。 Q-Learning 根据Bellman方程，最优策略\(\pi^*\)对应的的Q函数\(Q^*\)可以递归地">
+<meta property="og:updated_time" content="2018-02-10T13:20:29.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Manifold">
+<meta name="twitter:title" content="DQN注意事项">
+<meta name="twitter:description" content="DQN注意事项 本文的内容主要来自论文 Implementing the Deep Q-Network(arxiv:1711.10748)。 DQN比较难训练，为了得到较好的实验结果，可能需要用到许多技巧。这篇文章复现了Mnih et al. 的实验，并总结了需要注意的关键细节。 Q-Learning 根据Bellman方程，最优策略\(\pi^*\)对应的的Q函数\(Q^*\)可以递归地">
 
 
 
@@ -123,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/Mathematics/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/01/04/DQN注意事项/"/>
 
 
 
 
 
-  <title>标签: Mathematics | Manifold</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>DQN注意事项 | Manifold</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -155,7 +160,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left  ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -239,44 +244,177 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h1>Mathematics<small>标签</small>
-      </h1>
-    </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/04/DQN注意事项/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="airaria">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Manifold">
+    </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DQN注意事项</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-04T15:47:03+08:00">
+                2018-01-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
       
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <h1 id="dqn注意事项">DQN注意事项</h1>
+<p>本文的内容主要来自论文 <em>Implementing the Deep Q-Network</em>(arxiv:1711.10748)。</p>
+<p>DQN比较难训练，为了得到较好的实验结果，可能需要用到许多技巧。这篇文章复现了Mnih et al. 的实验，并总结了需要注意的关键细节。</p>
+<h2 id="q-learning">Q-Learning</h2>
+<p>根据Bellman方程，最优策略<span class="math inline">\(\pi^*\)</span>对应的的Q函数<span class="math inline">\(Q^*\)</span>可以递归地表示为 <span class="math display">\[
+Q^*(s,a) = \sum_{s&#39;\in S}T(s,a,s&#39;)[R(s,a,s&#39;)+\gamma\max_{a&#39;} Q^*(s&#39;,a&#39;)],
+\]</span> 在Q-Learning中，通过不断地根据策略采取行动、探索环境，依据Bellman方程迭代更新，来估计最优策略的Q函数 <span class="math display">\[
+Q_{t+1}(s_t,a_t)\leftarrow Q_t(s_t, a_t）+\alpha_t[r_{t+1}+\gamma\max_{a&#39;}Q_t(s_{t+1},a&#39;)-Q_{t}(s_t,a_t)],
+\]</span> Q-Learning的收敛性是有保证的，如果：Q函数是用表格法表示，每个状态和动作会被无限多次访问，且学习率<span class="math inline">\(\alpha_t\)</span>随着时间<span class="math inline">\(t\)</span>增长趋于<span class="math inline">\(0\)</span>，那么我们可以保证按上式迭代的<span class="math inline">\(Q\)</span>会收敛到最优策略的Q函数<span class="math inline">\(Q^*\)</span>。</p>
+<h2 id="deep-q-learning">Deep Q-Learning</h2>
+<p>DQN与普通的Q-Learning有如下不同：</p>
+<ol style="list-style-type: decimal">
+<li>用深度网络近似Q函数。但这样收敛性就没了保证，并且降低稳定性。</li>
+<li>经验回放。</li>
+<li>区分Q-value network和target network，并对target network的参数缓慢更新。</li>
+<li>把梯度裁剪到[-1,1]区间</li>
+</ol>
+<p>后三点都是为了增加训练的稳定性。但即便如此，在训练过程中仍会发生灾难性遗忘(catastrophic forgetting)，也就是经过一段时间训练后performance不上升，反而突然下降。</p>
+<h3 id="一些关键的实现细节">一些关键的实现细节</h3>
+<ol style="list-style-type: decimal">
+<li>每一个episode开始时，先执行随机数目个(0~30)no-op atari low-level 操作；</li>
+</ol>
+<p>每经过4个atari帧agent才感知一次，因此经验回放的是agent感知的帧，每次动作持续4个atari帧；</p>
+<p>梯度下降之前，先用随机策略填充50000步，以免对早期的经验过拟合；</p>
+<p>更新频率：agent每感知4次环境才执行一次梯度下降。</p>
+<ol start="2" style="list-style-type: decimal">
+<li><p>预分配经验回放等数组的内存以提高速度。</p></li>
+<li><p>在有生命值得游戏里，每当损失生命值时视为episode结束。</p></li>
+<li><p>如果使用RMSprop optimizer， 学习率设为0.00005，而不是Minh et al. 提到的0.00025，后者的RMSprop的实现与caffe的RMSprop实现有区别。</p></li>
+</ol>
 
-      <h2 class="post-title">
+      
+    </div>
+
+    <div>
+      
         
-            <a class="post-title-link" href="/2017/07/10/Min Max & Max Min/" itemprop="url">
-              
-                <span itemprop="name">Min Max & Max Min</span>
-              
-            </a>
+
+      
+    </div>
+
+    <div>
+      
         
-      </h2>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-07-10T09:15:00+08:00"
-              content="2017-07-10" >
-          07-10
-        </time>
-      </div>
+      
+    </div>
 
-    </header>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Reinforcement-Learning/" rel="tag"># Reinforcement Learning</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/31/强化学习中的策略优化方法3 - DPG&DDPG/" rel="next" title="强化学习中的策略优化方法3 - DPG&DDPG">
+                <i class="fa fa-chevron-left"></i> 强化学习中的策略优化方法3 - DPG&DDPG
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
-  </div>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -284,6 +422,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -303,8 +445,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -377,6 +528,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#dqn注意事项"><span class="nav-number">1.</span> <span class="nav-text">DQN注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#q-learning"><span class="nav-number">1.1.</span> <span class="nav-text">Q-Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deep-q-learning"><span class="nav-number">1.2.</span> <span class="nav-text">Deep Q-Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一些关键的实现细节"><span class="nav-number">1.2.1.</span> <span class="nav-text">一些关键的实现细节</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -490,6 +657,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
 
   
 
